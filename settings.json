@@ -1,0 +1,10 @@
+{
+  "ticker": "^GSPC",
+  "start_date": "2025-03-05",
+  "end_date": "2025-03-05",
+  "max_windows": 1,
+  "run_id": "concept",
+  "reference_start_date": "2020-01-01",
+  "reference_end_date": "2024-08-30",
+  "execute_models": false
+}

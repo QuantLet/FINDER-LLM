@@ -1,0 +1,182 @@
+[
+  {
+    "file": "Figures/Manuscript/Figure 01 Information Timeline.png",
+    "sha256": "89d31bb3912d5c311084cdc794129ff68d88e828c43187aa1cad90686b179091",
+    "submission_file": "Figure 01 Information Timeline.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "12 Information Timeline.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 02 Market Charts.png",
+    "sha256": "61613e7d14c2aa59ac70ceca55957282e6218f1b90dcd155ae3c372ad81724dc",
+    "submission_file": "Figure 02 Market Charts.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": true,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "10 Technical Chart Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 03 Risk Charts.png",
+    "sha256": "e326da501c6a4ed4942998daf4bc666ef693dc49db52e1b3264ecfcccff3f2ef",
+    "submission_file": "Figure 03 Risk Charts.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": true,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "10 Technical Chart Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 04 Volume Charts.png",
+    "sha256": "85308413e56c7e0f765ba0c575beaeca6ec9c5e8ab17f12ea4e505001b015a3c",
+    "submission_file": "Figure 04 Volume Charts.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": true,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "10 Technical Chart Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 05 Workflow.png",
+    "sha256": "67aeb998009b0b499ef2dbe546902771fa7b1e38d38dbf3dc1c26b009fc74bbe",
+    "submission_file": "Figure 05 Workflow.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": false,
+    "regenerated_pixel_difference_fraction": 0.0003735951275321354,
+    "notebook": "11 Workflow and Agent Roles.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 06 Agent Roles.png",
+    "sha256": "5687c35ce3d0d9b08f7a1d4c08d40a6ba8d427f46c26dabf3b42cf80efe8e21b",
+    "submission_file": "Figure 06 Agent Roles.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "11 Workflow and Agent Roles.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 07 News Selection.png",
+    "sha256": "a9adc3a57fccaa84aa272ff6c9edd0d3f73dca4c4924dc49027ae1e12fd006d8",
+    "submission_file": "Figure 07 News Selection.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "09 News Selection Figure.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 08 A ROC AUC.png",
+    "sha256": "5ddd6917f2135a405af4c6776d1c3135c51762c0187ea3d1891c66a05af907a9",
+    "submission_file": "Figure 08 A ROC AUC.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 08 B Average Precision.png",
+    "sha256": "711eebfa4b839e349f6a3d4b67665f7961adb81879ed0a41182a2fab63c753c4",
+    "submission_file": "Figure 08 B Average Precision.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 09 Risk Scores.png",
+    "sha256": "48a8cd5a76bb23865cc96ad3566b100892545cd5a28f0a2da3041c6ffd350ffe",
+    "submission_file": "Figure 09 Risk Scores.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 10 A SP500.png",
+    "sha256": "30d76cb3595b4ac855dcf59e96ac82d5b6f6c8fbec5651ab776ba63bd7aa853c",
+    "submission_file": "Figure 10 A SP500.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 10 B FTSE100.png",
+    "sha256": "e2189eb290bd9320ea8e882be60ca6b8cc934842e7aed190a8a25af3c32cba8a",
+    "submission_file": "Figure 10 B FTSE100.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 10 C DAX.png",
+    "sha256": "517fbfbb4df464404f6788f495a94c83e3d07db2c3f73d1804b124f6ef6dd621",
+    "submission_file": "Figure 10 C DAX.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 10 D CACT.png",
+    "sha256": "f1fa47b217885c0d447344c6a792ba257fd7fb5bac6dbf7163931c1c321656d2",
+    "submission_file": "Figure 10 D CACT.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 10 E STOXX.png",
+    "sha256": "6f947671dadafeabdb9995cb00c694a046ce2f6f5ec411771b372a3bc4472640",
+    "submission_file": "Figure 10 E STOXX.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 10 F CBU0.png",
+    "sha256": "072bfb198df04478b5ed81e7a48bbf445cddb85be395bd50891d8cdc6b2020e7",
+    "submission_file": "Figure 10 F CBU0.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure 11 April Case Study.png",
+    "sha256": "c35bf0db6e649f54237d803abd7d1d3b3ac5985f1311317e5fbfc8b705a96c12",
+    "submission_file": "Figure 11 April Case Study.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "07 Manuscript Comparison Figures.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Figure A1 Anomaly Events.png",
+    "sha256": "a0fd73d37aa2efbf1fc05648154fac48f3216ba3a837c4a5c2036b71c64a3531",
+    "submission_file": "Figure A1 Anomaly Events.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": false,
+    "regenerated_pixel_match": true,
+    "regenerated_pixel_difference_fraction": 0.0,
+    "notebook": "13 Appendix Event Figure.ipynb"
+  }
+]
