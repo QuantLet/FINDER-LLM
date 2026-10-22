@@ -1,5 +1,6 @@
 Data/
 Results/
+Runs/
 .env
 .env.*
 !.env.example
@@ -10,4 +11,6 @@ __pycache__/
 .DS_Store
 Figures/Generated/
 node_modules/
-finder_core/
+*.pem
+*.key
+coverage/

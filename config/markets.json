@@ -1,0 +1,712 @@
+{
+  "defaults": {
+    "analysis_start_date": "2024-09-01",
+    "analysis_end_date": "2026-08-31",
+    "news_start_date": "2024-09-01",
+    "news_end_date": "2026-08-31",
+    "window_size": 126,
+    "label_window_size": 252,
+    "context_window_size": 21,
+    "news_lookback_days": 7,
+    "horizon_days": 1,
+    "crash_percentile": 0.05,
+    "anomaly_threshold": 0.5,
+    "random_seed": 42,
+    "indicator_size": 63,
+    "chart_count": 3,
+    "max_windows": 10000,
+    "update_market_data": false,
+    "update_news_data": false,
+    "openai_reasoning_effort": "low",
+    "memory_mode": "recent_outcomes",
+    "few_shot_mode": "frozen_reference",
+    "few_shot_max_examples": 4,
+    "few_shot_scaler": "none",
+    "max_concurrent_model_calls": 8
+  },
+  "market_registry": {
+    "schema_version": 1,
+    "markets": {
+      "^GSPC": {
+        "market_id": "^GSPC",
+        "name": "S&P 500",
+        "description": "US large-cap equity index.",
+        "instrument_type": "equity_index",
+        "aliases": [
+          "S&P 500",
+          "S&P500"
+        ],
+        "region": "US",
+        "countries": [
+          "US"
+        ],
+        "currency": "USD",
+        "return_type": "price",
+        "price_sources": {
+          "lseg": {
+            "symbol": ".SPX",
+            "priority": 1,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          },
+          "yahoo": {
+            "symbol": "^GSPC",
+            "priority": 2,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          }
+        },
+        "session": {
+          "timezone": "America/New_York",
+          "calendar_id": "XNYS",
+          "open_local": "09:30",
+          "close_local": "16:00",
+          "basis": "regular_cash_session",
+          "session_dates": "observed_market_dates",
+          "overrides": {},
+          "verification_status": "regular_schedule_verified",
+          "source_url": "https://www.nyse.com/trade/trading-information",
+          "verified_at": "2026-09-20"
+        },
+        "news": {
+          "mode": "hybrid",
+          "query_groups": {
+            "instrument": [
+              "S&P 500",
+              "S&P500"
+            ],
+            "market_context": [
+              "US stocks",
+              "U.S. stocks",
+              "US equities",
+              "US stock market",
+              "Wall Street",
+              "American stocks"
+            ]
+          },
+          "exclude_terms": [],
+          "provider_options": {
+            "guardian": {
+              "sections": [
+                "business",
+                "money",
+                "world",
+                "politics",
+                "us-news",
+                "technology",
+                "commentisfree",
+                "news",
+                "uk-news"
+              ],
+              "language": "en"
+            }
+          },
+          "selection_policy": "shared_plus_market",
+          "window_start": "calendar_day_lookback",
+          "window_end": "target_session_open",
+          "boundary": "start_inclusive_end_exclusive"
+        },
+        "sources": [
+          "https://www.nyse.com/trade/trading-information"
+        ],
+        "verified_at": "2026-09-20",
+        "extensions": {}
+      },
+      "FTSE100": {
+        "market_id": "FTSE100",
+        "name": "FTSE 100",
+        "description": "UK large-cap equity index.",
+        "instrument_type": "equity_index",
+        "aliases": [
+          "FTSE 100",
+          "FTSE100"
+        ],
+        "region": "UK",
+        "countries": [
+          "GB"
+        ],
+        "currency": "GBP",
+        "return_type": "price",
+        "price_sources": {
+          "lseg": {
+            "symbol": ".FTSE",
+            "priority": 1,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          },
+          "yahoo": {
+            "symbol": "^FTSE",
+            "priority": 2,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          }
+        },
+        "session": {
+          "timezone": "Europe/London",
+          "calendar_id": "XLON",
+          "open_local": "08:00",
+          "close_local": "16:30",
+          "basis": "regular_cash_session",
+          "session_dates": "observed_market_dates",
+          "overrides": {},
+          "verification_status": "regular_schedule_verified",
+          "source_url": "https://www.lseg.com/en/media-centre/press-releases/2026/london-stock-exchange-to-launch-lse-24",
+          "verified_at": "2026-09-20"
+        },
+        "news": {
+          "mode": "hybrid",
+          "query_groups": {
+            "instrument": [
+              "FTSE 100",
+              "FTSE100"
+            ],
+            "market_context": [
+              "FTSE 250",
+              "FTSE All-Share",
+              "UK stocks",
+              "British stocks",
+              "UK equities",
+              "UK stock market",
+              "London stocks"
+            ]
+          },
+          "exclude_terms": [],
+          "provider_options": {
+            "guardian": {
+              "sections": [
+                "business",
+                "money",
+                "world",
+                "politics",
+                "us-news",
+                "technology",
+                "commentisfree",
+                "news",
+                "uk-news"
+              ],
+              "language": "en"
+            }
+          },
+          "selection_policy": "shared_plus_market",
+          "window_start": "calendar_day_lookback",
+          "window_end": "target_session_open",
+          "boundary": "start_inclusive_end_exclusive"
+        },
+        "sources": [
+          "https://www.lseg.com/en/media-centre/press-releases/2026/london-stock-exchange-to-launch-lse-24"
+        ],
+        "verified_at": "2026-09-20",
+        "extensions": {}
+      },
+      "GDAXI": {
+        "market_id": "GDAXI",
+        "name": "DAX",
+        "description": "German equity index; the configured standard DAX series includes reinvested distributions.",
+        "instrument_type": "equity_index",
+        "aliases": [
+          "DAX",
+          "DAX 40"
+        ],
+        "region": "Germany",
+        "countries": [
+          "DE"
+        ],
+        "currency": "EUR",
+        "return_type": "total_return",
+        "price_sources": {
+          "lseg": {
+            "symbol": ".GDAXI",
+            "priority": 1,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          },
+          "yahoo": {
+            "symbol": "^GDAXI",
+            "priority": 2,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          }
+        },
+        "session": {
+          "timezone": "Europe/Berlin",
+          "calendar_id": "XETR",
+          "open_local": "09:00",
+          "close_local": "17:30",
+          "basis": "regular_cash_session",
+          "session_dates": "observed_market_dates",
+          "overrides": {},
+          "verification_status": "regular_schedule_verified",
+          "source_url": "https://www.cashmarket.deutsche-boerse.com/cash-en/trading/trading-calendar-and-trading-hours",
+          "verified_at": "2026-09-20"
+        },
+        "news": {
+          "mode": "hybrid",
+          "query_groups": {
+            "instrument": [
+              "DAX",
+              "DAX 40"
+            ],
+            "market_context": [
+              "German stocks",
+              "German equities",
+              "German stock market",
+              "Frankfurt stocks"
+            ]
+          },
+          "exclude_terms": [],
+          "provider_options": {
+            "guardian": {
+              "sections": [
+                "business",
+                "money",
+                "world",
+                "politics",
+                "us-news",
+                "technology",
+                "commentisfree",
+                "news",
+                "uk-news"
+              ],
+              "language": "en"
+            }
+          },
+          "selection_policy": "shared_plus_market",
+          "window_start": "calendar_day_lookback",
+          "window_end": "target_session_open",
+          "boundary": "start_inclusive_end_exclusive"
+        },
+        "sources": [
+          "https://www.cashmarket.deutsche-boerse.com/cash-en/trading/trading-calendar-and-trading-hours"
+        ],
+        "verified_at": "2026-09-20",
+        "extensions": {}
+      },
+      "CACT": {
+        "market_id": "CACT",
+        "name": "CAC All-Tradable",
+        "description": "Broad equity index of eligible Euronext Paris companies; distinct from CAC 40.",
+        "instrument_type": "equity_index",
+        "aliases": [
+          "CAC All-Tradable",
+          "CAC All Tradable",
+          "SBF 250"
+        ],
+        "region": "France",
+        "countries": [
+          "FR"
+        ],
+        "currency": "EUR",
+        "return_type": "price",
+        "price_sources": {
+          "lseg": {
+            "symbol": ".CACT",
+            "priority": 1,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          },
+          "yahoo": {
+            "symbol": "^SBF250",
+            "priority": 2,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          }
+        },
+        "session": {
+          "timezone": "Europe/Paris",
+          "calendar_id": "XPAR",
+          "open_local": "09:00",
+          "close_local": "17:30",
+          "basis": "regular_cash_session",
+          "session_dates": "observed_market_dates",
+          "overrides": {},
+          "verification_status": "regular_schedule_verified",
+          "source_url": "https://connect2.euronext.com/sites/default/files/it-documentation/Euronext%20Clearing%20-%20How%20Clearing%20Works%20v1.0.pdf",
+          "verified_at": "2026-09-20"
+        },
+        "news": {
+          "mode": "hybrid",
+          "query_groups": {
+            "instrument": [
+              "CAC All-Tradable",
+              "CAC All Tradable",
+              "SBF 250"
+            ],
+            "market_context": [
+              "CAC 40",
+              "CAC40",
+              "French stocks",
+              "French equities",
+              "French stock market",
+              "Paris stocks"
+            ]
+          },
+          "exclude_terms": [],
+          "provider_options": {
+            "guardian": {
+              "sections": [
+                "business",
+                "money",
+                "world",
+                "politics",
+                "us-news",
+                "technology",
+                "commentisfree",
+                "news",
+                "uk-news"
+              ],
+              "language": "en"
+            }
+          },
+          "selection_policy": "shared_plus_market",
+          "window_start": "calendar_day_lookback",
+          "window_end": "target_session_open",
+          "boundary": "start_inclusive_end_exclusive"
+        },
+        "sources": [
+          "https://connect2.euronext.com/sites/default/files/it-documentation/Euronext%20Clearing%20-%20How%20Clearing%20Works%20v1.0.pdf"
+        ],
+        "verified_at": "2026-09-20",
+        "extensions": {}
+      },
+      "STOXX": {
+        "market_id": "STOXX",
+        "name": "STOXX Europe 600",
+        "description": "Broad pan-European equity index. The research clock uses the start of index calculation, not a single listing exchange.",
+        "instrument_type": "equity_index",
+        "aliases": [
+          "STOXX 600",
+          "STOXX Europe 600"
+        ],
+        "region": "Europe",
+        "countries": [],
+        "currency": "EUR",
+        "return_type": "price",
+        "price_sources": {
+          "lseg": {
+            "symbol": ".STOXX",
+            "priority": 1,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          },
+          "yahoo": {
+            "symbol": "^STOXX",
+            "priority": 2,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          }
+        },
+        "session": {
+          "timezone": "Europe/Berlin",
+          "calendar_id": "STOXX_EUROPE",
+          "open_local": "09:00",
+          "close_local": "18:00",
+          "basis": "index_calculation_start",
+          "session_dates": "observed_market_dates",
+          "overrides": {},
+          "verification_status": "regular_schedule_verified",
+          "source_url": "https://stoxx.com/index/SXXP/?d=2026-01&factsheet=true",
+          "verified_at": "2026-09-20"
+        },
+        "news": {
+          "mode": "hybrid",
+          "query_groups": {
+            "instrument": [
+              "STOXX 600",
+              "STOXX Europe 600"
+            ],
+            "market_context": [
+              "STOXX",
+              "Euro STOXX 50",
+              "European stocks",
+              "European equities",
+              "European stock market"
+            ]
+          },
+          "exclude_terms": [],
+          "provider_options": {
+            "guardian": {
+              "sections": [
+                "business",
+                "money",
+                "world",
+                "politics",
+                "us-news",
+                "technology",
+                "commentisfree",
+                "news",
+                "uk-news"
+              ],
+              "language": "en"
+            }
+          },
+          "selection_policy": "shared_plus_market",
+          "window_start": "calendar_day_lookback",
+          "window_end": "target_session_open",
+          "boundary": "start_inclusive_end_exclusive"
+        },
+        "sources": [
+          "https://stoxx.com/index/SXXP/?d=2026-01&factsheet=true"
+        ],
+        "verified_at": "2026-09-20",
+        "extensions": {}
+      },
+      "CBU0.L": {
+        "market_id": "CBU0.L",
+        "name": "iShares $ Treasury Bond 7-10yr UCITS ETF USD (Acc)",
+        "description": "USD accumulating Treasury bond ETF listed in London; the research clock follows its London listing.",
+        "instrument_type": "etf",
+        "aliases": [
+          "CBU0",
+          "iShares Treasury Bond"
+        ],
+        "region": "US bonds / London listing",
+        "countries": [
+          "US",
+          "GB"
+        ],
+        "currency": "USD",
+        "return_type": "accumulating_etf_price",
+        "price_sources": {
+          "lseg": {
+            "symbol": "CBU0.L",
+            "priority": 1,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          },
+          "yahoo": {
+            "symbol": "CBU0.L",
+            "priority": 2,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          }
+        },
+        "session": {
+          "timezone": "Europe/London",
+          "calendar_id": "XLON",
+          "open_local": "08:00",
+          "close_local": "16:30",
+          "basis": "regular_cash_session",
+          "session_dates": "observed_market_dates",
+          "overrides": {},
+          "verification_status": "regular_schedule_verified",
+          "source_url": "https://www.lseg.com/en/media-centre/press-releases/2026/london-stock-exchange-to-launch-lse-24",
+          "verified_at": "2026-09-20"
+        },
+        "news": {
+          "mode": "hybrid",
+          "query_groups": {
+            "instrument": [
+              "CBU0",
+              "iShares Treasury Bond"
+            ],
+            "market_context": [
+              "US Treasury",
+              "U.S. Treasury",
+              "Treasury yields",
+              "US government bonds",
+              "Federal Reserve",
+              "bond market"
+            ]
+          },
+          "exclude_terms": [],
+          "provider_options": {
+            "guardian": {
+              "sections": [
+                "business",
+                "money",
+                "world",
+                "politics",
+                "us-news",
+                "technology",
+                "commentisfree",
+                "news",
+                "uk-news"
+              ],
+              "language": "en"
+            }
+          },
+          "selection_policy": "shared_plus_market",
+          "window_start": "calendar_day_lookback",
+          "window_end": "target_session_open",
+          "boundary": "start_inclusive_end_exclusive"
+        },
+        "sources": [
+          "https://www.lseg.com/en/media-centre/press-releases/2026/london-stock-exchange-to-launch-lse-24"
+        ],
+        "verified_at": "2026-09-20",
+        "extensions": {}
+      },
+      "SPGTCLTR": {
+        "market_id": "SPGTCLTR",
+        "name": "S&P Global Clean Energy Transition Index Total Return",
+        "description": "Global clean-energy equity index spanning multiple local sessions.",
+        "instrument_type": "equity_index",
+        "aliases": [
+          "S&P Global Clean Energy",
+          "S&P Global Clean Energy Transition"
+        ],
+        "region": "Global",
+        "countries": [],
+        "currency": "USD",
+        "return_type": "total_return",
+        "price_sources": {
+          "lseg": {
+            "symbol": ".SPGTCLTR",
+            "priority": 1,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          },
+          "yahoo": {
+            "symbol": null,
+            "priority": 2,
+            "allow_fill": false,
+            "verification_status": "unavailable"
+          }
+        },
+        "session": {
+          "timezone": null,
+          "calendar_id": null,
+          "open_local": null,
+          "close_local": null,
+          "basis": "requires_research_clock",
+          "session_dates": "observed_market_dates",
+          "overrides": {},
+          "verification_status": "requires_research_clock",
+          "source_url": "https://www.spglobal.com/spdji/en/indices/sustainability/sp-global-clean-energy-transition-index/",
+          "verified_at": "2026-09-20"
+        },
+        "news": {
+          "mode": "hybrid",
+          "query_groups": {
+            "instrument": [
+              "S&P Global Clean Energy",
+              "S&P Global Clean Energy Transition"
+            ],
+            "market_context": [
+              "clean energy",
+              "renewable energy",
+              "solar energy",
+              "wind energy"
+            ]
+          },
+          "exclude_terms": [],
+          "provider_options": {
+            "guardian": {
+              "sections": [
+                "business",
+                "money",
+                "world",
+                "politics",
+                "us-news",
+                "technology",
+                "commentisfree",
+                "news",
+                "uk-news"
+              ],
+              "language": "en"
+            }
+          },
+          "selection_policy": "shared_plus_market",
+          "window_start": "calendar_day_lookback",
+          "window_end": "target_session_open",
+          "boundary": "start_inclusive_end_exclusive"
+        },
+        "sources": [
+          "https://www.spglobal.com/spdji/en/indices/sustainability/sp-global-clean-energy-transition-index/"
+        ],
+        "verified_at": "2026-09-20",
+        "extensions": {}
+      },
+      "DJCI": {
+        "market_id": "DJCI",
+        "name": "Dow Jones Commodity Index",
+        "description": "Diversified commodity futures index spanning multiple contracts and trading sessions.",
+        "instrument_type": "commodity_index",
+        "aliases": [
+          "Dow Jones Commodity Index",
+          "DJCI"
+        ],
+        "region": "Global",
+        "countries": [],
+        "currency": "USD",
+        "return_type": "spot_index",
+        "price_sources": {
+          "lseg": {
+            "symbol": ".DJCI",
+            "priority": 1,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          },
+          "yahoo": {
+            "symbol": "^DJCI",
+            "priority": 2,
+            "allow_fill": true,
+            "verification_status": "existing_project_mapping"
+          }
+        },
+        "session": {
+          "timezone": null,
+          "calendar_id": null,
+          "open_local": null,
+          "close_local": null,
+          "basis": "requires_research_clock",
+          "session_dates": "observed_market_dates",
+          "overrides": {},
+          "verification_status": "requires_research_clock",
+          "source_url": "https://www.spglobal.com/spdji/en/indices/commodities/dow-jones-commodity-index/",
+          "verified_at": "2026-09-20"
+        },
+        "news": {
+          "mode": "hybrid",
+          "query_groups": {
+            "instrument": [
+              "Dow Jones Commodity Index",
+              "DJCI"
+            ],
+            "market_context": [
+              "commodity prices",
+              "commodity futures",
+              "oil prices",
+              "natural gas",
+              "gold prices"
+            ]
+          },
+          "exclude_terms": [],
+          "provider_options": {
+            "guardian": {
+              "sections": [
+                "business",
+                "money",
+                "world",
+                "politics",
+                "us-news",
+                "technology",
+                "commentisfree",
+                "news",
+                "uk-news"
+              ],
+              "language": "en"
+            }
+          },
+          "selection_policy": "shared_plus_market",
+          "window_start": "calendar_day_lookback",
+          "window_end": "target_session_open",
+          "boundary": "start_inclusive_end_exclusive"
+        },
+        "sources": [
+          "https://www.spglobal.com/spdji/en/indices/commodities/dow-jones-commodity-index/"
+        ],
+        "verified_at": "2026-09-20",
+        "extensions": {}
+      }
+    }
+  },
+  "markets": {
+    "^GSPC": {},
+    "FTSE100": {},
+    "GDAXI": {},
+    "CACT": {},
+    "STOXX": {},
+    "CBU0.L": {}
+  }
+}

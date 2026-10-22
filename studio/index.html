@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="studio-token" content="__STUDIO_TOKEN__">
+  <title>FINDER Studio</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to workspace</a>
+<header class="topbar">
+  <a href="/" class="brand" aria-label="FINDER Studio home"><span class="brand-mark" aria-hidden="true">F</span><span>FINDER <span class="brand-light">Studio</span></span></a>
+  <span class="local-label">On your computer</span>
+  <button type="button" id="try-demo" class="quiet">Try a free demo</button>
+</header>
+<div class="layout">
+  <aside class="sidebar" aria-label="Workflow setup">
+    <p class="eyebrow">YOUR WORKSPACE</p>
+    <div class="mode-switch" role="group" aria-label="Workflow mode">
+      <button type="button" id="mode-paper" class="mode-button" aria-pressed="false">Paper workflow<span>The fixed research method</span></button>
+      <button type="button" id="mode-custom" class="mode-button active" aria-pressed="true">Custom workflow<span>Build an experiment</span></button>
+    </div>
+    <nav class="steps" aria-label="Setup steps">
+      <button type="button" data-step="1" class="step active" aria-current="step"><span class="step-number">1</span><span>Connection<small>Choose demo or your API</small></span></button>
+      <button type="button" data-step="2" class="step"><span class="step-number">2</span><span>Design<small>Set the roles and flow</small></span></button>
+      <button type="button" data-step="3" class="step"><span class="step-number">3</span><span>Run &amp; results<small>Review, run, and download</small></span></button>
+    </nav>
+    <div class="sidebar-note"><strong>Your saved results stay intact.</strong><p>Custom runs stay in memory until you download them. New paper runs use a separate local folder.</p></div>
+  </aside>
+  <main id="main" tabindex="-1">
+    <div id="error" class="notice error" role="alert" hidden></div>
+    <section id="step-1" class="step-panel" aria-labelledby="connection-title">
+      <p class="eyebrow">STEP 1 OF 3</p>
+      <h1 id="connection-title">Start with a connection.</h1>
+      <p class="intro">Try the interface for free, or connect a model with your own API key.</p>
+      <fieldset class="connection-options">
+        <legend class="sr-only">Run mode</legend>
+        <label class="choice-card"><input type="radio" name="connection-mode" value="demo" checked><span><strong>Free demo</strong><small>Sample replies. No API call or key needed.</small></span><span class="tag">Start here</span></label>
+        <label class="choice-card"><input type="radio" name="connection-mode" value="live"><span><strong>Live API</strong><small>Send your input to your chosen provider. Usage may cost money.</small></span></label>
+      </fieldset>
+      <div id="connection-live" class="card" hidden>
+        <div class="field-row">
+          <label>Provider<select id="provider"><option value="openai">OpenAI</option><option value="ollama">Ollama on this computer</option><option value="compatible">Other OpenAI-compatible API</option></select></label>
+          <label>Default model<input id="default-model" list="model-list" value="gpt-5-mini" maxlength="150" autocomplete="off"><small>Changing this updates all roles. You can choose a model for each role in Design.</small></label>
+        </div>
+        <label>API key<input type="password" id="api-key" autocomplete="off" spellcheck="false" placeholder="Enter your API key" maxlength="1000"><small>Kept in memory for the run. Never saved in files or configuration downloads.</small></label>
+        <details><summary>API address</summary><label>Base URL<input id="endpoint" type="url" value="https://api.openai.com/v1" maxlength="300" autocomplete="off"><small>Your key and input go to this address. Use your provider’s trusted endpoint.</small></label></details>
+      </div>
+      <div id="demo-note" class="notice">Demo replies only show how the interface works. They are not research results.</div>
+      <div class="page-actions"><button type="button" class="primary" id="connection-next">Continue to design <span aria-hidden="true">→</span></button></div>
+    </section>
+
+    <section id="step-2" class="step-panel" aria-labelledby="design-title" hidden>
+      <p class="eyebrow">STEP 2 OF 3</p>
+      <h1 id="design-title">Make the workflow clear.</h1>
+      <p id="design-intro" class="intro">Start small. Add a role or layer only when it helps your task.</p>
+      <div id="paper-design" hidden>
+        <div class="notice">The paper workflow is fixed. Choose Custom workflow to change roles, prompts, models, or debate rules.</div>
+        <div class="card"><div class="card-heading"><h2>Six roles. One research workflow.</h2><span class="tag">Paper method</span></div><div id="paper-diagram" class="paper-diagram"><div><strong>Market evidence</strong><span>Quantitative Expert</span><span>Chart Expert</span></div><div><strong>News evidence</strong><span>News Reader</span><span>News Assistant</span><span>News Expert</span></div><div><strong>Final assessment</strong><span>Decision Supervisor</span></div></div><p class="hint">The news roles run in order. The supervisor reads the completed evidence and past-only context.</p></div>
+        <div id="paper-status" class="notice" role="status">Checking local inputs…</div>
+        <details id="paper-input-details" class="card"><summary>Required input files</summary><p class="hint">Prepare your own licensed data with the notebooks in notebooks/prepare. The repository does not include raw market or news data.</p><pre id="paper-missing"></pre></details>
+        <div class="card"><h2>Choose a small run</h2><div class="field-row"><label>First information cutoff<input id="paper-start" type="date"></label><label>Last information cutoff<input id="paper-end" type="date"></label><label>Maximum windows<input id="paper-windows" type="number" min="1" max="5" value="1"></label></div><p class="hint">Each cutoff uses information available by that date to assess the next trading day. Prepared local data and the reference bank are required.</p><div id="paper-details"></div></div>
+      </div>
+      <div id="custom-design">
+        <div class="notice">Custom workflows are experiments. Their outputs do not reproduce the paper method.</div>
+        <div class="card"><div class="card-heading"><h2>Start from a template</h2><div class="button-row"><button type="button" id="import-config" class="quiet">Import JSON</button><button type="button" id="export-config" class="quiet">Export JSON</button></div></div><input id="import-file" type="file" accept="application/json,.json" hidden><div class="template-grid"><button type="button" class="template active" data-template="review"><strong>Parallel review</strong><span>Two independent views, then one review.</span></button><button type="button" class="template" data-template="debate"><strong>Short debate</strong><span>Two roles discuss, then a judge decides.</span></button><button type="button" class="template" data-template="blank"><strong>Start simple</strong><span>One role. Add layers when you need them.</span></button></div></div>
+        <div class="card"><label>Workflow name<input id="workflow-name" value="Parallel review" maxlength="100"></label><label>Task and input<textarea id="task-input" rows="5" maxlength="100000" placeholder="Write the task and paste the information each agent should use."></textarea><small>Every agent receives this task. In Live API mode, this text goes to your provider.</small></label><button type="button" class="quiet" id="sample-input">Use a sample task</button></div>
+        <div class="section-heading"><div><h2>Layers &amp; roles</h2><p class="hint">Each layer receives the outputs from the layers before it.</p></div><button type="button" class="secondary" id="add-layer">Add layer</button></div>
+        <div id="layers"></div>
+        <div class="card"><h2>Final output</h2><div class="field-row"><label>Format<select id="output-format"><option value="text">Text — easy to read</option><option value="json">JSON — use in code</option></select></label><label>Output limit per call<input id="max-tokens" type="number" min="128" max="8000" value="1500"><small>Tokens include model reasoning where supported.</small></label></div><div id="schema-panel" hidden><label>JSON schema<textarea id="output-schema" rows="8" spellcheck="false"></textarea><small>Applies to each agent in the final layer. Use an inline schema with type “object”.</small></label></div></div>
+      </div>
+      <div class="page-actions"><button type="button" class="quiet" data-step="1">Back</button><button type="button" class="primary" id="design-next">Review the run <span aria-hidden="true">→</span></button></div>
+    </section>
+
+    <section id="step-3" class="step-panel" aria-labelledby="run-title" hidden>
+      <p class="eyebrow">STEP 3 OF 3</p>
+      <h1 id="run-title">Ready when you are.</h1>
+      <p class="intro">Check the plan before you start. Results appear here as the run finishes.</p>
+      <div class="card"><div class="card-heading"><h2>Run summary</h2><span id="run-badge" class="tag">Demo</span></div><dl id="run-summary" class="summary-grid"></dl><p id="run-note" class="hint"></p><div class="button-row"><button type="button" class="primary" id="start-run">Run free demo</button><button type="button" class="quiet" id="stop-run" hidden>Stop after active calls</button><button type="button" class="quiet" data-step="2">Edit design</button></div></div>
+      <div id="run-status" class="notice" role="status" hidden></div>
+      <div id="progress-panel" class="card" hidden><div class="card-heading"><h2>Progress</h2><span id="progress-count"></span></div><progress id="progress-bar" value="0" max="1" aria-label="Completed model calls"></progress><ol id="run-events" class="run-events"></ol></div>
+      <div id="results-panel" hidden><div class="section-heading"><div><h2 id="results-title">Results</h2><p id="results-note" class="hint"></p></div><button type="button" class="secondary" id="download-results">Download JSON</button></div><div id="results"></div><details class="card"><summary>All agent replies</summary><pre id="trace"></pre></details></div>
+    </section>
+  </main>
+</div>
+<datalist id="model-list"><option value="gpt-5-mini"></option><option value="gpt-5-nano"></option><option value="gpt-4.1-mini"></option></datalist>
+<footer>FINDER Studio · Local workspace · No analytics or external page assets</footer>
+</body>
+</html>

@@ -1,0 +1,137 @@
+{
+  "python": ">=3.11",
+  "execution_order": [
+    "config/settings.json",
+    "notebooks/prepare/01 Market Data.ipynb",
+    "notebooks/prepare/02 News Collection.ipynb",
+    "notebooks/prepare/03 Technical Indicators.ipynb",
+    "notebooks/prepare/04 Reference Bank.ipynb",
+    "notebooks/01 Run FINDER.ipynb",
+    "notebooks/02 Review Results.ipynb"
+  ],
+  "inputs": {
+    "Data/{ticker}/Market/df_OHLCV.csv": [
+      "Date",
+      "Open",
+      "High",
+      "Low",
+      "Close",
+      "Volume"
+    ],
+    "Data/News/Guardian Raw/Raw Full New List.csv": [
+      "id",
+      "webPublicationDate",
+      "sectionName",
+      "sectionId",
+      "webTitle",
+      "headline",
+      "trailText"
+    ],
+    "Data/News/Full/Full News Complete.csv": [
+      "id",
+      "bodyText",
+      "lastModified",
+      "downloaded_at_utc"
+    ],
+    "Data/News/market_articles.csv": [
+      "market_id",
+      "article_id"
+    ],
+    "Data/Global/overseas_manifest.json": {
+      "markets": [
+        "market_id",
+        "market_name",
+        "instrument_type",
+        "currency",
+        "timezone",
+        "target_aliases",
+        "status",
+        "selected_source",
+        "data_path",
+        "data_sha256",
+        "schedule_path",
+        "schedule_sha256",
+        "schedule_date_bounds"
+      ]
+    }
+  },
+  "outputs": [
+    "Runs/{ticker}/{run_id}/scores.csv",
+    "Runs/{ticker}/{run_id}/Reports/{target_date}.json",
+    "Runs/{ticker}/{run_id}/Reports/{target_date}.md",
+    "Runs/{ticker}/{run_id}/evaluation.csv",
+    "Runs/{ticker}/{run_id}/metrics.csv"
+  ],
+  "published_score_fields": [
+    "quantitative_expert",
+    "chart_expert",
+    "news_reader",
+    "news_expert",
+    "decision_supervisor"
+  ],
+  "masked_score_fields": [
+    "news_assistant"
+  ],
+  "models": {
+    "news_assistant": "gpt-5-nano",
+    "other_scored_agents": "gpt-5-mini"
+  },
+  "reasoning_effort": "low",
+  "label_window_size": 252,
+  "crash_percentile": 0.05,
+  "window_size": 126,
+  "context_window_size": 21,
+  "indicator_size": 63,
+  "chart_count": 3,
+  "initial_classification_threshold": 0.5,
+  "debate_calls": 0,
+  "overseas_price_columns": [
+    "Date",
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Volume",
+    "close_to_close_return",
+    "open_to_previous_close_return"
+  ],
+  "overseas_schedule_columns": [
+    "Date",
+    "open_utc",
+    "close_utc"
+  ],
+  "benchmark_notebooks": [
+    "notebooks/benchmarks/LSTM IND.ipynb",
+    "notebooks/benchmarks/LSTM NEWS.ipynb"
+  ],
+  "benchmark_dependencies": "notebooks/benchmarks/requirements.txt",
+  "benchmark_official_outputs": "Benchmark/Official",
+  "benchmark_inputs": "Benchmark/source_manifest.json",
+  "finder_official_outputs": "FINDER/Official",
+  "figure_manifest": "Figures/manifest.json",
+  "figure_notebooks": [
+    "notebooks/figures/Comparison.ipynb",
+    "notebooks/figures/News Selection.ipynb",
+    "notebooks/figures/Technical Charts.ipynb",
+    "notebooks/figures/Anomaly Events.ipynb",
+    "notebooks/figures/Diagrams.ipynb"
+  ],
+  "figure_outputs": "Figures/Generated",
+  "manuscript_source_sha256": "d9a9af009a032c8497d18c0b7a3ac92ac56ee90a97e512b961a3008266c72284",
+  "local_only_modules": [],
+  "figure_runtime": {
+    "python_dependencies": "notebooks/figures/requirements.txt",
+    "svg_dependencies": "package.json",
+    "browser_install": "npx playwright install chromium",
+    "news_typesetting": [
+      "LaTeX",
+      "Palatino",
+      "T1 font encoding"
+    ],
+    "external_data_figures": [
+      "Figure 02 Market Charts.png",
+      "Figure 03 Risk Charts.png",
+      "Figure 04 Volume Charts.png"
+    ]
+  }
+}
