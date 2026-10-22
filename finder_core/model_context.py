@@ -53,7 +53,7 @@ def build_memory_decision_context(reference_context: Mapping[str, Any]) -> dict[
         result["outcome_status"] = "RESOLVED" if item.get("outcome") is not None else "PREDICTION_ONLY"
         if source.get("owner_agent_id"):
             if item["agent_id"] != source["owner_agent_id"]: raise ModelContextError("Memory contains another agent decision.")
-            for key in ("agent_id", "prior_anomaly_score", "prior_decision"):
+            for key in ("agent_id", "prior_anomaly_score", "prior_evidence_balance"):
                 result[key] = copy.deepcopy(item[key])
             result.pop("bounded_rationale", None)
             return result

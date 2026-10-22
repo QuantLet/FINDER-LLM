@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore the saved FINDER-LLM research results, market scores, role reports, and manuscript figures.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'">
+  <title>FINDER-LLM · Research explorer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to results</a>
+<header class="topbar"><a class="brand" href="#overview">FINDER<span class="brand-tail">–LLM</span><span class="brand-label">Research explorer</span></a><div class="header-actions"><span class="status-dot">Saved paper results</span><button class="text-button" type="button" id="about-data">About the data</button></div></header>
+<div class="app-shell">
+  <aside class="sidebar">
+    <nav aria-label="Research views">
+      <button type="button" data-view="overview" aria-current="page"><span class="nav-number">01</span>Overview</button>
+      <button type="button" data-view="markets"><span class="nav-number">02</span>Market results</button>
+      <button type="button" data-view="cases"><span class="nav-number">03</span>Case explorer</button>
+      <button type="button" data-view="method"><span class="nav-number">04</span>Method &amp; definitions</button>
+      <button type="button" data-view="library"><span class="nav-number">05</span>Paper figures</button>
+    </nav>
+    <div class="sidebar-bottom"><p>Read the results.<br>Follow the evidence.</p><span>Read-only · No model calls</span><a href="../README.md">Repository guide <span aria-hidden="true">↗</span></a></div>
+  </aside>
+  <main id="main" tabindex="-1">
+    <div id="load-status" class="loading" role="status">Loading the saved research results…</div>
+    <div id="error" class="notice error" role="alert" hidden></div>
+    <section id="view-overview" class="view" aria-labelledby="overview-title" hidden>
+      <div class="page-heading"><div><p class="eyebrow">FINDER-LLM</p><h1 id="overview-title">A view across six markets.</h1><p class="subtitle">Explore the paper’s saved scores, role reports, and evaluation results.</p></div></div>
+      <div id="study-stats" class="stat-strip"></div>
+      <section class="panel"><div class="section-header"><div><h2>How do the roles compare?</h2><p>Full evaluation sample · Five published score series</p></div><label class="compact-label">Metric<select id="overview-metric"><option value="roc_auc">ROC AUC</option><option value="ap">Average precision</option><option value="f1">F1 score</option><option value="mcc">MCC</option></select></label></div><p id="metric-definition" class="definition"></p><div id="role-matrix" class="table-wrap"></div><p class="source-note">Saved values from <code>market_agent_metrics.csv</code>. Select any metric cell to open that market and role’s score history.</p></section>
+      <div class="two-column"><section class="panel"><div class="section-header"><div><h2>Supervisor by market</h2><p id="supervisor-metric-label">ROC AUC · Full sample</p></div></div><div id="market-bars"></div><p class="hint" id="bar-note"></p></section><section class="panel"><div class="section-header"><div><h2>One workflow, six roles</h2><p>Independent evidence, then a final assessment</p></div></div><div class="mini-flow"><div><span>Market evidence</span><strong>Quantitative + Chart</strong></div><div><span>News evidence</span><strong>Reader → Assistant → Expert</strong></div><div class="flow-final"><span>Final assessment</span><strong>Decision Supervisor</strong></div></div><p class="hint">The Assistant prepares news summaries. The other five roles have published risk scores.</p><button type="button" class="text-button" data-view="method">Read the method <span aria-hidden="true">→</span></button></section></div>
+      <section class="panel"><div class="section-header"><div><h2>Comparison reported in the paper</h2><p>Supervisor and LSTM benchmarks · Values as reported</p></div><label class="compact-label">Market<select id="benchmark-market"></select></label></div><div id="benchmark-table" class="table-wrap"></div><p class="source-note">Saved comparison from <code>reported_comparison.csv</code>. These values use the paper’s reported precision.</p></section>
+    </section>
+
+    <section id="view-markets" class="view" aria-labelledby="markets-title" hidden>
+      <div class="page-heading"><div><p class="eyebrow">MARKET RESULTS</p><h1 id="markets-title">Explore the saved risk scores.</h1><p class="subtitle">Inspect a date, compare two roles, or follow changes across months.</p></div></div>
+      <div class="analysis-tabs" role="group" aria-label="Market analysis view"><button type="button" data-analysis="timeline" aria-pressed="true">Score timeline</button><button type="button" data-analysis="agreement" aria-pressed="false">Compare roles</button><button type="button" data-analysis="monthly" aria-pressed="false">Monthly view</button></div>
+      <div id="analysis-timeline" class="analysis-view">
+      <div class="filter-bar"><label>Market<select id="timeline-market"></select></label><label>Role<select id="timeline-role"></select></label><label>From target date<input id="timeline-start" type="date"></label><label>To target date<input id="timeline-end" type="date"></label><button type="button" class="text-button" id="reset-dates">Full period</button></div>
+      <div id="timeline-status" class="loading" role="status" hidden></div>
+      <div id="market-summary" class="stat-strip compact"></div>
+      <section class="panel chart-panel"><div class="section-header"><div><h2 id="timeline-title">Risk score and threshold</h2><p id="timeline-scope"></p></div><div class="legend"><span><i class="line score"></i>Risk score</span><span><i class="line threshold"></i>Saved threshold</span><span><i class="dot anomaly"></i>Observed anomaly</span></div></div><div id="timeline-chart" class="timeline-chart"></div><div class="chart-navigation"><label for="chart-date">Inspect a target date</label><input id="chart-date" type="range" min="0" max="0" value="0"><output id="chart-date-label" for="chart-date"></output><button type="button" class="secondary" id="timeline-summary">Day summary</button></div><div id="point-details" class="point-details"></div><p class="hint">Scores range from 0 to 1 and express downside-tail risk intensity, not a calibrated probability. The dashed line is the saved threshold fitted from earlier resolved outcomes. Hover to inspect a point; select it to pin a day summary. You can also use the date slider and Day summary button.</p></section>
+      <div class="two-column"><section class="panel"><div class="section-header"><div><h2>Outcomes in this date range</h2><p>Saved labels and threshold decisions</p></div></div><div id="confusion-counts" class="outcome-grid"></div><p class="hint">An alert means the saved prediction equals 1. An observed anomaly is the saved outcome label, available after prediction.</p></section><section class="panel"><div class="section-header"><div><h2>Full-sample role metrics</h2><p>These saved metrics do not change with the date filter.</p></div></div><div id="market-role-metrics" class="table-wrap"></div><p class="source-note">Source: official role metrics.</p></section></div>
+      <details class="panel"><summary>Inspect the plotted records</summary><div id="timeline-table" class="table-wrap"></div></details>
+      </div>
+      <div id="analysis-agreement" class="analysis-view" hidden>
+        <div class="filter-bar"><label>Market<select id="agreement-market"></select></label><label>Horizontal axis<select id="agreement-role-a"></select></label><label>Vertical axis<select id="agreement-role-b"></select></label></div>
+        <section class="panel"><div class="section-header"><div><h2>Where do two roles differ?</h2><p id="agreement-scope">One point per saved target date</p></div><div class="legend"><span><i class="dot ordinary"></i>No observed anomaly</span><span><i class="dot anomaly"></i>Observed anomaly</span></div></div><div class="gap-control"><label for="agreement-gap">Minimum absolute score gap</label><input id="agreement-gap" type="range" min="0" max="1" step="0.01" value="0"><output id="agreement-gap-label" for="agreement-gap">0.00 · all pairs</output></div><p class="hint">Absolute gap = |horizontal score − vertical score|. Points on the diagonal have equal scores. This view shows observed differences, not a test of statistical significance.</p><div id="agreement-chart" class="agreement-chart"></div><div class="chart-navigation"><label for="agreement-date">Inspect a target date</label><input id="agreement-date" type="range" min="0" max="0" value="0"><output id="agreement-date-label" for="agreement-date"></output><button type="button" class="secondary" id="agreement-summary">Day summary</button></div><div id="agreement-selected" class="point-details"></div></section>
+      </div>
+      <div id="analysis-monthly" class="analysis-view" hidden>
+        <div class="filter-bar"><label>Market<select id="monthly-market"></select></label><label>Measure<select id="monthly-measure"><option value="risk">Average risk score</option><option value="alerts">Saved dates with an alert (%)</option></select></label></div>
+        <section class="panel"><div class="section-header"><div><h2 id="monthly-title">Month-by-role view</h2><p id="monthly-scope"></p></div><span class="small-tag">Select a cell to inspect its dates</span></div><p id="monthly-definition" class="definition"></p><div id="monthly-matrix" class="table-wrap"></div><p class="hint">Months use target dates. Some months have partial saved coverage. Hover or focus on a cell for its count and date range.</p></section>
+      </div>
+    </section>
+
+    <section id="view-cases" class="view" aria-labelledby="cases-title" hidden>
+      <div class="page-heading"><div><p class="eyebrow">CASE EXPLORER</p><h1 id="cases-title">Read the reasoning behind a date.</h1><p class="subtitle">Open the saved reports, prompts, model names, and available input charts.</p></div></div>
+      <div class="filter-bar"><label>Market<select id="case-market"></select></label><label class="search-field">Search target date or report text<input id="case-search" type="search" placeholder="2025-04 or a word in the report" autocomplete="off"></label><label>Observed outcome<select id="case-outcome"><option value="all">All dates</option><option value="1">Anomaly</option><option value="0">No anomaly</option><option value="missing">No saved label</option></select></label></div>
+      <div class="paper-cases"><span>Cases in the paper · S&amp;P 500</span><button type="button" class="text-button" data-paper-case="2025-04-03">3 Apr 2025</button><button type="button" class="text-button" data-paper-case="2025-04-10">10 Apr 2025</button></div>
+      <div class="notice mask-notice"><code>[...]</code><p>Private raw data, news text, and credentials are withheld. The marker shows where content was removed; it is not a missing model reply.</p></div>
+      <div id="case-status" class="loading" role="status" hidden></div>
+      <div class="case-layout"><aside class="case-list-panel" aria-label="Available cases"><div class="case-list-heading"><strong>Target dates</strong><span id="case-count"></span></div><div id="case-list" class="case-list"></div><div class="pagination"><button id="case-prev" type="button" class="text-button">Previous</button><span id="case-page"></span><button id="case-next" type="button" class="text-button">Next</button></div></aside><article id="case-detail" class="case-detail" aria-live="polite"></article></div>
+    </section>
+
+    <section id="view-method" class="view" aria-labelledby="method-title" hidden>
+      <div class="page-heading"><div><p class="eyebrow">METHOD &amp; DEFINITIONS</p><h1 id="method-title">Understand what you are reading.</h1><p class="subtitle">A guide to the fixed research workflow and the saved evaluation.</p></div></div>
+      <section class="panel"><h2>The six-role workflow</h2><div id="method-roles" class="method-roles"></div><p class="hint">This dashboard reads saved research outputs. It does not run models, change prompts, or recalculate the paper’s scores.</p></section>
+      <div class="two-column"><section class="panel"><h2>The information timeline</h2><ol class="method-steps"><li><strong>Information cutoff</strong><p>The date that bounds the saved information used for the assessment.</p></li><li><strong>Forecast target</strong><p>The next trading date assessed by the workflow.</p></li><li><strong>Observed outcome</strong><p>The saved anomaly label used for later evaluation.</p></li></ol><p class="hint">Successful execution does not prove that all historical news was available at the time. Historical news availability remains a research limitation.</p></section><section class="panel"><h2>Scores and thresholds</h2><dl class="definitions"><dt>Risk score</dt><dd>A model’s downside-tail risk intensity from 0 to 1. It is not a calibrated probability.</dd><dt>Saved threshold</dt><dd>The threshold applied on that date, using earlier resolved outcomes. The saved method is expanding past-only F1 selection.</dd><dt>Alert</dt><dd>The saved binary prediction made by comparing the role’s score with its threshold.</dd></dl></section></div>
+      <section class="panel"><h2>How to read the evaluation metrics</h2><dl class="metric-glossary"><div><dt>ROC AUC</dt><dd>How well scores rank anomaly dates above other dates across possible thresholds. A value of 0.5 is the chance ranking reference.</dd></div><div><dt>Average precision</dt><dd>A summary of precision and recall across score thresholds. It is useful when anomaly dates are rare.</dd></div><div><dt>F1 score</dt><dd>The harmonic mean of precision and recall for the saved threshold decisions.</dd></div><div><dt>MCC</dt><dd>Matthews correlation coefficient. It uses all four outcome counts and ranges from −1 to 1.</dd></div><div><dt>Precision</dt><dd>The share of alerts that were observed anomalies.</dd></div><div><dt>Recall</dt><dd>The share of observed anomalies that received an alert.</dd></div></dl></section>
+      <section class="panel" id="data-note"><h2>What is public?</h2><p>The dashboard shows saved scores, evaluation labels, reports, prompts, model names, and available research figures. Sensitive content is replaced with <code>[...]</code>.</p><p>Masked inputs present the paper workflow fields; obsolete non-paper fields are omitted. They do not provide the original licensed dataset or news article text. Only the redacted public presentation is shown here.</p><details><summary>Source files and scope</summary><div id="source-details"></div></details></section>
+    </section>
+
+    <section id="view-library" class="view" aria-labelledby="library-title" hidden>
+      <div class="page-heading"><div><p class="eyebrow">PAPER FIGURES</p><h1 id="library-title">Inspect the paper’s research assets.</h1><p class="subtitle">Inspect the saved manuscript figures in a larger view.</p></div></div>
+      <div class="section-header gallery-header"><div><h2>Manuscript figures</h2><p>Select a figure to inspect it in a floating window.</p></div><label class="compact-label">Show<select id="figure-filter"><option value="all">All figures</option><option value="method">Method</option><option value="results">Results</option><option value="inputs">Input examples</option></select></label></div><div id="figure-gallery" class="figure-gallery"></div>
+    </section>
+    <footer><span>FINDER-LLM · Saved research outputs</span><span id="footer-scope"></span></footer>
+  </main>
+</div>
+<dialog id="figure-dialog" aria-labelledby="figure-dialog-title"><div class="dialog-bar"><h2 id="figure-dialog-title"></h2><div><button id="figure-close" class="text-button" type="button">Close</button></div></div><img id="figure-large" alt=""><p id="figure-caption" class="hint"></p></dialog>
+<div id="chart-tooltip" class="chart-tooltip" role="tooltip" hidden></div>
+<aside id="day-popover" class="day-popover" role="dialog" aria-modal="false" aria-labelledby="day-popover-title" hidden><div class="popover-heading"><div><p id="day-popover-market"></p><h2 id="day-popover-title"></h2></div><button type="button" class="text-button" id="day-popover-close" aria-label="Close day summary">Close</button></div><div id="day-popover-values" class="popover-values"></div><p id="day-popover-summary" class="popover-summary"></p><p class="hint">Excerpt from the saved, redacted report. <code>[...]</code> marks withheld content.</p><button type="button" class="primary" id="day-popover-details">Read day details →</button></aside>
+</body>
+</html>

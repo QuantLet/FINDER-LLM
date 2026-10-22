@@ -1,4 +1,6 @@
 Data/
+!Dashboard/data/
+!Dashboard/data/*.json
 Results/
 Runs/
 .env

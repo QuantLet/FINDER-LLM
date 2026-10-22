@@ -6,8 +6,8 @@
     "notebooks/prepare/02 News Collection.ipynb",
     "notebooks/prepare/03 Technical Indicators.ipynb",
     "notebooks/prepare/04 Reference Bank.ipynb",
-    "notebooks/01 Run FINDER.ipynb",
-    "notebooks/02 Review Results.ipynb"
+    "01 FINDER-LLM.ipynb",
+    "02 Review Results.ipynb"
   ],
   "inputs": {
     "Data/{ticker}/Market/df_OHLCV.csv": [
@@ -69,9 +69,6 @@
     "news_expert",
     "decision_supervisor"
   ],
-  "masked_score_fields": [
-    "news_assistant"
-  ],
   "models": {
     "news_assistant": "gpt-5-nano",
     "other_scored_agents": "gpt-5-mini"
@@ -84,7 +81,6 @@
   "indicator_size": 63,
   "chart_count": 3,
   "initial_classification_threshold": 0.5,
-  "debate_calls": 0,
   "overseas_price_columns": [
     "Date",
     "Open",
@@ -118,7 +114,6 @@
   ],
   "figure_outputs": "Figures/Generated",
   "manuscript_source_sha256": "d9a9af009a032c8497d18c0b7a3ac92ac56ee90a97e512b961a3008266c72284",
-  "local_only_modules": [],
   "figure_runtime": {
     "python_dependencies": "notebooks/figures/requirements.txt",
     "svg_dependencies": "package.json",

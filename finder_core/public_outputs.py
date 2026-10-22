@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.metrics import f1_score, precision_score, recall_score, matthews_corrcoef, roc_auc_score, average_precision_score, confusion_matrix, accuracy_score
-from .model_context import without_anomaly_scores
 from .events import write_json_atomic
 
 STAGES = [('Quantitative Expert', 'quantitative.evidence_report'), ('Chart Expert', 'chart.evidence_report'), ('News Reader', 'news.reader_selection'), ('News Assistant', 'news.assistant_summary'), ('News Expert', 'news.evidence_report'), ('Decision Supervisor', 'supervisor.independent')]
@@ -22,7 +21,7 @@ def write_outputs(destination, result, evidence, day, charts):
         response = json.loads(validated.read_text())['output'] if validated.exists() else next(json.loads(p.read_text())['response_json'] for p in reversed(captures) if 'response_json' in json.loads(p.read_text()))
         if stage == 'supervisor.independent':
             response = result['response']
-        outputs[name] = without_anomaly_scores(response) if stage == 'news.assistant_summary' else response
+        outputs[name] = response
     write_json_atomic(folder / (target + '.json'), {'target_date': target, 'information_cutoff': result['information_cutoff'], 'agents': outputs})
     text = '# ' + target + '\n\nInformation cutoff: ' + result['information_cutoff'] + '\n\n'
     text += '\n'.join('![Chart](<' + os.path.relpath(p, folder) + '>)\n' for p in charts)

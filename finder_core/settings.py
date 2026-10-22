@@ -1,4 +1,4 @@
-"""Load the small JSON settings files used by the notebooks and local app."""
+"""Load the small JSON settings files used by the notebooks."""
 
 from copy import deepcopy
 import json

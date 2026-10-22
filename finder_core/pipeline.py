@@ -29,7 +29,7 @@ def run_directory(root, ticker, run_id, output_root=None):
     if not parent.is_absolute():
         parent = root / parent
     destination = (parent / ticker / run_id).resolve()
-    for protected in (root / "Results", root / "FINDER", root / "Benchmark", root / "Figures", root / "Examples", root / "FigureSources"):
+    for protected in (root / "Results", root / "FINDER", root / "Benchmark", root / "Figures", root / "Examples", root / "FigureSources", root / "Dashboard"):
         if destination == protected.resolve() or protected.resolve() in destination.parents:
             raise ValueError("Saved research outputs are read-only. Choose a new folder under Runs.")
     if destination.exists():
@@ -84,11 +84,11 @@ def run(root, settings, parameters, *, api_key=None, base_url=None, progress=Non
             for previous in history:
                 row = labels.loc[previous['information_cutoff']]
                 response = previous['response']
-                recent.append({'decision_id': run_id + '-' + previous['target_date'], 'agent_id': DECISION_SUPERVISOR, 'information_cutoff': previous['information_cutoff'], 'forecast_target_date': previous['target_date'], 'prior_anomaly_score': response['anomaly_score'], 'prior_decision': response['debate_judgement']['stronger_side'], 'prior_report': without_anomaly_scores(response['report']), 'bounded_rationale': response['report']['rationale'], 'outcome': {'outcome_available_at': previous['target_date'], 'realized_target_return': float(row.min_future_logret), 'frozen_tail_threshold': float(row.crash_threshold), 'observed_anomaly_label': int(row.crash_label)}})
+                recent.append({'decision_id': run_id + '-' + previous['target_date'], 'agent_id': DECISION_SUPERVISOR, 'information_cutoff': previous['information_cutoff'], 'forecast_target_date': previous['target_date'], 'prior_anomaly_score': response['anomaly_score'], 'prior_evidence_balance': response['assessment']['evidence_balance'], 'prior_report': without_anomaly_scores(response['report']), 'bounded_rationale': response['report']['rationale'], 'outcome': {'outcome_available_at': previous['target_date'], 'realized_target_return': float(row.min_future_logret), 'frozen_tail_threshold': float(row.crash_threshold), 'observed_anomaly_label': int(row.crash_label)}})
         memory = {'mode': 'agent_decision_history', 'owner_agent_id': DECISION_SUPERVISOR, 'status': 'AVAILABLE' if recent else 'NO_MEMORY', 'recent_decisions': recent}
         fixture = {'window': item.window.public_dict(), 'numeric': item.tool_context.current_numeric_reference, 'reports': evidence['reports'], 'fewshot': fewshot, 'news_summaries': summaries, 'news_excerpts': excerpts}
         payload, messages, schema, ids = build_request(fixture, memory)
-        response = workflow._cached_validated_call(clients=clients, stage_store=store, event_logger=events, run_id=run_id, window_id=item.window.window_id, agent_id=DECISION_SUPERVISOR, stage_id='supervisor.independent', stage_group='prediction', input_payload=payload, messages=messages, schema=schema, validator=lambda value: validate_supervisor(value, valid_claim_ids=[], valid_memory_case_ids=ids), image_paths=item.tool_context.chart_paths, image_hashes=[hashlib.sha256(p.read_bytes()).hexdigest() for p in item.tool_context.chart_paths])
+        response = workflow._cached_validated_call(clients=clients, stage_store=store, event_logger=events, run_id=run_id, window_id=item.window.window_id, agent_id=DECISION_SUPERVISOR, stage_id='supervisor.independent', stage_group='prediction', input_payload=payload, messages=messages, schema=schema, validator=lambda value: validate_supervisor(value, valid_memory_case_ids=ids), image_paths=item.tool_context.chart_paths, image_hashes=[hashlib.sha256(p.read_bytes()).hexdigest() for p in item.tool_context.chart_paths])
         result = {'target_date': target, 'information_cutoff': cutoff, 'response': response}
         write_json_atomic(day / 'result.json', result)
         write_outputs(destination, result, evidence, day, item.tool_context.chart_paths)

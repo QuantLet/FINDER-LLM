@@ -7,7 +7,6 @@
     "window_size": 126,
     "label_window_size": 252,
     "context_window_size": 21,
-    "news_lookback_days": 7,
     "horizon_days": 1,
     "crash_percentile": 0.05,
     "anomaly_threshold": 0.5,
@@ -18,10 +17,6 @@
     "update_market_data": false,
     "update_news_data": false,
     "openai_reasoning_effort": "low",
-    "memory_mode": "recent_outcomes",
-    "few_shot_mode": "frozen_reference",
-    "few_shot_max_examples": 4,
-    "few_shot_scaler": "none",
     "max_concurrent_model_calls": 8
   },
   "market_registry": {

@@ -1,6 +1,6 @@
 # Read the core
 
-Start with these five files. The main flow uses six roles and no debate.
+Start with these five files. The main flow uses six roles.
 
 1. `pipeline.py` runs one date at a time: prepare inputs, collect evidence, ask the supervisor, and save the result.
 2. `workflow.py` runs three separate evidence branches. The news branch uses Reader → Assistant → Expert, with a title screen and a calendar check.
@@ -8,7 +8,7 @@ Start with these five files. The main flow uses six roles and no debate.
 4. `prompts.py` holds the exact task and role text. `contracts.py` defines the JSON each role must return.
 5. `public_outputs.py` saves reports and five score columns. It computes the paper's metrics and updates each threshold using only earlier resolved outcomes.
 
-The Quantitative Expert and Chart Expert run alongside the news branch. Their results meet at one independent Decision Supervisor. The News Assistant's score stays out of public reports. The output field `debate_judgement` is kept for compatibility; it does not add debate calls.
+The Quantitative Expert and Chart Expert run alongside the news branch. Their results meet at one independent Decision Supervisor. The News Assistant produces factual summaries and event records. The Supervisor reports the evidence balance and an assessment summary.
 
 ## Supporting files
 
@@ -27,4 +27,4 @@ The paper uses `gpt-5-mini`, with `gpt-5-nano` for the News Assistant, and low r
 
 Date checks, source hashes, full selected news text, JSON checks, bounded retries, and score masking are kept. A successful software test does not establish historical news availability or reproduce a paid model run.
 
-New runs go to `Runs/<market>/<run name>/`. Existing run folders and saved research outputs are protected. API keys are passed to clients at runtime and are not saved in run settings. Use `studio/` for custom roles, models, prompts, layers, and debates. The paper flow stays separate so its meaning is clear.
+New runs go to `Runs/<market>/<run name>/`. Existing run folders and saved research outputs are protected. API keys are passed to clients at runtime and are not saved in run settings.

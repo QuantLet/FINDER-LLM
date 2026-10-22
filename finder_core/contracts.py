@@ -37,7 +37,7 @@ class EvidenceReport(TypedDict):
 class FinalDecisionEnvelope(TypedDict):
     anomaly_score: float
     memory_comparison: dict[str, Any]
-    debate_judgement: dict[str, Any]
+    assessment: dict[str, Any]
     report: dict[str, Any]
 
 
@@ -140,14 +140,16 @@ def news_assistant_schema(selected_indices: Sequence[int]) -> dict[str, Any]:
     article_refs = [f"N{index:03d}" for index in selected_indices]
     event = _object({"article_refs": {**_array(_enum(article_refs) if article_refs else _text(ID_TEXT_LIMIT)), "minItems": 1, "maxItems": 1}, "event_name": _text(180), "event_date": _text(40), "date_evidence": _text(180), "event_state": _enum(("ANNOUNCED", "SCHEDULED", "ACTIVE", "ESCALATING", "MITIGATED", "RESOLVED", "UNKNOWN")), "latest_change": _text(360), "upcoming_catalyst": _text(240), "asset_channel": _text(240), "scope": _enum(("ASSET_SPECIFIC", "GLOBAL"))})
     events = {**_array(event), "maxItems": 10 if article_refs else 0}
-    return _object({"certainty_updates": certainty_update_schema(), "summaries": _object({f"N{index:03d}": _text(NEWS_SUMMARY_TEXT_LIMIT) for index in selected_indices}), "event_records": events, "anomaly_score": ANOMALY_SCORE_SCHEMA})
+    return _object({"certainty_updates": certainty_update_schema(), "summaries": _object({f"N{index:03d}": _text(NEWS_SUMMARY_TEXT_LIMIT) for index in selected_indices}), "event_records": events})
 
 
 def validate_news_assistant(value: Any, *, selected_indices: Sequence[int], maximum_certainty_updates: int = 10) -> dict[str, Any]:
     schema = news_assistant_schema(selected_indices)
     schema["properties"]["certainty_updates"]["maxItems"] = maximum_certainty_updates
     result = validate_response(value, schema)
-    return {"certainty_updates": result["certainty_updates"], "summaries": [{"index": index, "summary": result["summaries"][f"N{index:03d}"]} for index in selected_indices], "event_records": result["event_records"], "anomaly_score": result["anomaly_score"]}
+    if any(error.validator == "additionalProperties" for error in Draft202012Validator(schema).iter_errors(value)):
+        raise SchemaError("News Assistant output contains an unexpected field.")
+    return {"certainty_updates": result["certainty_updates"], "summaries": [{"index": index, "summary": result["summaries"][f"N{index:03d}"]} for index in selected_indices], "event_records": result["event_records"]}
 
 
 def evidence_report_schema(domain: str) -> dict[str, Any]:
@@ -170,30 +172,24 @@ def validate_evidence_report(value: Any, *, expected_domain: str, valid_source_r
         schema["properties"]["event_assessments"]["maxItems"] = 0
     result = validate_response(value, schema)
     result["evidence_domain"] = expected_domain
-    claims = [*result["supporting_evidence"], *result["counter_evidence"]]
-    for index, claim in enumerate(claims, 1):
-        claim["claim_id"] = f"{expected_domain}-C{index:02d}"
     return result
 
 
 SUPERVISOR_SCHEMA = _object({
     "report": _object({"evidence": _text(600), "counter_evidence": _text(600), "rationale": _text(REPORT_TEXT_LIMIT)}),
-    "debate_judgement": _object({"stronger_side": _enum(("ANOMALY", "NON_ANOMALY", "BALANCED")), "claim_judgements": _object({}), "summary": _text(600)}),
+    "assessment": _object({"evidence_balance": _enum(("ANOMALY", "NON_ANOMALY", "BALANCED")), "summary": _text(600)}),
     "memory_comparison": _object({"reference_case_ids": _array(_text(ID_TEXT_LIMIT), 4), "reason": _text(600)}),
     "anomaly_score": ANOMALY_SCORE_SCHEMA,
 })
 
 
-def supervisor_schema(valid_claim_ids: Sequence[str], valid_memory_case_ids: Sequence[str]) -> dict[str, Any]:
-    schema = bind_response_schema(SUPERVISOR_SCHEMA, references={"reference_case_ids": valid_memory_case_ids})
-    schema["properties"]["debate_judgement"]["properties"]["claim_judgements"] = _object({claim_id: _enum(("ACCEPT", "REJECT", "UNRESOLVED")) for claim_id in valid_claim_ids})
-    return schema
+def supervisor_schema(valid_memory_case_ids: Sequence[str] = ()) -> dict[str, Any]:
+    return bind_response_schema(SUPERVISOR_SCHEMA, references={"reference_case_ids": valid_memory_case_ids})
 
 
-def validate_supervisor(value: Any, *, valid_claim_ids: Sequence[str], valid_memory_case_ids: Sequence[str] = ()) -> dict[str, Any]:
-    result = validate_response(value, supervisor_schema(valid_claim_ids, valid_memory_case_ids))
-    judgement = result["debate_judgement"]
-    classifications = judgement.pop("claim_judgements")
-    for field, category in (("accepted_claim_ids", "ACCEPT"), ("rejected_claim_ids", "REJECT"), ("unresolved_claim_ids", "UNRESOLVED")):
-        judgement[field] = [claim_id for claim_id, classification in classifications.items() if classification == category]
+def validate_supervisor(value: Any, *, valid_memory_case_ids: Sequence[str] = ()) -> dict[str, Any]:
+    schema = supervisor_schema(valid_memory_case_ids)
+    result = validate_response(value, schema)
+    if any(error.validator == "additionalProperties" for error in Draft202012Validator(schema).iter_errors(value)):
+        raise SchemaError("Supervisor output contains an unexpected field.")
     return result

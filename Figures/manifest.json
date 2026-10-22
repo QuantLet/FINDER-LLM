@@ -7,7 +7,7 @@
     "requires_external_data": false,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "12 Information Timeline.ipynb"
+    "notebook": "notebooks/figures/Diagrams.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 02 Market Charts.png",
@@ -17,7 +17,7 @@
     "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "10 Technical Chart Figures.ipynb"
+    "notebook": "notebooks/figures/Technical Charts.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 03 Risk Charts.png",
@@ -27,7 +27,7 @@
     "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "10 Technical Chart Figures.ipynb"
+    "notebook": "notebooks/figures/Technical Charts.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 04 Volume Charts.png",
@@ -37,7 +37,7 @@
     "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "10 Technical Chart Figures.ipynb"
+    "notebook": "notebooks/figures/Technical Charts.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 05 Workflow.png",
@@ -47,7 +47,7 @@
     "requires_external_data": false,
     "regenerated_pixel_match": false,
     "regenerated_pixel_difference_fraction": 0.0003735951275321354,
-    "notebook": "11 Workflow and Agent Roles.ipynb"
+    "notebook": "notebooks/figures/Diagrams.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 06 Agent Roles.png",
@@ -57,17 +57,16 @@
     "requires_external_data": false,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "11 Workflow and Agent Roles.ipynb"
+    "notebook": "notebooks/figures/Diagrams.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 07 News Selection.png",
-    "sha256": "a9adc3a57fccaa84aa272ff6c9edd0d3f73dca4c4924dc49027ae1e12fd006d8",
+    "sha256": "569a28f5d150c51c80b8d9b53884adf87e3c0c44c54032783263d0898f87ff26",
     "submission_file": "Figure 07 News Selection.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": false,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "09 News Selection Figure.ipynb"
+    "notebook": "notebooks/figures/News Selection.ipynb",
+    "public_redaction": "Article titles are shown as [...]. Timeline and selected article positions are unchanged."
   },
   {
     "file": "Figures/Manuscript/Figure 08 A ROC AUC.png",
@@ -77,7 +76,7 @@
     "requires_external_data": false,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 08 B Average Precision.png",
@@ -87,7 +86,7 @@
     "requires_external_data": false,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 09 Risk Scores.png",
@@ -97,86 +96,86 @@
     "requires_external_data": false,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 10 A SP500.png",
     "sha256": "30d76cb3595b4ac855dcf59e96ac82d5b6f6c8fbec5651ab776ba63bd7aa853c",
     "submission_file": "Figure 10 A SP500.png",
     "submission_bytes_verified": true,
-    "requires_external_data": false,
+    "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 10 B FTSE100.png",
     "sha256": "e2189eb290bd9320ea8e882be60ca6b8cc934842e7aed190a8a25af3c32cba8a",
     "submission_file": "Figure 10 B FTSE100.png",
     "submission_bytes_verified": true,
-    "requires_external_data": false,
+    "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 10 C DAX.png",
     "sha256": "517fbfbb4df464404f6788f495a94c83e3d07db2c3f73d1804b124f6ef6dd621",
     "submission_file": "Figure 10 C DAX.png",
     "submission_bytes_verified": true,
-    "requires_external_data": false,
+    "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 10 D CACT.png",
     "sha256": "f1fa47b217885c0d447344c6a792ba257fd7fb5bac6dbf7163931c1c321656d2",
     "submission_file": "Figure 10 D CACT.png",
     "submission_bytes_verified": true,
-    "requires_external_data": false,
+    "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 10 E STOXX.png",
     "sha256": "6f947671dadafeabdb9995cb00c694a046ce2f6f5ec411771b372a3bc4472640",
     "submission_file": "Figure 10 E STOXX.png",
     "submission_bytes_verified": true,
-    "requires_external_data": false,
+    "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 10 F CBU0.png",
     "sha256": "072bfb198df04478b5ed81e7a48bbf445cddb85be395bd50891d8cdc6b2020e7",
     "submission_file": "Figure 10 F CBU0.png",
     "submission_bytes_verified": true,
-    "requires_external_data": false,
+    "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure 11 April Case Study.png",
     "sha256": "c35bf0db6e649f54237d803abd7d1d3b3ac5985f1311317e5fbfc8b705a96c12",
     "submission_file": "Figure 11 April Case Study.png",
     "submission_bytes_verified": true,
-    "requires_external_data": false,
+    "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "07 Manuscript Comparison Figures.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb"
   },
   {
     "file": "Figures/Manuscript/Figure A1 Anomaly Events.png",
     "sha256": "a0fd73d37aa2efbf1fc05648154fac48f3216ba3a837c4a5c2036b71c64a3531",
     "submission_file": "Figure A1 Anomaly Events.png",
     "submission_bytes_verified": true,
-    "requires_external_data": false,
+    "requires_external_data": true,
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "13 Appendix Event Figure.ipynb"
+    "notebook": "notebooks/figures/Anomaly Events.ipynb"
   }
 ]

@@ -59,10 +59,6 @@ class RuntimeConfig:
     @classmethod
     def from_settings(cls, settings: Mapping[str, Any] | None = None) -> "RuntimeConfig":
         values = dict(settings or {})
-        if values.get("model_profile", "online") != "online":
-            raise ConfigurationError("The paper workflow uses the online profile. Use the custom builder for other models.")
-        if values.get("supervisor_mode", "independent_news") != "independent_news":
-            raise ConfigurationError("The paper workflow uses one independent supervisor and no debate.")
         config = cls(openai_timeout_seconds=float(values.get("openai_timeout_seconds", 300)), openai_max_output_tokens=int(values.get("openai_max_output_tokens", 32768)), openai_max_retries=int(values.get("openai_max_retries", 2)), openai_reasoning_effort=str(values.get("openai_reasoning_effort", "low")), crash_percentile=float(values.get("crash_percentile", CRASH_PERCENTILE)), max_concurrent_model_calls=int(values.get("max_concurrent_model_calls", 8)), random_seed=int(values.get("random_seed", RANDOM_SEED)))
         config.validate()
         return config

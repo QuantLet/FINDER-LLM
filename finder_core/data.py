@@ -298,11 +298,8 @@ def _fixed_method_settings(settings: Mapping[str, Any]) -> None:
             raise DataError(f"{key} does not match the frozen prediction method.")
     crash_percentile = float(settings.get("crash_percentile", CRASH_PERCENTILE))
     context_window_size = settings.get("context_window_size", 21)
-    news_lookback_days = settings.get("news_lookback_days", 7)
     if type(context_window_size) is not int or not 2 <= context_window_size <= WINDOW_SIZE:
         raise DataError("context_window_size must be between 2 and the unchanged 126-observation history.")
-    if type(news_lookback_days) is not int or not 1 <= news_lookback_days <= 30:
-        raise DataError("news_lookback_days must be between 1 and 30 calendar days.")
     try:
         anomaly_threshold_for(crash_percentile, float(settings.get("anomaly_threshold", 0.5)))
     except Exception as exc:

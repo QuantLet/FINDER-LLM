@@ -39,7 +39,7 @@ def audit_payload(value, cutoff, historical=False):
         for item in value: audit_payload(item, cutoff, historical)
 
 def window_from_public(wp):
-    return WorkflowWindow(window_id=wp['window_id'], asset=wp['asset'], information_cutoff=date.fromisoformat(wp['information_cutoff']), forecast_target_date=date.fromisoformat(wp['forecast_target_date']), window_start_date=date.fromisoformat(wp['window_start_date']), window_end_date=date.fromisoformat(wp['window_end_date']), reference_start_date=date(2024, 9, 1), horizon_days=wp['horizon_days'], crash_percentile=wp['crash_percentile'], anomaly_threshold=wp.get('anomaly_threshold', .8), task_definition=wp['task_definition'], market=wp['market'], news_window=wp['news_window'])
+    return WorkflowWindow(window_id=wp['window_id'], asset=wp['asset'], information_cutoff=date.fromisoformat(wp['information_cutoff']), forecast_target_date=date.fromisoformat(wp['forecast_target_date']), window_start_date=date.fromisoformat(wp['window_start_date']), window_end_date=date.fromisoformat(wp['window_end_date']), reference_start_date=date(2024, 9, 1), horizon_days=wp['horizon_days'], crash_percentile=wp['crash_percentile'], anomaly_threshold=wp.get('anomaly_threshold', .5), task_definition=wp['task_definition'], market=wp['market'], news_window=wp['news_window'])
 
 def build_request(fixture, memory):
     window = window_from_public(fixture['window'])
@@ -49,4 +49,4 @@ def build_request(fixture, memory):
     audit_payload(safe, fixture['window']['information_cutoff']); assert_decision_model_payload(safe)
     messages = _messages(PROMPTS['supervisor.system'], payload, indicator_guide=True); messages[1]['content'] = ordered_payload_text(safe)
     ids = model_reference_case_ids(mc, {'examples': []})
-    return payload, messages, supervisor_schema([], ids), ids
+    return payload, messages, supervisor_schema(ids), ids

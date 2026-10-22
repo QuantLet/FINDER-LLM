@@ -5,7 +5,7 @@ from functools import lru_cache
 import re
 from collections import Counter
 from datetime import datetime
-import math,re
+import math
 
 MONTHS = {name.lower(): i for i in range(1, 13) for name in (calendar.month_name[i], calendar.month_abbr[i])}
 MONTH = '(?:' + '|'.join(sorted(MONTHS, key=len, reverse=True)) + ')'
