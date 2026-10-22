@@ -1,11 +1,10 @@
 'use strict';
 
 const $ = id => document.getElementById(id);
-const state = {index: null, view: 'overview', analysis: 'timeline', agreement: [], agreementAll: [], agreementPoint: 0, monthlyCells: [], popup: null, cache: new Map(), market: null, caseMarket: null, caseDate: null, caseRole: 'decision_supervisor', casePage: 0, caseDates: new Map(), caseMatches: [], timeline: [], point: 0, validRange: null, chartBounds: null, prompts: null, figures: [], loadId: 0};
+const state = {index: null, view: 'overview', analysis: 'overview', benchmarks: null, comparisonMarket: null, comparisonAll: [], comparisonRows: [], comparisonModels: [], comparisonSelected: [], comparisonPoint: 0, comparisonFilter: null, comparisonBounds: null, comparisonRange: null, agreement: [], agreementAll: [], agreementPoint: 0, monthlyCells: [], popup: null, cache: new Map(), market: null, caseMarket: null, caseDate: null, caseRole: 'decision_supervisor', casePage: 0, caseDates: new Map(), caseMatches: [], timeline: [], point: 0, validRange: null, chartBounds: null, prompts: null, figures: [], loadId: 0};
 const metricNames = {roc_auc: 'ROC AUC', ap: 'Average precision', f1: 'F1 score', mcc: 'MCC'};
 const metricNotes = {roc_auc: 'ROC AUC measures ranking across score thresholds. The chance ranking reference is 0.5.', ap: 'Average precision summarizes precision and recall across score thresholds. It is useful when anomaly dates are rare.', f1: 'F1 balances precision and recall for the saved threshold decisions. Values range from 0 to 1.', mcc: 'Matthews correlation coefficient uses all four outcome counts. Values range from −1 to 1.'};
 const shortRole = {quantitative_expert: 'Quantitative', chart_expert: 'Chart', news_reader: 'News Reader', news_assistant: 'News Assistant', news_expert: 'News Expert', decision_supervisor: 'Supervisor'};
-const roleDescriptions = {quantitative_expert: 'Reviews the supplied market values and historical indicator context.', chart_expert: 'Reads the prepared market, risk, and volume charts.', news_reader: 'Selects relevant news from the supplied source material.', news_assistant: 'Prepares summaries of the selected articles. This role has no published risk score.', news_expert: 'Assesses the news evidence and its possible market effects.', decision_supervisor: 'Combines the evidence, prior cases, and available outcomes into the final assessment.'};
 const number = value => value === null || value === undefined || value === '' ? null : Number.isFinite(Number(value)) ? Number(value) : null;
 const fixed = (value, digits = 3) => number(value) === null ? 'Not available' : number(value).toFixed(digits);
 const integer = value => number(value) === null ? 'Not available' : new Intl.NumberFormat('en-US').format(number(value));
@@ -17,6 +16,7 @@ const marketInfo = id => state.index.markets.find(market => market.id === id);
 const marketLabel = market => ({'^GSPC': 'S&P 500', FTSE100: 'FTSE 100', GDAXI: 'DAX', CACT: 'CAC All-Tradable', STOXX: 'STOXX Europe 600', 'CBU0.L': 'CBU0.L'}[market.id] || market.name);
 const scoredRoles = () => state.index.roles.filter(role => role.id !== 'news_assistant');
 const metricFor = (market, role) => state.index.metrics.find(row => row.market === market && row.agent === role);
+const observedLabel = label => number(label) === 1 ? 'Observed anomaly' : number(label) === 0 ? 'No observed anomaly' : 'No saved label';
 const badge = label => number(label) === 1 ? '<span class="badge anomaly">Observed anomaly</span>' : number(label) === 0 ? '<span class="badge">No observed anomaly</span>' : '<span class="badge">No saved label</span>';
 
 function localPath(path) {
@@ -54,7 +54,7 @@ function setOptions(element, rows, valueKey = 'id', labelKey = 'name') {
 }
 
 async function showView(view, focus = true) {
-  if (!['overview', 'markets', 'cases', 'method', 'library'].includes(view)) view = 'overview';
+  if (!['overview', 'markets', 'cases', 'library'].includes(view)) view = 'overview';
   state.view = view;
   closeDayPopover();
   hideTooltip();
@@ -64,6 +64,7 @@ async function showView(view, focus = true) {
   history.replaceState(null, '', `#${view}`);
   if (focus) { $('main').focus({preventScroll: true}); window.scrollTo({top: 0}); }
   try {
+    if (view === 'overview') await renderComparison();
     if (view === 'markets') await setAnalysis(state.analysis);
     if (view === 'cases') await renderCases();
     if (view === 'library') await renderGallery();
@@ -91,10 +92,10 @@ function renderMetricMatrix() {
   const ticks = metric === 'mcc' ? [-1, 0, 1] : [0, .5, 1];
   let svg = `<svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Decision Supervisor ${metricNames[metric]} by market"><title>Decision Supervisor ${metricNames[metric]} by market</title>`;
   ticks.forEach(value => { svg += `<line class="chart-grid" x1="${x(value)}" x2="${x(value)}" y1="3" y2="${height - 28}"></line><text x="${x(value)}" y="${height - 7}" text-anchor="middle">${value.toFixed(1)}</text>`; });
-  state.index.markets.forEach((market, index) => { const y = top + index * 40, value = number(metricFor(market.id, 'decision_supervisor')?.[metric]); svg += `<text x="0" y="${y + 17}">${escapeText(marketLabel(market))}</text>`; if (value !== null) svg += `<rect class="bar-fill" x="${Math.min(x(0), x(value))}" y="${y + 2}" width="${Math.abs(x(value) - x(0))}" height="23" rx="3"></rect><text x="${width - right + 10}" y="${y + 17}">${fixed(value)}</text>`; });
+  state.index.markets.forEach((market, index) => { const y = top + index * 40, value = number(metricFor(market.id, 'decision_supervisor')?.[metric]); svg += `<text x="0" y="${y + 17}">${escapeText(marketLabel(market))}</text>`; if (value !== null) svg += `<rect class="bar-fill" x="${Math.min(x(0), x(value))}" y="${y + 2}" width="${Math.abs(x(value) - x(0))}" height="23"></rect><text x="${width - right + 10}" y="${y + 17}">${fixed(value)}</text>`; });
   svg += '</svg>';
   $('market-bars').innerHTML = svg;
-  $('bar-note').textContent = metric === 'roc_auc' ? 'The same 0–1 scale is used for every market. The 0.5 gridline is the chance ranking reference.' : metric === 'mcc' ? 'The same −1 to 1 scale is used for every market. Zero is the no-correlation reference.' : 'The same 0–1 scale is used for every market. Exact values are shown in the table above.';
+  $('bar-note').textContent = metric === 'roc_auc' ? 'The same 0–1 scale is used for every market. The 0.5 gridline is the chance ranking reference.' : metric === 'mcc' ? 'The same −1 to 1 scale is used for every market. Zero is the no-correlation reference.' : 'The same 0–1 scale is used for every market. Values are rounded to three decimals in the table above.';
 }
 
 function renderBenchmark() {
@@ -178,7 +179,8 @@ function drawTimeline() {
   svg += `<path class="chart-threshold" d="${thresholdPath}"></path><path class="chart-score" d="${scorePath}"></path>`;
   if (rows.length === 1 && number(rows[0].scores?.[role]) !== null) svg += `<circle class="chart-point" cx="${x(0)}" cy="${y(number(rows[0].scores[role]))}" r="4"></circle>`;
   if (rows.length === 1 && number(rows[0].thresholds?.[role]) !== null) svg += `<line class="chart-threshold" x1="${x(0) - 12}" x2="${x(0) + 12}" y1="${y(number(rows[0].thresholds[role]))}" y2="${y(number(rows[0].thresholds[role]))}"></line>`;
-  rows.forEach((row, index) => { if (number(row.label) === 1 && number(row.scores?.[role]) !== null) svg += `<circle class="chart-anomaly" cx="${x(index)}" cy="${y(number(row.scores[role]))}" r="4"><title>${escapeText(`${row.target_date}: observed anomaly, score ${fixed(row.scores[role], 4)}`)}</title></circle>`; });
+  rows.forEach((row, index) => { const outcome = decisionOutcome(row.label, row.predictions?.[role]), score = number(row.scores?.[role]); if (score !== null && (outcome !== 'tn' || rows.length <= 40)) svg += outcomeMarker(outcome, x(index), y(score), rows.length <= 40 ? 4 : 3, '#4169E1'); });
+  svg += `<rect class="chart-spine" x="${left}" y="${top}" width="${width-left-right}" height="${height-top-bottom}"></rect>`;
   svg += `<line id="chart-cursor" class="chart-cursor" x1="${x(state.point)}" x2="${x(state.point)}" y1="${top}" y2="${height - bottom}"></line></svg>`;
   $('timeline-chart').innerHTML = svg;
   const nearest = event => {
@@ -290,7 +292,7 @@ async function renderCaseDetail() {
   if (!record) { $('case-detail').innerHTML = '<div class="panel empty">No case matches these filters. Clear the search or choose another outcome.</div>'; return; }
   if (!record.agents.some(agent => agent.id === state.caseRole)) state.caseRole = record.agents[0]?.id;
   const agent = record.agents.find(item => item.id === state.caseRole), recordMarket = state.caseMarket;
-  $('case-detail').innerHTML = `<section class="panel"><div class="case-heading"><div><h2>${escapeText(dateText(record.target_date))}</h2><p>${escapeText(marketInfo(state.caseMarket).name)} · Information cutoff: ${escapeText(dateText(record.information_cutoff))}</p></div>${badge(record.label)}</div><div class="case-scores">${scoredRoles().map(role => `<div class="case-score"><span>${escapeText(shortRole[role.id] || role.name)}</span><strong>${fixed(record.scores?.[role.id], 4)}</strong><span>Threshold ${fixed(record.thresholds?.[role.id], 4)}</span></div>`).join('')}</div></section><section class="panel"><div class="role-tabs" role="group" aria-label="Read a role report">${record.agents.map(item => `<button type="button" data-role="${escapeText(item.id)}" aria-pressed="${item.id === state.caseRole}">${escapeText(shortRole[item.id] || item.name)}</button>`).join('')}</div><div class="agent-meta"><h3>${escapeText(agent?.name || 'Saved role')}</h3><span class="model-tag">${escapeText(agent?.model || 'Model not recorded')}</span></div><div id="agent-output"></div><details class="agent-details"><summary>Read the role prompt</summary><p id="prompt-note" class="hint"></p><div id="agent-prompts"></div></details><details class="agent-details"><summary>Inspect the masked input</summary><p class="hint">Input fields are presented for the paper workflow. Private values are shown as <code>[...]</code>; obsolete non-paper fields are omitted.</p><pre id="agent-input"></pre></details></section><section class="panel"><div class="section-header"><div><h2>Saved input charts</h2><p>${escapeText(state.index.chart_note || 'Charts captured for this target date')}</p></div></div><div id="case-charts" class="input-chart-grid"></div></section>`;
+  $('case-detail').innerHTML = `<section class="panel"><div class="case-heading"><div><h2>${escapeText(dateText(record.target_date))}</h2><p>${escapeText(marketInfo(state.caseMarket).name)} · Information cutoff: ${escapeText(dateText(record.information_cutoff))}</p></div>${badge(record.label)}</div><div class="case-scores">${scoredRoles().map(role => `<div class="case-score"><span>${escapeText(shortRole[role.id] || role.name)}</span><strong>${fixed(record.scores?.[role.id], 4)}</strong><span>Threshold ${fixed(record.thresholds?.[role.id], 4)}</span></div>`).join('')}</div></section><section class="panel"><div class="role-tabs" role="group" aria-label="Read a role report">${record.agents.map(item => `<button type="button" data-role="${escapeText(item.id)}" aria-pressed="${item.id === state.caseRole}">${escapeText(shortRole[item.id] || item.name)}</button>`).join('')}</div><div class="agent-meta"><h3>${escapeText(agent?.name || 'Saved role')}</h3><span class="model-tag">${escapeText(agent?.model || 'Model not recorded')}</span></div><div id="agent-output"></div><details class="agent-details"><summary>Read the role prompt</summary><p id="prompt-note" class="hint"></p><div id="agent-prompts"></div></details><details class="agent-details"><summary>Inspect the masked input</summary><p class="hint">Input fields are presented for the paper workflow. Private values are shown as <code>[...]</code>; obsolete non-paper fields are omitted.</p><pre id="agent-input"></pre></details></section><section class="panel"><div class="section-header"><div><h2>Saved input charts</h2><p>Three input charts captured for this target date.</p></div></div><div id="case-charts" class="input-chart-grid"></div></section>`;
   $('agent-output').append(renderValue(agent?.output));
   $('agent-input').textContent = JSON.stringify(agent?.input ?? null, null, 2);
   const charts = record.charts || [];
@@ -303,13 +305,6 @@ async function renderCaseDetail() {
     $('agent-prompts').replaceChildren(...ids.map(id => { const block = document.createElement('div'); const label = document.createElement('p'); label.className = 'prompt-id'; label.textContent = id; const text = document.createElement('pre'); text.textContent = state.prompts.prompts[id] || 'This prompt is not included in the public export.'; block.append(label, text); return block; }));
     if (!ids.length) $('agent-prompts').textContent = 'No prompt is included for this saved role.';
   } catch { $('agent-prompts').textContent = 'The saved prompt file could not be loaded.'; }
-}
-
-function renderMethod() {
-  $('method-roles').innerHTML = state.index.roles.map((role, index) => `<article class="method-role"><span class="number">${String(index + 1).padStart(2, '0')}</span><h3>${escapeText(role.name)}</h3><p>${escapeText(roleDescriptions[role.id] || '')}</p></article>`).join('');
-  const notes = state.index.source_notes || state.index.limitations || [];
-  $('source-details').innerHTML = `<p class="hint">Scores, thresholds, and metrics come from the public official research files. Case records provide a redacted view of the saved workflow. Dashboard filters do not change the underlying results.</p><ul class="hint"><li>Daily role scores: <code>daily_scores_all_markets.csv</code></li><li>Historical thresholds and decisions: <code>daily_thresholds.csv</code></li><li>Full-sample evaluation: <code>market_agent_metrics.csv</code></li><li>Public case index and coverage: <code>Dashboard/data/index.json</code></li><li>Saved figure metadata: <code>Figures/manifest.json</code></li></ul>`;
-  if (notes.length) $('source-details').append(renderValue(notes));
 }
 
 async function renderGallery() {
@@ -368,8 +363,8 @@ function showDayTooltip(record, market, role, event, secondRole = null) {
 function savedExcerpt(record, role) {
   for (const id of [role, 'decision_supervisor']) {
     const agent = record.agents.find(item => item.id === id), report = agent?.output?.report;
-    const text = typeof report === 'string' ? report : report?.rationale || report?.summary || report?.conclusion || report?.evidence;
-    if (typeof text === 'string' && text.trim()) { const clean = text.replace(/\s+/g, ' ').trim(); return {role: agent.name || roleName(id), text: clean.length > 460 ? clean.slice(0, 460).trimEnd() + '…' : clean}; }
+    const text = agent?.output?.assessment?.summary || (typeof report === 'string' ? report : report?.summary || report?.assessment?.summary || report?.rationale || report?.conclusion || report?.evidence);
+    if (typeof text === 'string' && text.trim()) { const clean = text.replace(/\s+/g, ' ').trim(); return {role: agent.name || roleName(id), text: clean.length > 240 ? clean.slice(0, 240).replace(/\s+\S*$/, '').trimEnd() + '…' : clean}; }
   }
   return {role: roleName(role), text: 'Open the day details to read the structured saved response.'};
 }
@@ -398,7 +393,7 @@ function closeDayPopover(returnFocus = false) {
 }
 
 async function setAnalysis(mode) {
-  const controls = {timeline: 'timeline-market', agreement: 'agreement-market', monthly: 'monthly-market'};
+  const controls = {overview: 'timeline-market', timeline: 'timeline-market', agreement: 'agreement-market', monthly: 'monthly-market'};
   if (state.analysis !== mode) $(controls[mode]).value = $(controls[state.analysis]).value;
   state.analysis = mode;
   closeDayPopover(); hideTooltip(); $('error').hidden = true;
@@ -443,7 +438,7 @@ function drawAgreement() {
   const x = value => left + value * (width - left - right), y = value => top + (1 - value) * (height - top - bottom);
   let svg = `<svg id="agreement-svg" class="chart-svg interactive-chart" viewBox="0 0 ${width} ${height}" tabindex="0" role="img" aria-label="Daily role score comparison. Left and right arrows select a date; Enter opens its summary."><title>${escapeText(roleName(roleA))} versus ${escapeText(roleName(roleB))}</title>`;
   [0, .25, .5, .75, 1].forEach(value => { svg += `<line class="chart-grid" x1="${x(value)}" x2="${x(value)}" y1="${y(0)}" y2="${y(1)}"></line><line class="chart-grid" x1="${x(0)}" x2="${x(1)}" y1="${y(value)}" y2="${y(value)}"></line><text x="${x(value)}" y="${height - bottom + 21}" text-anchor="middle">${value.toFixed(2)}</text><text x="${left - 11}" y="${y(value) + 4}" text-anchor="end">${value.toFixed(2)}</text>`; });
-  svg += `<line class="agreement-diagonal" x1="${x(0)}" x2="${x(1)}" y1="${y(0)}" y2="${y(1)}"></line><text x="${(x(0) + x(1)) / 2}" y="${height - 5}" text-anchor="middle">${escapeText(roleName(roleA))} score</text><text transform="translate(12 ${(y(0) + y(1)) / 2}) rotate(-90)" text-anchor="middle">${escapeText(roleName(roleB))} score</text>`;
+  svg += `<rect class="chart-spine" x="${left}" y="${top}" width="${width-left-right}" height="${height-top-bottom}"></rect><line class="agreement-diagonal" x1="${x(0)}" x2="${x(1)}" y1="${y(0)}" y2="${y(1)}"></line><text x="${(x(0) + x(1)) / 2}" y="${height - 5}" text-anchor="middle">${escapeText(roleName(roleA))} score</text><text transform="translate(12 ${(y(0) + y(1)) / 2}) rotate(-90)" text-anchor="middle">${escapeText(roleName(roleB))} score</text>`;
   rows.forEach(row => { svg += `<circle class="agreement-dot ${number(row.label) === 1 ? 'observed-anomaly' : number(row.label) === 0 ? 'ordinary-date' : 'unknown-date'}" cx="${x(number(row.scores[roleA]))}" cy="${y(number(row.scores[roleB]))}" r="4"></circle>`; });
   const selected = rows[state.agreementPoint];
   svg += `<circle id="agreement-focus" class="agreement-focus" cx="${x(number(selected.scores[roleA]))}" cy="${y(number(selected.scores[roleB]))}" r="7"></circle></svg>`;
@@ -511,10 +506,210 @@ async function openMonth(cell) {
   window.scrollTo({top: 0});
 }
 
+const comparisonNames = {decision_supervisor: 'Decision Supervisor', lstm_ind: 'LSTM-IND', lstm_news: 'LSTM-(IND+NEWS)'};
+const outcomeNames = {tp: 'TP · alert + anomaly', fn: 'FN · no alert + anomaly', fp: 'FP · alert + no anomaly', tn: 'TN · no alert + no anomaly'};
+
+function decisionOutcome(label, prediction) {
+  if (![0, 1].includes(number(label)) || ![0, 1].includes(number(prediction))) return null;
+  return number(label) === 1 ? number(prediction) === 1 ? 'tp' : 'fn' : number(prediction) === 1 ? 'fp' : 'tn';
+}
+
+function comparisonValue(value, model, scale = $('comparison-scale').value) {
+  const raw = number(value);
+  if (raw === null || scale === 'raw') return raw;
+  const mean = number(model.standardization?.mean), sd = number(model.standardization?.std_ddof0);
+  return mean === null || sd === null || sd <= 0 ? null : (raw - mean) / sd;
+}
+
+async function renderComparison(reset = false) {
+  const market = $('comparison-market').value, loadId = ++state.loadId;
+  closeDayPopover(); hideTooltip(); $('error').hidden = true;
+  $('comparison-status').hidden = false;
+  $('comparison-status').textContent = 'Loading saved model scores…';
+  try {
+    const [data, benchmarks] = await Promise.all([loadMarket(market), state.benchmarks || readJSON('data/benchmarks.json')]);
+    if (loadId !== state.loadId) return;
+    state.benchmarks = benchmarks;
+    const benchmark = benchmarks.markets.find(item => item.id === market);
+    if (!benchmark) throw new Error('No saved benchmark data are available for this market.');
+    state.comparisonModels = [{id: 'decision_supervisor', standardization: benchmark.standardization.decision_supervisor}, ...benchmark.models];
+    const lookup = new Map(benchmark.models.map(model => [model.id, new Map(model.records.map(row => [row.target_date, row]))]));
+    state.comparisonAll = data.records.map(record => ({...record, models: Object.fromEntries(state.comparisonModels.map(model => [model.id, model.id === 'decision_supervisor' ? {score: record.scores.decision_supervisor, threshold: record.thresholds.decision_supervisor, prediction: record.predictions.decision_supervisor, label: record.label} : lookup.get(model.id).get(record.target_date)]))}));
+    const first = data.records[0]?.target_date || '', last = data.records.at(-1)?.target_date || '';
+    if (state.comparisonMarket !== market || reset) {
+      const initial = state.comparisonMarket === null && market === '^GSPC' && !reset;
+      $('comparison-start').value = initial ? '2025-04-01' : first;
+      $('comparison-end').value = initial ? '2025-04-14' : last;
+      state.comparisonFilter = null; state.comparisonPoint = 0;
+    }
+    state.comparisonMarket = market;
+    $('comparison-start').min = $('comparison-end').min = first;
+    $('comparison-start').max = $('comparison-end').max = last;
+    let start = $('comparison-start').value, end = $('comparison-end').value;
+    if (start > end) {
+      const previous = state.comparisonRange;
+      $('comparison-start').value = previous?.market === market ? previous.start : first;
+      $('comparison-end').value = previous?.market === market ? previous.end : last;
+      throw new Error('The start date must be on or before the end date. The previous valid range has been restored.');
+    }
+    state.comparisonRange = {market, start, end};
+    state.comparisonRows = state.comparisonAll.filter(row => (!start || row.target_date >= start) && (!end || row.target_date <= end));
+    $('comparison-title').textContent = `${marketLabel(marketInfo(market))} · ${$('comparison-scale').value === 'raw' ? 'Raw scores' : 'Paper z-scores'}`;
+    const rows = state.comparisonRows, anomalies = rows.filter(row => number(row.label) === 1).length;
+    $('comparison-scope').textContent = rows.length ? `${dateText(rows[0].target_date)} – ${dateText(rows.at(-1).target_date)} · ${rows.length} target dates · ${anomalies} observed anomalies` : 'No saved target dates in this range';
+    $('comparison-scale-note').textContent = $('comparison-scale').value === 'raw' ? 'Supervisor: uncalibrated risk score. LSTMs: model probabilities. Supervisor thresholds update from earlier resolved cases; LSTM thresholds stay fixed. Date filters refit neither.' : 'z = (score − full-period mean) / full-period standard deviation (ddof = 0). Score and threshold use the same saved constants. Supervisor thresholds are sequential; LSTM thresholds are fixed. Date filters refit neither.';
+    const comparisonLabel = marketInfo(market).comparison_name;
+    if (comparisonLabel) { $('benchmark-market').value = comparisonLabel; renderBenchmark(); }
+    renderComparisonOutcomes();
+    filterComparisonDates();
+    drawDistributions();
+  } finally { if (loadId === state.loadId) $('comparison-status').hidden = true; }
+}
+
+function renderComparisonOutcomes() {
+  const rows = state.comparisonRows;
+  $('comparison-confusion').innerHTML = `<table class="confusion-table"><thead><tr><th scope="col">Model</th>${['tp', 'fn', 'fp', 'tn'].map(key => `<th scope="col" class="outcome-${key}" title="${escapeText(outcomeNames[key])}">${key.toUpperCase()}</th>`).join('')}</tr></thead><tbody>${state.comparisonModels.map(model => `<tr><td>${comparisonNames[model.id]}</td>${['tp', 'fn', 'fp', 'tn'].map(key => { const n = rows.filter(row => decisionOutcome(row.label, row.models[model.id]?.prediction) === key).length; return `<td class="outcome-${key}"><button type="button" class="outcome-cell" data-outcome-model="${model.id}" data-outcome="${key}" aria-pressed="${state.comparisonFilter?.model === model.id && state.comparisonFilter?.outcome === key}" aria-label="${comparisonNames[model.id]}, ${outcomeNames[key]}, ${n} dates. Filter dates.">${n}</button></td>`; }).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+function filterComparisonDates() {
+  closeDayPopover(); hideTooltip();
+  const filter = state.comparisonFilter;
+  state.comparisonSelected = state.comparisonRows.filter(row => !filter || decisionOutcome(row.label, row.models[filter.model]?.prediction) === filter.outcome);
+  state.comparisonPoint = Math.max(0, Math.min(state.comparisonPoint, state.comparisonSelected.length - 1));
+  $('comparison-clear').hidden = !filter;
+  $('comparison-filter-label').textContent = filter ? `${comparisonNames[filter.model]} · ${outcomeNames[filter.outcome]} · ${state.comparisonSelected.length} of ${state.comparisonRows.length} dates. The timeline retains the full selected range; outlined marks and the date slider follow this filter.` : 'All outcome groups. Select a count to list its dates and inspect their reports.';
+  $('comparison-matches').innerHTML = filter ? state.comparisonSelected.map(row => `<button type="button" data-comparison-case="${row.target_date}">${escapeText(dateText(row.target_date))}</button>`).join('') || '<p class="hint">No dates match this outcome in the selected range.</p>' : '';
+  $('comparison-date').max = Math.max(0, state.comparisonSelected.length - 1);
+  $('comparison-date').value = state.comparisonPoint;
+  $('comparison-date').disabled = $('comparison-summary').disabled = !state.comparisonSelected.length;
+  drawComparison(); renderComparisonPoint();
+}
+
+function outcomeMarker(outcome, x, y, radius = 3, seriesColor = '#89929D') {
+  if (outcome === 'tp') return `<circle cx="${x}" cy="${y}" r="${radius}" fill="#B43C4B"></circle>`;
+  if (outcome === 'fn') return `<path d="M${x-radius},${y-radius}L${x+radius},${y+radius}M${x-radius},${y+radius}L${x+radius},${y-radius}" stroke="#B43C4B" stroke-width="2.3" fill="none"></path>`;
+  if (outcome === 'fp') return `<path d="M${x},${y-radius-1}L${x+radius+1},${y+radius}L${x-radius-1},${y+radius}Z" fill="#AD7625"></path>`;
+  if (outcome === 'tn') return `<circle cx="${x}" cy="${y}" r="${Math.max(1.6, radius-1)}" fill="${seriesColor}"></circle>`;
+  return '';
+}
+
+function comparisonDomain() {
+  if ($('comparison-scale').value === 'raw') return [-.04, 1.18];
+  const values = state.comparisonModels.flatMap(model => state.comparisonAll.flatMap(row => [comparisonValue(row.models[model.id]?.score, model), comparisonValue(row.models[model.id]?.threshold, model)])).filter(value => value !== null);
+  return values.length ? [Math.floor(Math.min(...values) - .25), Math.ceil(Math.max(...values) + 1.15)] : [-3, 3];
+}
+
+function drawComparison() {
+  const rows = state.comparisonRows;
+  if (!rows.length) { $('comparison-chart').innerHTML = '<p class="empty">No saved dates in this range.</p>'; return; }
+  const width = Math.max(290, $('comparison-chart').clientWidth), left = 46, right = 10, top = 8, panelHeight = width < 500 ? 142 : 120, gap = 13;
+  const lane = top + 3 * (panelHeight + gap) + 19, height = lane + 55, first = Date.parse(rows[0].target_date), last = Date.parse(rows.at(-1).target_date);
+  const x = date => rows.length === 1 ? (left + width-right)/2 : left + (Date.parse(date)-first)/Math.max(1,last-first)*(width-left-right);
+  const [low, high] = comparisonDomain();
+  const y = (value, panel) => top + panel * (panelHeight + gap) + (high-value)/(high-low)*panelHeight;
+  state.comparisonBounds = {width, left, right, first, last, top, bottom: lane+18, single: rows.length === 1};
+  const tickStep = Math.max(1, Math.ceil((high-low)/4));
+  const ticks = $('comparison-scale').value === 'raw' ? [0, .5, 1] : Array.from({length: Math.floor(high/tickStep)-Math.ceil(low/tickStep)+1}, (_, i) => (Math.ceil(low/tickStep)+i)*tickStep);
+  let svg = `<svg id="comparison-svg" class="chart-svg interactive-chart" tabindex="0" viewBox="0 0 ${width} ${height}" role="img" aria-label="Three aligned model score panels and a shared observed outcome lane. Arrow keys select dates. Enter opens a day summary."><title>Saved model scores, thresholds, and observed outcomes</title>`;
+  state.comparisonModels.forEach((model, panel) => {
+    const panelTop = top + panel * (panelHeight+gap);
+    rows.forEach((row,index) => { if (number(row.label)!==1) return; const before=index ? (x(rows[index-1].target_date)+x(row.target_date))/2 : left, after=index<rows.length-1 ? (x(rows[index+1].target_date)+x(row.target_date))/2 : width-right; svg += `<rect x="${before}" y="${panelTop}" width="${Math.max(.8,after-before)}" height="${panelHeight}" fill="#B43C4B" opacity=".055"></rect>`; });
+    ticks.forEach(value => { svg += `<line x1="${left-4}" x2="${left}" y1="${y(value,panel)}" y2="${y(value,panel)}" stroke="#111"></line><text x="${left-8}" y="${y(value,panel)+4}" text-anchor="end">${$('comparison-scale').value==='raw' ? value.toFixed(1) : value}</text>`; });
+    if (low < 0 && high > 0) svg += `<line x1="${left}" x2="${width-right}" y1="${y(0,panel)}" y2="${y(0,panel)}" stroke="#b5bcc5" stroke-width=".6"></line>`;
+    let scorePath='',thresholdPath='',previousScore=null,previousThreshold=null;
+    rows.forEach(row => { const values=row.models[model.id], score=comparisonValue(values?.score,model), threshold=comparisonValue(values?.threshold,model); if(score!==null) scorePath+=`${previousScore===null?'M':'L'}${x(row.target_date)},${y(score,panel)} `; previousScore=score; if(threshold!==null) thresholdPath+=previousThreshold===null?`M${x(row.target_date)},${y(threshold,panel)} `:`H${x(row.target_date)}V${y(threshold,panel)} `; previousThreshold=threshold; });
+    svg+=`<path d="${thresholdPath}" class="chart-threshold"></path><path d="${scorePath}" fill="none" stroke="${model.id==='decision_supervisor'?'#4169E1':'#555F6B'}" stroke-width="1.5"${model.id==='lstm_news'?' stroke-dasharray="5 3"':''}></path>`;
+    rows.forEach(row => { const score=comparisonValue(row.models[model.id]?.score,model), outcome=decisionOutcome(row.label,row.models[model.id]?.prediction); if(score===null)return; const px=x(row.target_date),py=y(score,panel); if(outcome!=='tn'||rows.length<=40)svg+=outcomeMarker(outcome,px,py,rows.length<=40?4:2.6,model.id==='decision_supervisor'?'#4169E1':'#555F6B'); if(state.comparisonFilter?.model===model.id&&outcome===state.comparisonFilter.outcome)svg+=`<circle cx="${px}" cy="${py}" r="6" fill="none" stroke="#111" stroke-width="1"></circle>`; if(rows.length===1){ svg+=`<line class="chart-threshold" x1="${px-12}" x2="${px+12}" y1="${y(comparisonValue(row.models[model.id]?.threshold,model),panel)}" y2="${y(comparisonValue(row.models[model.id]?.threshold,model),panel)}"></line>`; } });
+    svg+=`<rect class="chart-spine" x="${left}" y="${panelTop}" width="${width-left-right}" height="${panelHeight}"></rect><rect x="${left+5}" y="${panelTop+3}" width="${model.id==='lstm_news'?147:153}" height="18" fill="white" opacity=".95"></rect><text class="comparison-model" x="${left+8}" y="${panelTop+16}">${comparisonNames[model.id]}</text>`;
+  });
+  svg+=`<text x="${left}" y="${lane-6}" font-weight="700">Observed outcome${width<500 ? ' · red = anomaly' : ''}</text>${width>=500 ? `<text x="${width-right}" y="${lane-6}" text-anchor="end">Anomaly = red · No anomaly = grey</text>` : ''}`;
+  rows.forEach((row,index)=>{const before=index?(x(rows[index-1].target_date)+x(row.target_date))/2:left,after=index<rows.length-1?(x(rows[index+1].target_date)+x(row.target_date))/2:width-right;svg+=`<rect x="${before}" y="${lane}" width="${Math.max(.8,after-before)}" height="18" fill="${number(row.label)===1?'#B43C4B':number(row.label)===0?'#e1e3e6':'white'}"></rect>`;});
+  svg+=`<rect class="chart-spine" x="${left}" y="${lane}" width="${width-left-right}" height="18"></rect>`;
+  const tickCount=rows.length<=12&&width>700?rows.length:width<500?2:4;
+  [...new Set(Array.from({length:tickCount},(_,i)=>Math.round(i*(rows.length-1)/Math.max(1,tickCount-1))))].forEach((index,i,all)=>{svg+=`<text x="${x(rows[index].target_date)}" y="${height-10}" text-anchor="${i===0?'start':i===all.length-1?'end':'middle'}">${escapeText(rows.length<=12 ? dateText(rows[index].target_date).replace(/ \d{4}$/, '') : dateText(rows[index].target_date))}</text>`;});
+  svg+=`<line id="comparison-cursor" class="chart-cursor" x1="${left}" x2="${left}" y1="${top}" y2="${lane+18}"></line></svg>`;
+  $('comparison-chart').innerHTML=svg;
+  const nearest=event=>{const point=svgPoint(event,$('comparison-svg')).x,selected=state.comparisonSelected;return selected.reduce((best,row,index)=>Math.abs(x(row.target_date)-point)<Math.abs(x(selected[best].target_date)-point)?index:best,0);};
+  $('comparison-svg').addEventListener('pointermove',event=>{if(state.popup||!state.comparisonSelected.length)return;const row=state.comparisonSelected[nearest(event)];moveComparisonCursor(row);showComparisonTooltip(row,event);});
+  $('comparison-svg').addEventListener('pointerleave',()=>{hideTooltip();if(!state.popup)renderComparisonPoint();});
+  $('comparison-svg').addEventListener('click',event=>{if(!state.comparisonSelected.length)return;state.comparisonPoint=nearest(event);$('comparison-date').value=state.comparisonPoint;renderComparisonPoint();showComparisonPopover(state.comparisonSelected[state.comparisonPoint],event);});
+  $('comparison-svg').addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();state.comparisonPoint=Math.max(0,Math.min(state.comparisonSelected.length-1,state.comparisonPoint+(event.key==='ArrowRight'?1:-1)));$('comparison-date').value=state.comparisonPoint;renderComparisonPoint();}if(event.key==='Enter'){event.preventDefault();showComparisonPopover(state.comparisonSelected[state.comparisonPoint],event);}});
+}
+
+function moveComparisonCursor(row) {
+  const cursor=$('comparison-cursor');if(!cursor)return;
+  cursor.style.display=row?'':'none';if(!row)return;
+  const b=state.comparisonBounds,x=b.single?(b.left+b.width-b.right)/2:b.left+(Date.parse(row.target_date)-b.first)/Math.max(1,b.last-b.first)*(b.width-b.left-b.right);
+  cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);
+}
+
+function comparisonTable(row, scale = $('comparison-scale').value) {
+  return table(['Model',scale==='raw'?'Score':'z-score',scale==='raw'?'Threshold':'Threshold z','Outcome'],state.comparisonModels.map(model=>{const values=row.models[model.id],outcome=decisionOutcome(row.label,values?.prediction);return [comparisonNames[model.id],fixed(comparisonValue(values?.score,model,scale),4),fixed(comparisonValue(values?.threshold,model,scale),4),`<span class="outcome-${outcome}">${outcome?.toUpperCase()||'Unavailable'}</span>`];}),'comparison-selected-table');
+}
+
+function renderComparisonPoint() {
+  const row=state.comparisonSelected[state.comparisonPoint];moveComparisonCursor(row);
+  $('comparison-date-label').textContent=row?.target_date||'No matching date';
+  $('comparison-date').setAttribute('aria-valuetext',row?dateText(row.target_date):'No matching date');
+  $('comparison-selected').innerHTML=row?`<p class="selected-date"><strong>${escapeText(dateText(row.target_date))}</strong> · ${observedLabel(row.label)}</p>`+comparisonTable(row):'<p class="hint">No date matches the current outcome filter.</p>';
+}
+
+function showComparisonTooltip(row,event) {
+  showTooltip(`<strong>${escapeText(dateText(row.target_date))}</strong><span class="tooltip-market">${escapeText(marketLabel(marketInfo(state.comparisonMarket)))}</span><p>${observedLabel(row.label)}</p>${comparisonTable(row)}<small>Select for the daily summary and saved reports.</small>`,event);
+}
+
+function showComparisonPopover(row,event) {
+  if(!row)return;
+  showDayPopover(row,state.comparisonMarket,'decision_supervisor',event);
+  $('day-popover-values').innerHTML=`<div class="popover-comparison"><p>${observedLabel(row.label)} · Information cutoff ${escapeText(dateText(row.information_cutoff))}</p>${comparisonTable(row)}${$('comparison-scale').value==='standardized'?'<p class="hint">Table shows paper z-scores; original saved values are unchanged.</p>':''}</div>`;
+  floatAt($('day-popover'),event);
+}
+
+function distributionBins(rows, model, low, high, bins = 16) {
+  return [0,1].map(label=>{const values=rows.filter(row=>number(row.label)===label).map(row=>comparisonValue(row.models[model.id]?.score,model)).filter(value=>value!==null),counts=Array(bins).fill(0);values.forEach(value=>{const index=Math.max(0,Math.min(bins-1,Math.floor((value-low)/(high-low)*bins)));counts[index]+=1;});return {label,n:values.length,counts,shares:values.length?counts.map(count=>count/values.length):[]};});
+}
+
+function drawDistributions() {
+  const rows=state.comparisonRows,raw=$('comparison-scale').value==='raw',[low,high]=raw?[0,1]:comparisonDomain();
+  if (!rows.length) { $('distribution-scope').textContent = 'No saved dates in the selected range'; $('comparison-distributions').innerHTML = '<p class="empty">No scores are available for this date range.</p>'; return; }
+  const groups=state.comparisonModels.map(model=>({model,groups:distributionBins(rows,model,low,high)}));
+  const ymax=Math.max(.05,...groups.flatMap(item=>item.groups.flatMap(group=>group.shares)))*1.12;
+  $('distribution-scope').textContent=`${rows.length} dates in the selected range · Shares within each outcome group · Outcome count filter does not change these distributions`;
+  $('comparison-distributions').innerHTML=groups.map(({model,groups})=>{
+    const width=330,height=220,left=43,right=12,top=12,bottom=43,plotWidth=width-left-right,plotHeight=height-top-bottom;
+    const x=value=>left+(value-low)/(high-low)*plotWidth,y=value=>top+(1-value/ymax)*plotHeight;
+    let svg=`<svg class="chart-svg interactive-chart" data-distribution-model="${model.id}" tabindex="0" viewBox="0 0 ${width} ${height}" role="img" aria-label="${comparisonNames[model.id]} score distribution. Use left and right arrows to inspect the 16 score bins."><title>${comparisonNames[model.id]}: scores by observed outcome</title>`;
+    [0,ymax/2,ymax].forEach(value=>{svg+=`<text x="${left-7}" y="${y(value)+4}" text-anchor="end">${(value*100).toFixed(0)}%</text>`;});
+    [low,(low+high)/2,high].forEach(value=>{svg+=`<text x="${x(value)}" y="${height-25}" text-anchor="middle">${value.toFixed(1)}</text>`;});
+    groups.forEach(group=>{if(!group.n)return;let path=`M${left},${y(0)}`;group.shares.forEach((value,index)=>{const bx=left+index/group.shares.length*plotWidth,bx2=left+(index+1)/group.shares.length*plotWidth;path+=`H${bx}V${y(value)}H${bx2}`;});path+=`V${y(0)}`;svg+=`<path d="${path}" fill="none" stroke="${group.label===1?'#B43C4B':'#555F6B'}" stroke-width="1.7"${group.label===0?' stroke-dasharray="5 2"':''}><title>${group.label===1?'Observed anomaly':'No observed anomaly'}: n=${group.n}</title></path>`;});
+    svg+=`<rect class="distribution-bin-focus" x="${left}" y="${top}" width="${plotWidth/16}" height="${plotHeight}" fill="#4169E1" opacity="0"></rect><rect class="chart-spine" x="${left}" y="${top}" width="${plotWidth}" height="${plotHeight}"></rect><text x="${left+plotWidth/2}" y="${height-5}" text-anchor="middle">${raw?'Raw score':'Paper z-score'}</text></svg>`;
+    return `<figure><figcaption>${comparisonNames[model.id]}</figcaption><p class="distribution-count">Anomaly n = ${groups[1].n}${groups[1].n?'':' (no saved scores)'} · No anomaly n = ${groups[0].n}${groups[0].n?'':' (no saved scores)'}</p>${svg}</figure>`;
+  }).join('');
+  document.querySelectorAll('[data-distribution-model]').forEach(svg => {
+    const item = groups.find(group => group.model.id === svg.dataset.distributionModel), bins = 16, left = 43, plotWidth = 275;
+    let selected = 0;
+    const preview = (index, event) => {
+      selected = Math.max(0, Math.min(bins - 1, index));
+      const start = low + selected * (high-low)/bins, end = low + (selected+1) * (high-low)/bins;
+      const focus = svg.querySelector('.distribution-bin-focus'); focus.setAttribute('x', left + selected/bins*plotWidth); focus.setAttribute('opacity', '.10');
+      const interval = `${fixed(start, 4)} ≤ ${raw ? 'score' : 'z'} ${selected === bins-1 ? '≤' : '<'} ${fixed(end, 4)}`;
+      const groupRows = item.groups.map(group => [group.label === 1 ? 'Observed anomaly' : 'No observed anomaly', `${group.counts[selected]} / ${group.n}`, group.n ? `${(group.shares[selected]*100).toFixed(2)}%` : 'No saved scores']);
+      showTooltip(`<strong>${comparisonNames[item.model.id]}</strong><p>${escapeText(interval)}</p>${table(['Outcome group', 'Bin count / n', 'Group share'], groupRows, 'comparison-selected-table')}`, event);
+      svg.setAttribute('aria-label', `${comparisonNames[item.model.id]}, ${interval}. ${groupRows.map(row => row.join(', ')).join('. ')}. Left and right arrows change bins.`);
+    };
+    svg.addEventListener('pointermove', event => { if (!state.popup) preview(Math.floor((svgPoint(event, svg).x-left)/plotWidth*bins), event); });
+    svg.addEventListener('pointerleave', () => { hideTooltip(); svg.querySelector('.distribution-bin-focus').setAttribute('opacity', '0'); });
+    svg.addEventListener('focus', event => preview(selected, event));
+    svg.addEventListener('blur', () => { hideTooltip(); svg.querySelector('.distribution-bin-focus').setAttribute('opacity', '0'); });
+    svg.addEventListener('keydown', event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); preview(event.key === 'Home' ? 0 : event.key === 'End' ? bins-1 : selected + (event.key === 'ArrowRight' ? 1 : -1), event); } });
+  });
+}
+
 async function initialise() {
   try {
     state.index = await readJSON('data/index.json');
     if (!Array.isArray(state.index.markets) || !Array.isArray(state.index.metrics) || !state.index.markets.length) throw new Error('The public research index is not complete.');
+    setOptions($('comparison-market'), state.index.markets);
     setOptions($('timeline-market'), state.index.markets);
     setOptions($('case-market'), state.index.markets);
     setOptions($('agreement-market'), state.index.markets);
@@ -528,11 +723,22 @@ async function initialise() {
     const comparisons = [...new Set(state.index.comparison.map(row => row.market))].map(name => ({id: name, name}));
     setOptions($('benchmark-market'), comparisons);
     renderOverview();
-    renderMethod();
+
     $('load-status').hidden = true;
     await showView(location.hash.slice(1) || 'overview', false);
   } catch (error) { $('load-status').hidden = true; if (location.protocol === 'file:') error = new Error('Open this dashboard through a local web server. From the repository root, run python -m http.server 8765 and open http://localhost:8765/Dashboard/.'); showError(error); }
 }
+
+$('comparison-market').addEventListener('change', () => renderComparison().catch(showError));
+['comparison-start', 'comparison-end', 'comparison-scale'].forEach(id => $(id).addEventListener('change', () => renderComparison().catch(showError)));
+$('comparison-reset').addEventListener('click', () => renderComparison(true).catch(showError));
+$('comparison-april').addEventListener('click', () => { $('comparison-market').value = '^GSPC'; state.comparisonMarket = '^GSPC'; $('comparison-start').value = '2025-04-01'; $('comparison-end').value = '2025-04-14'; $('comparison-scale').value = 'raw'; state.comparisonFilter = null; state.comparisonPoint = 0; renderComparison().catch(showError); });
+$('comparison-date').addEventListener('input', () => { closeDayPopover(); hideTooltip(); state.comparisonPoint = Number($('comparison-date').value); renderComparisonPoint(); });
+$('comparison-date').addEventListener('keydown', event => { if (event.key === 'Enter') showComparisonPopover(state.comparisonSelected[state.comparisonPoint], event); });
+$('comparison-summary').addEventListener('click', event => showComparisonPopover(state.comparisonSelected[state.comparisonPoint], event));
+$('comparison-confusion').addEventListener('click', event => { const button = event.target.closest('[data-outcome-model]'); if (!button) return; state.comparisonFilter = {model: button.dataset.outcomeModel, outcome: button.dataset.outcome}; state.comparisonPoint = 0; renderComparisonOutcomes(); filterComparisonDates(); });
+$('comparison-clear').addEventListener('click', () => { state.comparisonFilter = null; state.comparisonPoint = 0; renderComparisonOutcomes(); filterComparisonDates(); });
+$('comparison-matches').addEventListener('click', event => { const button = event.target.closest('[data-comparison-case]'); if (button) { state.caseRole = 'decision_supervisor'; openCase(state.comparisonMarket, button.dataset.comparisonCase); } });
 
 document.querySelectorAll('[data-analysis]').forEach(button => button.addEventListener('click', () => setAnalysis(button.dataset.analysis).catch(showError)));
 $('timeline-summary').addEventListener('click', event => showDayPopover(state.timeline[state.point], state.market, $('timeline-role').value, event));
@@ -556,7 +762,6 @@ document.addEventListener('keydown', event => { if (event.key === 'Escape') { cl
 window.addEventListener('scroll', hideTooltip, {capture: true, passive: true});
 
 document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => { if (state.index) showView(button.dataset.view); }));
-$('about-data').addEventListener('click', async () => { if (!state.index) return; await showView('method'); $('data-note').scrollIntoView({block: 'start', behavior: 'instant'}); });
 $('overview-metric').addEventListener('change', renderMetricMatrix);
 $('benchmark-market').addEventListener('change', renderBenchmark);
 $('role-matrix').addEventListener('click', event => { const button = event.target.closest('[data-market]'); if (button) { $('timeline-market').value = button.dataset.market; if (button.dataset.metricRole) $('timeline-role').value = button.dataset.metricRole; state.market = null; state.analysis = 'timeline'; showView('markets'); } });
@@ -579,13 +784,13 @@ $('case-detail').addEventListener('click', event => {
   const roleButton = event.target.closest('[data-role]');
   if (roleButton) { state.caseRole = roleButton.dataset.role; renderCaseDetail().catch(showError); return; }
   const chartButton = event.target.closest('[data-chart-index]');
-  if (chartButton) { const record = state.caseMatches.find(row => row.target_date === state.caseDate), chart = record.charts[Number(chartButton.dataset.chartIndex)]; openFigure(chart.src, `${record.target_date} · ${chart.title || 'Input chart'}`, state.index.chart_note || 'Chart captured for this saved target date.'); }
+  if (chartButton) { const record = state.caseMatches.find(row => row.target_date === state.caseDate), chart = record.charts[Number(chartButton.dataset.chartIndex)]; openFigure(chart.src, `${record.target_date} · ${chart.title || 'Input chart'}`, 'Input chart captured for this target date.'); }
 });
 $('figure-filter').addEventListener('change', () => renderGallery().catch(showError));
 $('figure-gallery').addEventListener('click', event => { const button = event.target.closest('[data-figure]'); if (button) { const figure = state.figures[Number(button.dataset.figure)]; openFigure('../' + figure.file, figure.submission_file.replace(/\.png$/i, ''), figure.public_redaction || 'Saved manuscript figure.'); } });
 $('figure-close').addEventListener('click', () => $('figure-dialog').close());
 $('figure-dialog').addEventListener('click', event => { if (event.target === $('figure-dialog')) { const rect = event.target.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) event.target.close(); } });
 let resizeTimer;
-window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (state.view === 'markets') { closeDayPopover(); hideTooltip(); if (state.analysis === 'timeline' && state.timeline.length) { drawTimeline(); renderPoint(); } if (state.analysis === 'agreement') drawAgreement(); } }, 120); });
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (state.view === 'overview' && state.comparisonRows.length) { drawComparison(); renderComparisonPoint(); drawDistributions(); } if (state.view === 'markets') { closeDayPopover(); hideTooltip(); if (state.analysis === 'timeline' && state.timeline.length) { drawTimeline(); renderPoint(); } if (state.analysis === 'agreement') drawAgreement(); } }, 120); });
 window.addEventListener('hashchange', () => { if (state.index) showView(location.hash.slice(1), false); });
 initialise();
