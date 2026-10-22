@@ -1,0 +1,52 @@
+name: Deploy research dashboard
+
+on:
+  push:
+    branches: [main]
+    paths: ['Dashboard/**', 'Figures/**', '.github/workflows/dashboard.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - name: Prepare the static dashboard
+        env:
+          CHART_COMMIT: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import shutil
+          from pathlib import Path
+
+          site = Path('_site')
+          shutil.copytree('Dashboard', site / 'Dashboard', ignore=shutil.ignore_patterns('charts'))
+          shutil.copytree('Figures', site / 'Figures')
+          page = site / 'Dashboard' / 'index.html'
+          page.write_text(page.read_text().replace('<head>', '<head>\n  <meta name="chart-commit" content="' + os.environ['CHART_COMMIT'] + '">'))
+          (site / 'index.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=Dashboard/"><title>FINDER-LLM</title></head><body><a href="Dashboard/">Open the FINDER-LLM Dashboard</a></body></html>')
+          (site / '.nojekyll').touch()
+          size = sum(path.stat().st_size for path in site.rglob('*') if path.is_file())
+          assert size < 1_000_000_000, 'The Pages artifact exceeds the hosting limit.'
+          print(f'Dashboard artifact: {size:,} bytes; original charts use the same source commit.')
+          PY
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4

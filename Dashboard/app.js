@@ -22,6 +22,8 @@ const badge = label => number(label) === 1 ? '<span class="badge anomaly">Observ
 function localPath(path) {
   const url = new URL(path, location.href);
   if (url.origin !== location.origin || !['http:', 'https:'].includes(url.protocol)) throw new Error('A research asset has an invalid path.');
+  const chartCommit = document.querySelector('meta[name="chart-commit"]')?.content;
+  if (/^[a-f0-9]{40}$/.test(chartCommit || '') && /^charts\/[a-f0-9]{64}\.webp$/.test(path)) return `https://raw.githubusercontent.com/QuantLet/FINDER-LLM/${chartCommit}/Dashboard/${path}`;
   return url.href;
 }
 
