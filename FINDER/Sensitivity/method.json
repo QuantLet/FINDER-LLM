@@ -1,0 +1,34 @@
+{
+  "n_bootstrap": 5000,
+  "block_lengths": [
+    5,
+    10,
+    20
+  ],
+  "random_seed": 20261027,
+  "primary_excluded_month": "2025-04",
+  "additional_excluded_month": "2026-03",
+  "additional_month_selection": "largest sum of market event counts outside April 2025; independent of model scores",
+  "resampling_grid": "original union of target dates; excluded April dates remain masked",
+  "monthly_check": "each calendar month omitted once; descriptive point estimates only",
+  "aggregation": "equal weight 1/6; invalid if any market lacks either class",
+  "predictions_and_labels": "unchanged; no model calls or training",
+  "intervals": "pointwise percentile; conditional on saved predictions",
+  "source_sha256": {
+    "FINDER/Official/daily_scores_all_markets.csv": "e5b992e3c8a512c49f36e7cc9320c7b17d81d4ffc6db57ed6a9453e9333abae1",
+    "FINDER/Official/market_agent_metrics.csv": "4b007778bc9bf704144bd242dd2b361c664226cd3ec276e1ad7e6e2b658fda79",
+    "Benchmark/Official/metrics.csv": "f9ee88d0cf310681941b4df3f6b0d3064930160fb447bcf17a57d5fe9a92adf7",
+    "Benchmark/Official/CAC_IND/test_predictions.csv": "9231f66bd3ebd61eacfe1eeb79e8fa737934766223cc6dd1d82a9c3b464d7453",
+    "Benchmark/Official/CAC_NEWS/test_predictions.csv": "fc5f9f3c72ab5f29c5011096fb19d981a87be1029e00724a31df09c6309bc3da",
+    "Benchmark/Official/CBU0_IND/test_predictions.csv": "a56d1033e03c1a9ea1f3587d866e06eb25cdcd2c43b956955a53b4de16d118f9",
+    "Benchmark/Official/CBU0_NEWS/test_predictions.csv": "658867e888fd5ba2befa33f2efdab599ad42a8fc626cdcbbd2a4f248e53b84c0",
+    "Benchmark/Official/DAX_IND/test_predictions.csv": "95d47642d410d8d920fbc4a9dc347f26194bf1946718b5511ca5a29b934b74ca",
+    "Benchmark/Official/DAX_NEWS/test_predictions.csv": "e6e860415f90077f7fbc7a2835721b6d15a26a0259fbe1e7c8d17d701af19cf9",
+    "Benchmark/Official/FTSE_IND/test_predictions.csv": "ad8cbb62e1e23bce474c2f8ef62be01a16da183db601a463bdc4abda1d6bdb9a",
+    "Benchmark/Official/FTSE_NEWS/test_predictions.csv": "3f23e0d20f0abb5cc56429a11638320508d74098a7ae532532ee2e1a1597d0a4",
+    "Benchmark/Official/SP500_IND/test_predictions.csv": "f2844de5c51867b9464e178d081683335253cef2e214510ad843cc6b5cfc351e",
+    "Benchmark/Official/SP500_NEWS/test_predictions.csv": "f9f7e2a208c76d823bfd3710cbbf6909f8af6d1a426b74ed454b67fb76dd09c2",
+    "Benchmark/Official/STOXX_IND/test_predictions.csv": "a5ed7dc63d4b40b4942ea429fe2678a34e9e7d10584faf621d57e8a74323ad33",
+    "Benchmark/Official/STOXX_NEWS/test_predictions.csv": "300fe961ffb2461d14094b35e758b7f77404eb108b9216e2acc8b5caf97d2e98"
+  }
+}
