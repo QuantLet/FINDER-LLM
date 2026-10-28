@@ -273,10 +273,10 @@ def _chart_paths(paths: InputPaths, ticker: str, frame: pd.DataFrame, context_wi
 
 def _target_event_spec(indicators: pd.DataFrame, position: int, crash_percentile: float, label_window_size: int = WINDOW_SIZE, historical_returns: pd.Series | None = None) -> dict[str, Any]:
     history = indicators.iloc[:position]
-    returns = np.log(history["close"]).diff().iloc[-label_window_size - 1:-1] if historical_returns is None else historical_returns[historical_returns.index < history.index[-1]].tail(label_window_size)
+    returns = np.log(history["close"]).diff().tail(label_window_size) if historical_returns is None else historical_returns[historical_returns.index <= history.index[-1]].tail(label_window_size)
     if len(returns) != label_window_size or not np.isfinite(returns.to_numpy(dtype=float)).all():
-        raise DataError(f"The target tail threshold requires {label_window_size} complete past returns before the cutoff return.")
-    return {"target_tail_threshold": float(returns.quantile(crash_percentile)), "crash_percentile": crash_percentile, "return_units": "decimal_log_return", "return_definition": "log(target_close / previous_session_close)", "threshold_observations": label_window_size, "threshold_sample_start": returns.index[0].date().isoformat(), "threshold_sample_end": returns.index[-1].date().isoformat(), "market_data_cutoff_date": history.index[-1].date().isoformat(), "forecast_target_date": indicators.index[position].date().isoformat(), "threshold_rule": f"past_{label_window_size}_log_returns_excluding_cutoff_return"}
+        raise DataError(f"The target tail threshold requires {label_window_size} complete returns through the cutoff session.")
+    return {"target_tail_threshold": float(returns.quantile(crash_percentile)), "crash_percentile": crash_percentile, "return_units": "decimal_log_return", "return_definition": "log(target_close / previous_session_close)", "threshold_observations": label_window_size, "threshold_sample_start": returns.index[0].date().isoformat(), "threshold_sample_end": returns.index[-1].date().isoformat(), "market_data_cutoff_date": history.index[-1].date().isoformat(), "forecast_target_date": indicators.index[position].date().isoformat(), "threshold_rule": f"past_{label_window_size}_log_returns_through_cutoff_return"}
 
 
 def _complete(paths: Iterable[Path]) -> bool:

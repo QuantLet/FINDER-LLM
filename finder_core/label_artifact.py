@@ -11,7 +11,7 @@ import pandas as pd
 from .memory import canonical_sha256, file_sha256
 
 
-LABEL_METHOD = "rolling-lower-tail-quantile-shift-one"
+LABEL_METHOD = "rolling-lower-tail-quantile-through-cutoff"
 SUPPORTED_CRASH_PERCENTILES = (0.01, 0.05)
 
 
@@ -94,7 +94,7 @@ def verify_label_artifact(labels_path: Path | str, returns_path: Path | str, *, 
         raise LabelArtifactValidationError("Log-return dates must be unique and strictly ordered.")
     return_position = {current_date: position for position, current_date in enumerate(return_dates)}
     series = pd.Series(return_values, index=return_dates, dtype="float64")
-    expected_thresholds = series.rolling(window_size, min_periods=window_size).quantile(q).shift(1)
+    expected_thresholds = series.rolling(window_size, min_periods=window_size).quantile(q)
 
     label_fields, label_rows = _read_csv(labels_file, "labels")
     label_date_field = _single_field(label_fields, "date", "labels")

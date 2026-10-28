@@ -1,6 +1,6 @@
 # Ranking confidence intervals
 
-`metrics_ci.csv` and `paired_differences_ci.csv` contain the saved results from `02 Review Results.ipynb`. The inputs are the unchanged daily scores and labels in `FINDER/Official` and the aligned LSTM probabilities in `Benchmark/Official`.
+`metrics_ci.csv` and `paired_differences_ci.csv` contain the saved results from `02 Review Results.ipynb`. The inputs are the daily scores and event labels in `FINDER/Official` and the aligned LSTM probabilities in `Benchmark/Official`.
 
 The notebook uses 5,000 stationary-bootstrap draws with mean block length 10 observations on the union of market target dates and seed 20261027. Each draw shares date indices across all markets, labels and models. Market holidays remain missing. Pointwise 95% percentile intervals use the 2.5th and 97.5th percentiles. Paired differences are Decision Supervisor minus comparator. Equal-weight summaries average the six market metrics within each draw.
 

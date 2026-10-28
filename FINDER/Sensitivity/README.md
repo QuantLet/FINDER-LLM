@@ -1,11 +1,9 @@
 # Event concentration and bootstrap sensitivity
 
-`03 A4 Sensitivity.ipynb` evaluates unchanged scores and labels for all seven score series in six markets. It reproduces the saved main intervals before adding the sensitivity checks. No model is called or retrained.
+`03 A4 Sensitivity.ipynb` evaluates the saved Supervisor, specialist and LSTM scores for six markets. It reproduces the saved main intervals before adding the sensitivity checks.
 
 The main event check excludes every observed target date in April 2025. March 2026 is also excluded because it has the largest summed market event count outside April 2025 (27, compared with 24 in April). This selection uses labels without model scores. Counts refer to market-day events and can include shared shocks. A descriptive check omits each of the 19 observed calendar months once, including the observed part of boundary months.
 
 Each interval calculation uses 5,000 stationary-bootstrap draws, seed 20261027, common date indices across markets and models, and circular continuation. Mean block lengths are 5, 10 and 20 observations for the full sample; event exclusions use 10. Excluded dates remain masked on the original union-date grid. Frequency-weighted rank calculations handle ties exactly and are checked against scikit-learn. Market weights remain 1/6. A single-class market invalidates its market interval draw and the aggregate draw. Intervals are pointwise and unadjusted for multiple comparisons, conditional on the saved predictions.
 
 The notebook writes these files under `Results/Sensitivity/`; the saved copies here support the manuscript. `metrics_ci.csv` and `paired_differences_ci.csv` contain all market and aggregate estimates, limits and valid-draw counts. `samples.csv` contains retained sample counts and prevalences. The three `monthly_*.csv` files contain event counts and descriptive month-exclusion results. `method.json` records settings and input hashes.
-
-Alternative tail levels and label-window lengths are not evaluated. Both enter the model prompt inputs, so an assessment of the framework under each changed configuration requires a separate prediction run and benchmark retraining. The manuscript and draft response disclose the time and computational-cost constraint.

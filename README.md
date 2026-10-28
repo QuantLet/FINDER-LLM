@@ -13,6 +13,6 @@ Author: Siang-Li JHENG, Rahul Tak, Ștefan Găman, Diana Ioana Micu, Daniel Trai
 
 Input: Use Python 3.11 or newer and install requirements.txt. Edit config/settings.json and open 01 FINDER-LLM.ipynb to run the model. Prepare local inputs with notebooks/prepare/. Supply an OpenAI API key through the environment or a local .env file. Raw market data, full news text and reference banks are not included.
 
-Output: New runs are saved under Runs/<market>/<run name>/ as scores.csv and daily reports covering six roles. Evaluation produces evaluation.csv and metrics.csv. Saved paper results are in FINDER/Official and Benchmark/Official; saved figures are in Figures/Manuscript. New runs do not overwrite these outputs.
+Output: New runs are saved under Runs/<market>/<run name>/ as scores.csv and daily reports covering six roles. Evaluation produces evaluation.csv and metrics.csv. Saved paper results are in FINDER/Official and Benchmark/Official; saved figures are in Figures/Manuscript. New runs do not overwrite these outputs. Use 02 Review Results.ipynb for ranking intervals, 03 A4 Sensitivity.ipynb for event-month checks, and notebooks/figures/ for the manuscript figures.
 
 ```

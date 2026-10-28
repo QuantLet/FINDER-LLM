@@ -18,7 +18,7 @@ MODEL_REFERENCE_MAX_CHARACTERS = 12000
 SELECTION_POLICY = "class-recency"
 SCALER_ID = "none"
 FEW_SHOT_MODE = "frozen_reference"
-LABEL_THRESHOLD_METHOD = "rolling-lower-tail-quantile-shift-one"
+LABEL_THRESHOLD_METHOD = "rolling-lower-tail-quantile-through-cutoff"
 FEW_SHOT_STATUSES = {"BALANCED", "CLASS_LIMITED", "SINGLE_CLASS_LIMITED", "NO_FEW_SHOT"}
 _MANIFEST_KEYS = {"schema_version", "bank_id", "created_at_utc", "mode", "asset", "candidate_start_date", "candidate_end_date", "window_size", "indicator_count", "indicator_fields", "input_schema_fingerprint", "forecast_horizon_days", "crash_percentile", "selection_policy", "maximum_examples", "scaler_id", "scaler_sha256", "bank_sha256", "case_count", "class_counts", "source_files", "label_artifact_fingerprint", "label_threshold_method", "verified_label_rows", "exclusion_counts", "case_payload", "manifest_hash"}
 
