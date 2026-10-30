@@ -1,0 +1,68 @@
+# Data
+
+TICKER = "^GSPC"
+START_DATE = "2024-09-01"
+END_DATE = "2026-08-31"
+NEWS_START_DATE = "2024-09-01"
+NEWS_END_DATE = "2026-08-31"
+WINDOW_SIZE = 126
+HORIZON_DAYS = 1
+CRASH_PERCENTILE = 0.05  # 0.01, 0.05
+RANDOM_SEED = 42
+INDICATOR_COUNT = 63
+CHART_COUNT = 3
+MAX_WINDOWS = 10000
+UPDATE_MARKET_DATA = False 
+UPDATE_NEWS_DATA = False
+
+# Models
+
+MODEL_PROFILE = "online"  # "online" (Nano-evidence/debate, Mini-chart/supervisor), "default" (Gemma except Nano chart)
+OLLAMA_URL = "http://127.0.0.1:11434"
+
+# Decision
+
+DEBATE_MAX_ROUNDS = 2
+MEMORY_MODE = "frozen_reference"  # "frozen_reference", "prequential"
+FEW_SHOT_MODE = "frozen_reference"
+FEW_SHOT_MAX_EXAMPLES = 4
+FEW_SHOT_SCALER = "none"
+
+# Concurrency
+
+PIPELINE_MAX_IN_FLIGHT = 2
+MAX_CONCURRENT_MODEL_CALLS = 8
+
+# Evaluation
+
+EVALUATION_RUN_ID = ""  # Optional completed run ID; leave empty when no run is selected
+
+# Paths
+
+## Results
+
+RUNS_PATH = f"Results/{TICKER}"
+MEMORY_PATH = f"Results/{TICKER}/Memory"
+BENCHMARK_PATH = f"Results/{TICKER}/Benchmark/benchmark_predictions.csv"
+EVALUATION_PATH = f"Results/{TICKER}/Evaluation"
+FIGURES_ROOT = f"Data/{TICKER}/Figures"
+FEW_SHOT_BANK_PATH = f"Data/{TICKER}/Reference/few_shot_bank.jsonl"
+
+## Market Data
+
+OHLCV_PATH = f"Data/{TICKER}/Market/df_OHLCV.csv"
+LOG_RETURNS_PATH = f"Data/{TICKER}/Market/df_Log_Returns.csv"
+INDICATORS_PATH = f"Data/{TICKER}/Market/df_Indicators.csv"
+INDICATORS_SMALL_PATH = f"Data/{TICKER}/Market/df_Indicators_small.csv"
+INDICATOR_LIST_PATH = f"Data/{TICKER}/Market/indicators_list.txt"
+INDICATOR_LIST_SMALL_PATH = f"Data/{TICKER}/Market/indicators_list_small.txt"
+FULL_DATA_PATH = f"Data/{TICKER}/Market/df_Full.csv"
+QUANTILE_SERIES_PATH = f"Data/{TICKER}/Market/df_Quantile_Series.csv"
+VALID_DATES_PATH = f"Data/{TICKER}/Market/df_Valid_Dates.csv"
+LABELS_PATH = f"Data/{TICKER}/Market/df_Crash_Label.csv"
+
+## News Data
+
+NEWS_CATALOG_PATH = f"Data/News/Guardian Raw/Raw Full New List.csv"
+NEWS_FULL_TEXT_PATH = f"Data/News/Full/Full News Complete.csv"
+NEWS_PREPARED_PATH = f"Data/News/Prepared/news_evidence.csv"
