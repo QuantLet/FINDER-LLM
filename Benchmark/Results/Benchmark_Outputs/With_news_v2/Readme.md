@@ -1,1 +1,1 @@
-Output of the multiple benchmark with news
+Output of the 05 MultiBenchmarks_News.ipynb (multiple benchmark with news)
