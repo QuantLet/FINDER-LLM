@@ -1,62 +1,65 @@
 {
   "models": {
     "CAC_IND": {
-      "metrics.json": "68a79fb9225a672f3d6fe7870fb2ced77f646b4b6b203aea2f9d51071022246e",
-      "test_predictions.csv": "9231f66bd3ebd61eacfe1eeb79e8fa737934766223cc6dd1d82a9c3b464d7453"
+      "metrics.json": "6411c64c417d35dc4a693c1d1f379b0ea339ccd051c6bedd90568024c77fb097",
+      "test_predictions.csv": "ed10f7455813ea3728404f60d9e464b9b01272a6382ef1e573a5b6894a181db7"
     },
     "CAC_NEWS": {
-      "metrics.json": "9dc59eb629870ba63c083132ac00e09ed047e50a62a2b28887ed82a8de34e692",
-      "test_predictions.csv": "fc5f9f3c72ab5f29c5011096fb19d981a87be1029e00724a31df09c6309bc3da"
+      "metrics.json": "a4ffe6d2a05712d6c10269e7beeb815229818b199bc8b20b329bed8242c3cd2d",
+      "test_predictions.csv": "cb61c1d09fd344c68d7c4afc1ffe416f6668f381816555a68dc3676960aaf095"
     },
     "CBU0_IND": {
-      "metrics.json": "9a3be9f15f765cb2312607d243beea26da976e584b8e7e62b24c57e60f4157a6",
-      "test_predictions.csv": "a56d1033e03c1a9ea1f3587d866e06eb25cdcd2c43b956955a53b4de16d118f9"
+      "metrics.json": "f7bc8ba86a2f711efff3243341dc38f01019e6a4eb0f8d370b09e6a1f8002790",
+      "test_predictions.csv": "e5beb44ad8bc8f5f0d86e6e9bf0102304d0678ec147c55358cb9e31098adb228"
     },
     "CBU0_NEWS": {
-      "metrics.json": "b43aec544202739ecb0531cf13d40307aa3b25ace46fac8cfbda274d7a9c9c27",
-      "test_predictions.csv": "658867e888fd5ba2befa33f2efdab599ad42a8fc626cdcbbd2a4f248e53b84c0"
+      "metrics.json": "3af3f2f9cf62c083cdb777dd16b2b63bd1927cfbe1b94df6fa9f2e7fcf10f1d3",
+      "test_predictions.csv": "f1700f272ad5d5a284f5cc8e2c25189c21a0f8dadb70db1c0c3bdd1706c6632e"
     },
     "DAX_IND": {
-      "metrics.json": "9233fc9a881b77461e9a7b38ac70e69e595d802cd7b4ea2d37c9b5645cb8258c",
-      "test_predictions.csv": "95d47642d410d8d920fbc4a9dc347f26194bf1946718b5511ca5a29b934b74ca"
+      "metrics.json": "0a51b71da289ea13bff3130e013733c6d49ed23f9b26a16d64fac46586a0e927",
+      "test_predictions.csv": "6564a0745fb7afff715e08655b39da3928d64ba673d0cd4826ff9d336501e0f9"
     },
     "DAX_NEWS": {
-      "metrics.json": "3bdaffc1ecf07c9e34675a49fc22d0092a4d30d74e0ceb77539f6d41658e1bb8",
-      "test_predictions.csv": "e6e860415f90077f7fbc7a2835721b6d15a26a0259fbe1e7c8d17d701af19cf9"
+      "metrics.json": "f5f5096ec5a64c139d22634a45353b951c7d75ad9d99f058bd8aa61428be8b9a",
+      "test_predictions.csv": "942684c1268dfc7313709ea260ac116c2b1fa1726c677bcb37d4e5c156db9c21"
     },
     "FTSE_IND": {
-      "metrics.json": "7655867c777022d760ee65382e071109f5c9412b322e64537280c372c85954c2",
-      "test_predictions.csv": "ad8cbb62e1e23bce474c2f8ef62be01a16da183db601a463bdc4abda1d6bdb9a"
+      "metrics.json": "050886015aad6ed277ff25c7b6327d2cedc36d9bfca9f8fd9bc2597fbb82cc33",
+      "test_predictions.csv": "6d37565df832c19e5e8f7e1d16c969c53ac003b130ee3dd7543c0183fe66899c"
     },
     "FTSE_NEWS": {
-      "metrics.json": "e0c588ab9b8306ca4bac77923e0ec02fd7e3000f865ced41a3f3f9639ac0f83c",
-      "test_predictions.csv": "3f23e0d20f0abb5cc56429a11638320508d74098a7ae532532ee2e1a1597d0a4"
+      "metrics.json": "0487e3eb35c62704cd8353463ca3801194faa5e1ba40f95dbeae3303b641c562",
+      "test_predictions.csv": "3dbfa812ab08753e66994b00428dec4f58710ded6cbe04ecabb8059de49d3870"
     },
     "SP500_IND": {
-      "metrics.json": "07135565b0b07d32e233032847603f1db0068553caf78b1bc30b909355c2c3c4",
-      "test_predictions.csv": "f2844de5c51867b9464e178d081683335253cef2e214510ad843cc6b5cfc351e"
+      "metrics.json": "2fb1ef009c652f85d5fa51a7c8b3dfab8f7e41b3227bc830a499c2ea48e3fbe9",
+      "test_predictions.csv": "3cdf7486d20c8f62105b9396407287fb5648c1a6b2d7cb787d4f2f1d28bc5375"
     },
     "SP500_NEWS": {
-      "metrics.json": "23030a49014632b5cad0d060590f1919ca5270b9d767b2acc7057176ce1f0eff",
-      "test_predictions.csv": "f9f7e2a208c76d823bfd3710cbbf6909f8af6d1a426b74ed454b67fb76dd09c2"
+      "metrics.json": "79801aa772a1d9563902fe4305702329bd6d06b9bd2fbf3304dd29a19e6857e0",
+      "test_predictions.csv": "7189ed755aca819ace97bdffa51e7ee446542464fe4ab40f7bddb6ca8aa444d8"
     },
     "STOXX_IND": {
-      "metrics.json": "106c76a207b884cea92ff7d44d6195829d0a4680ee4b42f4d6d03eed3e590800",
-      "test_predictions.csv": "a5ed7dc63d4b40b4942ea429fe2678a34e9e7d10584faf621d57e8a74323ad33"
+      "metrics.json": "450260a4ab9483bf6dda5c3748c8d91e9784c2a991291839aef9c1fbc1e4a6f5",
+      "test_predictions.csv": "f3551c263fbe6d0509c846899863f9f9f1f57b1217bc9b612e9c934ef6637278"
     },
     "STOXX_NEWS": {
-      "metrics.json": "7074319f5fa90c7006197c694dc3c66e21a5cc8b9a6ac6b12d21c1559af83b4c",
-      "test_predictions.csv": "300fe961ffb2461d14094b35e758b7f77404eb108b9216e2acc8b5caf97d2e98"
+      "metrics.json": "cf3d79ff666fbff4390f3490c6542c2cbb06bb4847eced6759a4f9c338682a71",
+      "test_predictions.csv": "fa0f1eb562fa4cf46bf4a366870d225ea4eff987775b3ded21b80bcf9d73b380"
+    },
+    "GJR_GARCH": {
+      "gjr_predictions.csv": "65cd4797693d473d4017454b53466574023e4dd73d1dee0f45fc7722e69a8f83"
     }
   },
   "input_paths": {
-    "prices": "Data/Benchmark/OHLCV/{market}_df_OHLCV.csv",
-    "indicators": "Data/Benchmark/Indicators_crash/{market}_df_Indicators.csv",
-    "legacy_labels": "Data/Benchmark/Indicators_crash/{market}_df_Crash_Label.csv",
-    "primary_prices": "Data/{ticker}/Market/df_OHLCV.csv",
-    "news_embeddings": "Data/Benchmark/{market}_daily_news_embeddings.csv"
+    "prices": "Benchmark/Data/OHLCV/{market}_df_OHLCV.csv",
+    "indicators": "Benchmark/Data/Indicators_crash/{market}_df_Indicators.csv",
+    "labels": "Benchmark/Data/Indicators_crash/{market}_df_Crash_Label.csv",
+    "primary_prices": "Benchmark/Data/OHLCV/{market}_df_OHLCV.csv",
+    "news_embeddings": "Benchmark/Data/{market}_daily_news_embeddings.csv"
   },
   "main_results": "Benchmark/Official/main_results.csv",
   "models_included": false,
-  "raw_data_included": false
+  "raw_data_included": true
 }

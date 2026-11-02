@@ -508,7 +508,7 @@ async function openMonth(cell) {
   window.scrollTo({top: 0});
 }
 
-const comparisonNames = {decision_supervisor: 'Decision Supervisor', lstm_ind: 'LSTM-IND', lstm_news: 'LSTM-(IND+NEWS)'};
+const comparisonNames = {decision_supervisor: 'Decision Supervisor', lstm_ind: 'LSTM-IND', lstm_news: 'LSTM-(IND+NEWS)', logistic_ind: 'Logistic-IND', logistic_news: 'Logistic-(IND+NEWS)', gjr_garch: 'GJR-GARCH'};
 const outcomeNames = {tp: 'TP · alert + anomaly', fn: 'FN · no alert + anomaly', fp: 'FP · alert + no anomaly', tn: 'TN · no alert + no anomaly'};
 
 function decisionOutcome(label, prediction) {
@@ -536,7 +536,7 @@ async function renderComparison(reset = false) {
     if (!benchmark) throw new Error('No saved benchmark data are available for this market.');
     state.comparisonModels = [{id: 'decision_supervisor', standardization: benchmark.standardization.decision_supervisor}, ...benchmark.models];
     const lookup = new Map(benchmark.models.map(model => [model.id, new Map(model.records.map(row => [row.target_date, row]))]));
-    state.comparisonAll = data.records.map(record => ({...record, models: Object.fromEntries(state.comparisonModels.map(model => [model.id, model.id === 'decision_supervisor' ? {score: record.scores.decision_supervisor, threshold: record.thresholds.decision_supervisor, prediction: record.predictions.decision_supervisor, label: record.label} : lookup.get(model.id).get(record.target_date)]))}));
+    state.comparisonAll = data.records.filter(record => benchmark.models.every(model => lookup.get(model.id).has(record.target_date))).map(record => ({...record, models: Object.fromEntries(state.comparisonModels.map(model => [model.id, model.id === 'decision_supervisor' ? {score: record.scores.decision_supervisor, threshold: record.thresholds.decision_supervisor, prediction: record.predictions.decision_supervisor, label: record.label} : lookup.get(model.id).get(record.target_date)]))}));
     const first = data.records[0]?.target_date || '', last = data.records.at(-1)?.target_date || '';
     if (state.comparisonMarket !== market || reset) {
       const initial = state.comparisonMarket === null && market === '^GSPC' && !reset;
@@ -559,7 +559,7 @@ async function renderComparison(reset = false) {
     $('comparison-title').textContent = `${marketLabel(marketInfo(market))} · ${$('comparison-scale').value === 'raw' ? 'Raw scores' : 'Paper z-scores'}`;
     const rows = state.comparisonRows, anomalies = rows.filter(row => number(row.label) === 1).length;
     $('comparison-scope').textContent = rows.length ? `${dateText(rows[0].target_date)} – ${dateText(rows.at(-1).target_date)} · ${rows.length} target dates · ${anomalies} observed anomalies` : 'No saved target dates in this range';
-    $('comparison-scale-note').textContent = $('comparison-scale').value === 'raw' ? 'Supervisor: uncalibrated risk score. LSTMs: model probabilities. Supervisor thresholds update from earlier resolved cases; LSTM thresholds stay fixed. Date filters refit neither.' : 'z = (score − full-period mean) / full-period standard deviation (ddof = 0). Score and threshold use the same saved constants. Supervisor thresholds are sequential; LSTM thresholds are fixed. Date filters refit neither.';
+    $('comparison-scale-note').textContent = $('comparison-scale').value === 'raw' ? 'Supervisor: uncalibrated risk score. Benchmarks: model probabilities. All thresholds update from earlier resolved cases using the same sequential F1 rule. Date filters preserve saved thresholds.' : 'z = (score − full-period mean) / full-period standard deviation (ddof = 0). Score and threshold use the same saved constants. All thresholds use the same sequential F1 rule. Date filters preserve saved thresholds.';
     const comparisonLabel = marketInfo(market).comparison_name;
     if (comparisonLabel) { $('benchmark-market').value = comparisonLabel; renderBenchmark(); }
     renderComparisonOutcomes();
@@ -605,14 +605,14 @@ function drawComparison() {
   const rows = state.comparisonRows;
   if (!rows.length) { $('comparison-chart').innerHTML = '<p class="empty">No saved dates in this range.</p>'; return; }
   const width = Math.max(290, $('comparison-chart').clientWidth), left = 46, right = 10, top = 8, panelHeight = width < 500 ? 142 : 120, gap = 13;
-  const lane = top + 3 * (panelHeight + gap) + 19, height = lane + 55, first = Date.parse(rows[0].target_date), last = Date.parse(rows.at(-1).target_date);
+  const lane = top + state.comparisonModels.length * (panelHeight + gap) + 19, height = lane + 55, first = Date.parse(rows[0].target_date), last = Date.parse(rows.at(-1).target_date);
   const x = date => rows.length === 1 ? (left + width-right)/2 : left + (Date.parse(date)-first)/Math.max(1,last-first)*(width-left-right);
   const [low, high] = comparisonDomain();
   const y = (value, panel) => top + panel * (panelHeight + gap) + (high-value)/(high-low)*panelHeight;
   state.comparisonBounds = {width, left, right, first, last, top, bottom: lane+18, single: rows.length === 1};
   const tickStep = Math.max(1, Math.ceil((high-low)/4));
   const ticks = $('comparison-scale').value === 'raw' ? [0, .5, 1] : Array.from({length: Math.floor(high/tickStep)-Math.ceil(low/tickStep)+1}, (_, i) => (Math.ceil(low/tickStep)+i)*tickStep);
-  let svg = `<svg id="comparison-svg" class="chart-svg interactive-chart" tabindex="0" viewBox="0 0 ${width} ${height}" role="img" aria-label="Three aligned model score panels and a shared observed outcome lane. Arrow keys select dates. Enter opens a day summary."><title>Saved model scores, thresholds, and observed outcomes</title>`;
+  let svg = `<svg id="comparison-svg" class="chart-svg interactive-chart" tabindex="0" viewBox="0 0 ${width} ${height}" role="img" aria-label="Aligned model score panels and a shared observed outcome lane. Arrow keys select dates. Enter opens a day summary."><title>Saved model scores, thresholds, and observed outcomes</title>`;
   state.comparisonModels.forEach((model, panel) => {
     const panelTop = top + panel * (panelHeight+gap);
     rows.forEach((row,index) => { if (number(row.label)!==1) return; const before=index ? (x(rows[index-1].target_date)+x(row.target_date))/2 : left, after=index<rows.length-1 ? (x(rows[index+1].target_date)+x(row.target_date))/2 : width-right; svg += `<rect x="${before}" y="${panelTop}" width="${Math.max(.8,after-before)}" height="${panelHeight}" fill="#B43C4B" opacity=".055"></rect>`; });

@@ -98,7 +98,8 @@
   ],
   "benchmark_notebooks": [
     "notebooks/benchmarks/LSTM IND.ipynb",
-    "notebooks/benchmarks/LSTM NEWS.ipynb"
+    "notebooks/benchmarks/LSTM NEWS.ipynb",
+    "notebooks/benchmarks/GJR GARCH.ipynb"
   ],
   "benchmark_dependencies": "notebooks/benchmarks/requirements.txt",
   "benchmark_official_outputs": "Benchmark/Official",

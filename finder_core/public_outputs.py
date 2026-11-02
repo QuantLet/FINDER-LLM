@@ -34,6 +34,27 @@ def write_outputs(destination, result, evidence, day, charts):
     pd.concat([frame, pd.DataFrame([score])], ignore_index=True).to_csv(path, index=False)
 
 
+def sequential_thresholds(probabilities, labels, target_dates, information_cutoffs):
+    s = np.asarray(probabilities, dtype=float)
+    y = np.asarray(labels, dtype=int)
+    target_dates = np.asarray(target_dates)
+    information_cutoffs = np.asarray(information_cutoffs)
+    threshold = 0.5
+    thresholds = []
+    for i in range(len(s)):
+        eligible = (np.arange(len(s)) < i) & (target_dates <= information_cutoffs[i])
+        if y[eligible].sum() > 0:
+            candidates = np.unique(np.r_[0., 1., 0.5, threshold, s[eligible]])
+            alerts = s[eligible, None] >= candidates[None, :]
+            true_positives = (alerts & (y[eligible, None] == 1)).sum(axis=0)
+            denominator = alerts.sum(axis=0) + y[eligible].sum()
+            values = np.divide(2 * true_positives, denominator, out=np.zeros(len(candidates)), where=denominator != 0)
+            best = candidates[np.isclose(values, max(values), rtol=0, atol=1e-12)]
+            threshold = min(best, key=lambda t: (abs(t - threshold), -t))
+        thresholds.append(threshold)
+    return np.asarray(thresholds)
+
+
 def evaluate(destination, labels_path):
     destination = Path(destination)
     scores = pd.read_csv(destination / 'scores.csv').sort_values('target_date').reset_index(drop=True)
@@ -45,19 +66,7 @@ def evaluate(destination, labels_path):
     y = scores.crash_label.astype(int).to_numpy()
     for agent in [*SCORES, 'decision_supervisor']:
         s = scores[agent].to_numpy()
-        threshold = 0.5
-        thresholds = []
-        for i in range(len(scores)):
-            eligible = (np.arange(len(scores)) < i) & (scores.target_date.to_numpy() <= scores.information_cutoff.iloc[i])
-            if y[eligible].sum() > 0:
-                candidates = np.unique(np.r_[0., 1., 0.5, threshold, s[eligible]])
-                alerts = s[eligible, None] >= candidates[None, :]
-                true_positives = (alerts & (y[eligible, None] == 1)).sum(axis=0)
-                denominator = alerts.sum(axis=0) + y[eligible].sum()
-                values = np.divide(2 * true_positives, denominator, out=np.zeros(len(candidates)), where=denominator != 0)
-                best = candidates[np.isclose(values, max(values), rtol=0, atol=1e-12)]
-                threshold = min(best, key=lambda t: (abs(t - threshold), -t))
-            thresholds.append(threshold)
+        thresholds = sequential_thresholds(s, y, scores.target_date, scores.information_cutoff)
         predicted = s >= np.array(thresholds)
         scores[agent + '_threshold'] = thresholds
         scores[agent + '_alert'] = predicted.astype(int)

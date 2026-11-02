@@ -5,3 +5,4 @@ pandas==2.2.3
 scikit-learn==1.8.0
 joblib==1.6.0
 ipykernel==7.1.0
+arch==7.2.0
