@@ -97,8 +97,9 @@
     "close_utc"
   ],
   "benchmark_notebooks": [
-    "notebooks/benchmarks/LSTM IND.ipynb",
-    "notebooks/benchmarks/LSTM NEWS.ipynb"
+    "Benchmark/05 MultiBenchmarks.ipynb",
+    "Benchmark/05 MultiBenchmarks_News.ipynb",
+    "Benchmark/05 GARCH.ipynb"
   ],
   "benchmark_dependencies": "notebooks/benchmarks/requirements.txt",
   "benchmark_official_outputs": "Benchmark/Official",
@@ -128,5 +129,20 @@
       "Figure 03 Risk Charts.png",
       "Figure 04 Volume Charts.png"
     ]
+  },
+  "benchmark_integrated_outputs": "Benchmark/Integrated",
+  "benchmark_retained_outputs": "Benchmark/Results/Benchmark_Outputs",
+  "benchmark_integration": {
+    "source_commit": "7ffd191d73041fd07e422879b8f62e8c328cf4d5",
+    "bootstrap": "moving_block_percentile",
+    "replicates": 10000,
+    "block_length": 21,
+    "seed": 42,
+    "confidence_level": 0.95,
+    "date_join": "FINDER.information_cutoff = benchmark.date",
+    "label_source": "FINDER/Official/daily_scores_all_markets.csv",
+    "original_label_differences": 22,
+    "matched_n": 2271,
+    "events": 123
   }
 }

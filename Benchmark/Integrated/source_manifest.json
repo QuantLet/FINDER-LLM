@@ -1,0 +1,74 @@
+[
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/Without_news_v2/SP500_finderBenchmark_test_predictions.csv",
+    "sha256": "6cab867920162e6d0c680a1091b9f931cbcea3f2643878d5d366e168185b7879"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/With_news_v2/SP500_finderBenchmark_test_predictions.csv",
+    "sha256": "9bf4d13107d5ac5d689beb4af43d40fc9cd898106aab94bdb14153dc962ef9f9"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/GJR_GARCH/SP500_GJR_GARCH_test_predictions.csv",
+    "sha256": "2546fe684ef43d953b95a8975c142bd08dfaa85722e7f90972279d3c5c704512"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/Without_news_v2/FTSE_finderBenchmark_test_predictions.csv",
+    "sha256": "6964fcc52b0a224effafbc91cfbfbef339fbbc43b3b41e609a61c47a88b8fc64"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/With_news_v2/FTSE_finderBenchmark_test_predictions.csv",
+    "sha256": "34c40164a3fe988ff51f83c1b6852f4e7f5341b691c10d278ad8e4606305a81f"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/GJR_GARCH/FTSE_GJR_GARCH_test_predictions.csv",
+    "sha256": "5c1771c3c82e8c56625a300d6c81b3d55c6775c27075561d728660c2fc984462"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/Without_news_v2/DAX_finderBenchmark_test_predictions.csv",
+    "sha256": "539d744f3dda5b6ce70ec92ef752ec2cb87a755d9a77c9e249608d62f00b5541"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/With_news_v2/DAX_finderBenchmark_test_predictions.csv",
+    "sha256": "23c02efa02d84155b80eaf879103302866b722564df3eb62a93a032a8ca78701"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/GJR_GARCH/DAX_GJR_GARCH_test_predictions.csv",
+    "sha256": "6f599fc33e042c02dbe576d39fbed0411356744a76d35772293852015bd554fa"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/Without_news_v2/CAC_finderBenchmark_test_predictions.csv",
+    "sha256": "55d1a1d82832c489d8f348e51e8b3d7525ec27cea8f4c9ecd1e100ae73c693eb"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/With_news_v2/CAC_finderBenchmark_test_predictions.csv",
+    "sha256": "15701e793e02a016f495c000e8b14d5580916911acbd530c0a0285c07f71f80b"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/GJR_GARCH/CAC_GJR_GARCH_test_predictions.csv",
+    "sha256": "3411b2a4a4d7bbf42f49645b86fcfc93e122a2d0c928945adadb9a55cb949b5a"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/Without_news_v2/STOXX_finderBenchmark_test_predictions.csv",
+    "sha256": "2259c94b520f570f8cb50b123a2121d2b3817d7f473c055df93165f130deca60"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/With_news_v2/STOXX_finderBenchmark_test_predictions.csv",
+    "sha256": "f049b2c512df25a68cabba18378a464bc2891b2d3b2772beee5bd6f53a015fca"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/GJR_GARCH/STOXX_GJR_GARCH_test_predictions.csv",
+    "sha256": "92b00e423294be78087efe660fd892d249b34fd83df3b218addc93c52a337ff3"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/Without_news_v2/CBU0_finderBenchmark_test_predictions.csv",
+    "sha256": "4c65811f2f2cd9cac685294699d375c9c3239ec57620eff7a1214f4e7f3c3e13"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/With_news_v2/CBU0_finderBenchmark_test_predictions.csv",
+    "sha256": "83b4d7b8f604e59b32dc04ae5707f7b4d91d51fa380da98c510906707a1061d8"
+  },
+  {
+    "path": "Benchmark/Results/Benchmark_Outputs/GJR_GARCH/CBU0_GJR_GARCH_test_predictions.csv",
+    "sha256": "c0d032ce87523e22ba0056b587d053587607bc34f22c33dd5bb872bbc947ae21"
+  }
+]

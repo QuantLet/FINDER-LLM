@@ -16,3 +16,7 @@ Input: Use Python 3.11 or newer and install requirements.txt. Edit config/settin
 Output: New runs are saved under Runs/<market>/<run name>/ as scores.csv and daily reports covering six roles. Evaluation produces evaluation.csv and metrics.csv. Saved paper results are in FINDER/Official and Benchmark/Official; saved figures are in Figures/Manuscript. New runs do not overwrite these outputs. Use 02 Review Results.ipynb for ranking intervals, 03 A4 Sensitivity.ipynb for event-month checks, and notebooks/figures/ for the manuscript figures.
 
 ```
+
+## Integrated benchmarks (2026-11-02)
+
+The current LSTM, L1-logistic and GJR-GARCH saved-score comparison is reproduced by `02 Review Results.ipynb`. See [method, coverage and qualifications](Benchmark/Integrated/README.md) and [metrics](Benchmark/Integrated/metrics_ci.csv). Original benchmark exports remain preserved.

@@ -1,0 +1,13 @@
+# Integrated benchmark evaluation
+
+Run `02 Review Results.ipynb` from the repository root. This offline entry point reads the retained LSTM, L1-logistic and GJR-GARCH probabilities; it makes no training or model API calls. The original files in `Benchmark/Results/Benchmark_Outputs` remain unchanged. Historical `Benchmark/Official` exports describe the earlier specification.
+
+The 2026-11-02 integration maps benchmark `date` to FINDER `information_cutoff`, then uses FINDER target dates and labels. The common sample has 2,271 observations and all 123 FINDER events; eight non-event dates are outside the common coverage. There are 22 distinct market/date label disagreements, repeated across the three source variants. `source_label_differences.csv` records them without dropping disagreements or modifying source files. Model fitting used the original source labels.
+
+Every series uses `finder_core.public_outputs.sequential_thresholds`: initial threshold 0.5; only outcomes resolved by the information cutoff; historical F1 maximization; ties choose the threshold nearest the previous value, then the larger value. All policies restart on the common evaluation sample. Source predictions and integrated predictions can consequently differ.
+
+ROC AUC and AP use non-circular moving blocks of 21 retained market observations, 10,000 valid draws, seed 42 and 95% percentile intervals. Single-class draws are rejected with a 20B attempt cap. Each market's models share the same draws for paired differences. This matches the combined-bootstrap notebook's method and parameters. No cross-market aggregate confidence interval is inferred from these separate market resamples. Classification metrics use saved chronological decisions, with no classification confidence interval in the integrated report.
+
+The saved news PCA uses the full embedding period. LSTM callbacks monitor validation AUC without supplied validation data. These fits were preserved and were not retrained. The GJR source forecasts the return on its CSV date using prior returns, while the label on that date describes the next session. Its saved probability is retained as a lagged signal; it must not be described as a verified density forecast for the FINDER target. These limitations qualify the comparison.
+
+`metrics_ci.csv`, `paired_differences_ci.csv`, `daily_decisions.csv`, `coverage.csv` and `source_manifest.json` contain the reproducible integrated outputs. Original Benchmark notebook outputs are available in source commit 7ffd191; changed notebook cells are unexecuted to avoid presenting old outputs as results of the common-threshold code.
