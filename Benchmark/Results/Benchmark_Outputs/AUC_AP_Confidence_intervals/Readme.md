@@ -1,0 +1,3 @@
+This folder contains the results of sequence preserving bootstrapping to compute confidence intervals of AUC ROC and AP for GARCH and Models with and without news.
+Specifically use files in this folder for anything related to confidence intervals of AUC ROC and AP. Output files for model with news are of form 
+"{Asset}_Combined_ML_GARCH_BootstrapSummary_news.csv", and for GARCH and model without news is of form "{Asset}_Combined_ML_GARCH_BootstrapSummary.csv"
