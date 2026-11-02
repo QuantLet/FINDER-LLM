@@ -1,0 +1,1 @@
+Results for LSTM, Logistic L1 regression with features including news embeddings. Modeled using "05 MultiBenchmarks_News.ipynb". Main output files to consider "{Asset}_finderBenchmark_results.csv". For confidence interval of AUC ROC and AP we have different folder don't use it from here.
