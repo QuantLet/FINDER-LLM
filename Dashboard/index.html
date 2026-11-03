@@ -6,8 +6,8 @@
   <meta name="description" content="Explore the saved FINDER-LLM research results, market scores, role reports, and manuscript figures.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://raw.githubusercontent.com; connect-src 'self'; object-src 'none'; base-uri 'none'">
   <title>FINDER-LLM · Research explorer</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="style.css?v=20261103-paper-style">
+  <script src="app.js?v=20261103-paper-style" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to results</a>
@@ -26,11 +26,11 @@
     <div id="load-status" class="loading" role="status">Loading the saved research results…</div>
     <div id="error" class="notice error" role="alert" hidden></div>
     <section id="view-overview" class="view" aria-labelledby="overview-title" hidden>
-      <div class="page-heading"><div><h1 id="overview-title">Model comparison</h1><p class="subtitle">Decision Supervisor, LSTM-IND, and LSTM-(IND+NEWS) · Saved evaluation dates</p></div></div>
+      <div class="page-heading"><div><h1 id="overview-title">Model comparison</h1><p class="subtitle">Decision Supervisor, LSTM, Logistic, and GJR-GARCH · Full paper evaluation sample</p></div></div>
       <div class="filter-bar"><label>Market<select id="comparison-market"></select></label><label>Score scale<select id="comparison-scale"><option value="raw">Raw score</option><option value="standardized">Paper z-score</option></select></label><label>From target date<input id="comparison-start" type="date"></label><label>To target date<input id="comparison-end" type="date"></label><button type="button" class="text-button" id="comparison-reset">Full period</button><button type="button" class="text-button" id="comparison-april">1–14 Apr 2025 · S&amp;P 500</button></div>
       <div id="comparison-status" class="loading" role="status" hidden></div>
       <section class="panel comparison-panel"><div class="section-header"><div><h2 id="comparison-title">Aligned score histories</h2><p id="comparison-scope"></p></div></div>
-        <div class="legend comparison-legend"><span><i class="line score"></i>Supervisor</span><span><i class="line benchmark"></i>LSTM-IND</span><span><i class="line benchmark news"></i>LSTM-(IND+NEWS)</span><span><i class="line benchmark"></i>Logistic-IND</span><span><i class="line benchmark"></i>Logistic-(IND+NEWS)</span><span><i class="line benchmark"></i>GJR-GARCH</span><span><i class="line threshold"></i>Saved threshold</span></div>
+        <div class="legend comparison-legend"><span><i class="line score"></i>Supervisor</span><span><i class="line benchmark"></i>LSTM-IND</span><span><i class="line benchmark"></i>LSTM-(IND+NEWS)</span><span><i class="line benchmark"></i>Logistic-IND</span><span><i class="line benchmark"></i>Logistic-(IND+NEWS)</span><span><i class="line benchmark"></i>GJR-GARCH</span><span><i class="line threshold"></i>Saved threshold</span></div>
         <div class="legend outcome-legend"><span><i class="marker tp"></i>TP · alert + anomaly</span><span><i class="marker fn">×</i>FN · no alert + anomaly</span><span><i class="marker fp"></i>FP · alert + no anomaly</span><span><i class="marker tn"></i>TN · no alert + no anomaly</span></div>
         <div id="comparison-chart"></div><div class="chart-navigation"><label for="comparison-date">Target date</label><input id="comparison-date" type="range" min="0" max="0" value="0"><output id="comparison-date-label" for="comparison-date"></output><button type="button" class="secondary" id="comparison-summary">Day summary</button></div><div id="comparison-selected" class="table-wrap"></div><p id="comparison-scale-note" class="source-note"></p>
       </section>

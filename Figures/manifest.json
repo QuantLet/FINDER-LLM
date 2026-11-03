@@ -1,13 +1,16 @@
 [
   {
     "file": "Figures/Manuscript/Figure 01 Information Timeline.png",
-    "sha256": "89d31bb3912d5c311084cdc794129ff68d88e828c43187aa1cad90686b179091",
+    "sha256": "73654e796e8de9ea1b14f53c53447ca7201dac1d9dd74a73d3d1ec3e90eb0fce",
     "submission_file": "Figure 01 Information Timeline.png",
     "submission_bytes_verified": true,
     "requires_external_data": false,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Diagrams.ipynb"
+    "notebook": "notebooks/figures/Diagrams.ipynb",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "73654e796e8de9ea1b14f53c53447ca7201dac1d9dd74a73d3d1ec3e90eb0fce",
+    "display_name": "Figure 1 · Information timeline",
+    "category": "method",
+    "manuscript_label": "fig:codex_information_clock"
   },
   {
     "file": "Figures/Manuscript/Figure 02 Market Charts.png",
@@ -15,9 +18,12 @@
     "submission_file": "Figure 02 Market Charts.png",
     "submission_bytes_verified": true,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Technical Charts.ipynb"
+    "notebook": "notebooks/figures/Technical Charts.ipynb",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "61613e7d14c2aa59ac70ceca55957282e6218f1b90dcd155ae3c372ad81724dc",
+    "display_name": "Figure 2(a) · Price location and trading pressure",
+    "category": "inputs",
+    "manuscript_label": "fig:visual_inputs"
   },
   {
     "file": "Figures/Manuscript/Figure 03 Risk Charts.png",
@@ -25,9 +31,12 @@
     "submission_file": "Figure 03 Risk Charts.png",
     "submission_bytes_verified": true,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Technical Charts.ipynb"
+    "notebook": "notebooks/figures/Technical Charts.ipynb",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "e326da501c6a4ed4942998daf4bc666ef693dc49db52e1b3264ecfcccff3f2ef",
+    "display_name": "Figure 2(b) · Momentum and trend strength",
+    "category": "inputs",
+    "manuscript_label": "fig:visual_inputs"
   },
   {
     "file": "Figures/Manuscript/Figure 04 Volume Charts.png",
@@ -35,29 +44,38 @@
     "submission_file": "Figure 04 Volume Charts.png",
     "submission_bytes_verified": true,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Technical Charts.ipynb"
+    "notebook": "notebooks/figures/Technical Charts.ipynb",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "85308413e56c7e0f765ba0c575beaeca6ec9c5e8ab17f12ea4e505001b015a3c",
+    "display_name": "Figure 2(c) · Risk and loss profile",
+    "category": "inputs",
+    "manuscript_label": "fig:visual_inputs"
   },
   {
     "file": "Figures/Manuscript/Figure 05 Workflow.png",
-    "sha256": "67aeb998009b0b499ef2dbe546902771fa7b1e38d38dbf3dc1c26b009fc74bbe",
+    "sha256": "4811a45bdf33e79d85659f6db6217e6ea45a2afb6738c70bad3c923ef8dc8411",
     "submission_file": "Figure 05 Workflow.png",
     "submission_bytes_verified": true,
     "requires_external_data": false,
-    "regenerated_pixel_match": false,
-    "regenerated_pixel_difference_fraction": 0.0003735951275321354,
-    "notebook": "notebooks/figures/Diagrams.ipynb"
+    "notebook": "notebooks/figures/Diagrams.ipynb",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "4811a45bdf33e79d85659f6db6217e6ea45a2afb6738c70bad3c923ef8dc8411",
+    "display_name": "Figure 3 · Information flow",
+    "category": "method",
+    "manuscript_label": "fig:finder_llm_flow"
   },
   {
     "file": "Figures/Manuscript/Figure 06 Agent Roles.png",
-    "sha256": "5687c35ce3d0d9b08f7a1d4c08d40a6ba8d427f46c26dabf3b42cf80efe8e21b",
+    "sha256": "29819b4f04e6cbcd12da71d72a4b1ffe6428700ab65e23b3e5cf66b02dc492e6",
     "submission_file": "Figure 06 Agent Roles.png",
     "submission_bytes_verified": true,
     "requires_external_data": false,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Diagrams.ipynb"
+    "notebook": "notebooks/figures/Diagrams.ipynb",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "29819b4f04e6cbcd12da71d72a4b1ffe6428700ab65e23b3e5cf66b02dc492e6",
+    "display_name": "Figure 4 · Agent roles",
+    "category": "method",
+    "manuscript_label": "fig:agent_cards"
   },
   {
     "file": "Figures/Manuscript/Figure 07 News Selection.png",
@@ -66,126 +84,196 @@
     "submission_bytes_verified": false,
     "requires_external_data": false,
     "notebook": "notebooks/figures/News Selection.ipynb",
-    "public_redaction": "Article titles are shown as [...]. Timeline and selected article positions are unchanged."
+    "public_redaction": "Article titles are shown as [...]. Timeline and selected article positions are unchanged.",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "a9adc3a57fccaa84aa272ff6c9edd0d3f73dca4c4924dc49027ae1e12fd006d8",
+    "display_name": "Figure 5 · News selection",
+    "category": "inputs",
+    "manuscript_label": "fig:news_integration"
   },
   {
     "file": "Figures/Manuscript/Figure 08 A ROC AUC.png",
-    "sha256": "4dfba5e3e8edef5a192125525dbd988b1cfceab6f6be9311e8fec7529ce5b5b1",
+    "sha256": "ed5447d6f9ed79e3d9236c9b49f389f27049aee555af8012fe89612c693d3759",
     "submission_file": "Figure 08 A ROC AUC.png",
-    "submission_bytes_verified": false,
+    "submission_bytes_verified": true,
     "requires_external_data": false,
     "notebook": "notebooks/figures/Comparison.ipynb",
-    "evaluation_sample_n": 2279
+    "evaluation_sample_n": 2279,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "ed5447d6f9ed79e3d9236c9b49f389f27049aee555af8012fe89612c693d3759",
+    "display_name": "Figure 6(a) · ROC AUC",
+    "category": "results",
+    "manuscript_label": "fig:market_comparison"
   },
   {
     "file": "Figures/Manuscript/Figure 08 B Average Precision.png",
-    "sha256": "dbbef398eb0b15ddd585148504e472d2500191b67011846c4afe26f7ff8a3eac",
+    "sha256": "4dc1f15023c1c85f458d9817b211448a35ea8e4f6890be8f37b3fbae498eadb6",
     "submission_file": "Figure 08 B Average Precision.png",
-    "submission_bytes_verified": false,
-    "requires_external_data": false,
-    "notebook": "notebooks/figures/Comparison.ipynb",
-    "evaluation_sample_n": 2279
-  },
-  {
-    "file": "Figures/Manuscript/Figure 09 Risk Scores.png",
-    "sha256": "48a8cd5a76bb23865cc96ad3566b100892545cd5a28f0a2da3041c6ffd350ffe",
-    "submission_file": "Figure 09 Risk Scores.png",
     "submission_bytes_verified": true,
     "requires_external_data": false,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "4dc1f15023c1c85f458d9817b211448a35ea8e4f6890be8f37b3fbae498eadb6",
+    "display_name": "Figure 6(b) · Average precision",
+    "category": "results",
+    "manuscript_label": "fig:market_comparison"
   },
   {
     "file": "Figures/Manuscript/Figure 10 A SP500.png",
-    "sha256": "d4e71cbe892423333ea4714b945608c8501211c90adc9361e73b7adb8d01b6f7",
+    "sha256": "ea5cf52f6f978ac98c94894305c9783b2a8c51e9f677e07ef30e124d31170a59",
     "submission_file": "Figure 10 A SP500.png",
-    "submission_bytes_verified": false,
+    "submission_bytes_verified": true,
     "requires_external_data": true,
     "notebook": "notebooks/figures/Comparison.ipynb",
-    "evaluation_sample_n": 2279
+    "evaluation_sample_n": 2279,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "ea5cf52f6f978ac98c94894305c9783b2a8c51e9f677e07ef30e124d31170a59",
+    "display_name": "Figure 7 · Daily assessments · S&P 500",
+    "category": "results",
+    "manuscript_label": "fig:daily_comparison"
   },
   {
     "file": "Figures/Manuscript/Figure 10 B FTSE100.png",
-    "sha256": "2c7c4259e99b614af874d3d19fd9b57d388183790a2f1aaab189a6ad3f25805b",
+    "sha256": "c9a1506b4440077644f4caf96ce1299aefb39818dc9be1608684171304e4c8e5",
     "submission_file": "Figure 10 B FTSE100.png",
-    "submission_bytes_verified": false,
+    "submission_bytes_verified": true,
     "requires_external_data": true,
     "notebook": "notebooks/figures/Comparison.ipynb",
-    "evaluation_sample_n": 2279
+    "evaluation_sample_n": 2279,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "c9a1506b4440077644f4caf96ce1299aefb39818dc9be1608684171304e4c8e5",
+    "display_name": "Figure 7 · Daily assessments · FTSE 100",
+    "category": "results",
+    "manuscript_label": "fig:daily_comparison"
   },
   {
     "file": "Figures/Manuscript/Figure 10 C DAX.png",
-    "sha256": "20abd0cfd492b781da5c8b5e2ce45e36bab260b0aae89e155a69d484fe61faec",
+    "sha256": "3549904c481fc32e2c1e18fc0f8668aacb690554b05e78696f5dbf6695ccc651",
     "submission_file": "Figure 10 C DAX.png",
-    "submission_bytes_verified": false,
+    "submission_bytes_verified": true,
     "requires_external_data": true,
     "notebook": "notebooks/figures/Comparison.ipynb",
-    "evaluation_sample_n": 2279
+    "evaluation_sample_n": 2279,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "3549904c481fc32e2c1e18fc0f8668aacb690554b05e78696f5dbf6695ccc651",
+    "display_name": "Figure 7 · Daily assessments · DAX",
+    "category": "results",
+    "manuscript_label": "fig:daily_comparison"
   },
   {
     "file": "Figures/Manuscript/Figure 10 D CACT.png",
-    "sha256": "e931b8a152de25ffd8fc07fa0b70f0f7a04df1ee22dc13ba87123546ce867073",
+    "sha256": "8b2d55c645a5af2004399213ba7a6b65c3265fa766ca64b58b5912105792547b",
     "submission_file": "Figure 10 D CACT.png",
-    "submission_bytes_verified": false,
+    "submission_bytes_verified": true,
     "requires_external_data": true,
     "notebook": "notebooks/figures/Comparison.ipynb",
-    "evaluation_sample_n": 2279
+    "evaluation_sample_n": 2279,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "8b2d55c645a5af2004399213ba7a6b65c3265fa766ca64b58b5912105792547b",
+    "display_name": "Figure 7 · Daily assessments · CACT",
+    "category": "results",
+    "manuscript_label": "fig:daily_comparison"
   },
   {
     "file": "Figures/Manuscript/Figure 10 E STOXX.png",
-    "sha256": "4c3cdbef1268eaf247c407b0ebc6cb3079c6927baea5218269046480b410826e",
+    "sha256": "f3bbbf12eda88cc9af8992b42234c08d105635f748e1c08d57da656b50baec81",
     "submission_file": "Figure 10 E STOXX.png",
-    "submission_bytes_verified": false,
+    "submission_bytes_verified": true,
     "requires_external_data": true,
     "notebook": "notebooks/figures/Comparison.ipynb",
-    "evaluation_sample_n": 2279
+    "evaluation_sample_n": 2279,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "f3bbbf12eda88cc9af8992b42234c08d105635f748e1c08d57da656b50baec81",
+    "display_name": "Figure 7 · Daily assessments · STOXX Europe 600",
+    "category": "results",
+    "manuscript_label": "fig:daily_comparison"
   },
   {
     "file": "Figures/Manuscript/Figure 10 F CBU0.png",
-    "sha256": "d85b85a9fc0db0ab2388f3b0fc45efea436bf1ac71b556085e12ec28ed8720a5",
+    "sha256": "bf776a123a8631db287a8e8cffb59de1fa4ebb4cc0b55f411f0769555aaff7b2",
     "submission_file": "Figure 10 F CBU0.png",
-    "submission_bytes_verified": false,
+    "submission_bytes_verified": true,
     "requires_external_data": true,
     "notebook": "notebooks/figures/Comparison.ipynb",
-    "evaluation_sample_n": 2279
+    "evaluation_sample_n": 2279,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "bf776a123a8631db287a8e8cffb59de1fa4ebb4cc0b55f411f0769555aaff7b2",
+    "display_name": "Figure 7 · Daily assessments · CBU0.L",
+    "category": "results",
+    "manuscript_label": "fig:daily_comparison"
   },
   {
     "file": "Figures/Manuscript/Figure 11 April Case Study.png",
-    "sha256": "c35bf0db6e649f54237d803abd7d1d3b3ac5985f1311317e5fbfc8b705a96c12",
+    "sha256": "cd8e105d89725fa2c64d929afcc6851d3c396db8822451bd6faf8177d24c205f",
     "submission_file": "Figure 11 April Case Study.png",
     "submission_bytes_verified": true,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
-  },
-  {
-    "file": "Figures/Manuscript/Figure A1 Anomaly Events.png",
-    "sha256": "a0fd73d37aa2efbf1fc05648154fac48f3216ba3a837c4a5c2036b71c64a3531",
-    "submission_file": "Figure A1 Anomaly Events.png",
-    "submission_bytes_verified": true,
-    "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Anomaly Events.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "cd8e105d89725fa2c64d929afcc6851d3c396db8822451bd6faf8177d24c205f",
+    "display_name": "Figure 8 · S&P 500 · 1–14 April 2025",
+    "category": "results",
+    "manuscript_label": "fig:case_study"
   },
   {
     "file": "Figures/Manuscript/Paired ROC AUC.png",
-    "sha256": "9977dad1f9124314225583905e7f50e962b68d21e28cea4a6226cf884d62106e",
-    "submission_bytes_verified": false,
-    "evaluation_sample_n": 2279
-  },
-  {
-    "file": "Figures/Manuscript/Relative Economic Value.png",
-    "sha256": "46876dd9d0ebee403eb77921b4be27b99637eebebb2950d9a2a8f78fb15054c5",
-    "submission_bytes_verified": false,
-    "evaluation_sample_n": 2279
+    "sha256": "18e886a1a17721cff22b8ea14747db63d94bf6c4fb6da60d9509278791af0db0",
+    "submission_bytes_verified": true,
+    "evaluation_sample_n": 2279,
+    "submission_file": "Paired ROC AUC.png",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "18e886a1a17721cff22b8ea14747db63d94bf6c4fb6da60d9509278791af0db0",
+    "display_name": "Figure 9(a) · Paired ROC-AUC differences",
+    "category": "results",
+    "manuscript_label": "fig:paired_roc_auc"
   },
   {
     "file": "Figures/Manuscript/Paired AP.png",
-    "sha256": "74216f221f64617642f22be2bce390f0fd08ce55c84f9d2eb338aba739ea6ea1",
-    "submission_bytes_verified": false,
-    "evaluation_sample_n": 2279
+    "sha256": "e22d14f295b02a522071c8abbb37cbcf6bb84a3f83217b179713517ab7752f97",
+    "submission_bytes_verified": true,
+    "evaluation_sample_n": 2279,
+    "submission_file": "Paired AP.png",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "e22d14f295b02a522071c8abbb37cbcf6bb84a3f83217b179713517ab7752f97",
+    "display_name": "Figure 9(b) · Paired AP differences",
+    "category": "results",
+    "manuscript_label": "fig:paired_ap"
+  },
+  {
+    "file": "Figures/Manuscript/Cost Loss.png",
+    "submission_file": "Cost Loss.png",
+    "sha256": "4b2be3a4954ad69983f5a5b45020c396a1d3b697c10ef362d496169b5b9d6fb4",
+    "submission_bytes_verified": true,
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "4b2be3a4954ad69983f5a5b45020c396a1d3b697c10ef362d496169b5b9d6fb4",
+    "display_name": "Figure 10 · Cost–loss comparison",
+    "category": "results",
+    "manuscript_label": "fig:cost_loss"
+  },
+  {
+    "file": "Figures/Manuscript/Relative Economic Value.png",
+    "sha256": "fb412319dfbc8992e5fa34ae8a3061e0d695f22974113d4d707cba841b075b5a",
+    "submission_bytes_verified": true,
+    "evaluation_sample_n": 2279,
+    "submission_file": "Relative Economic Value.png",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "fb412319dfbc8992e5fa34ae8a3061e0d695f22974113d4d707cba841b075b5a",
+    "display_name": "Figure 11 · Relative economic value",
+    "category": "results",
+    "manuscript_label": "fig:relative_value"
+  },
+  {
+    "file": "Figures/Manuscript/Figure A1 Anomaly Events.png",
+    "sha256": "aeb55ede5fa97943d4ba427ee8fedbe89ac9a4efb7c2bb3b6fa460dea8a2d60f",
+    "submission_file": "Figure A1 Anomaly Events.png",
+    "submission_bytes_verified": true,
+    "requires_external_data": true,
+    "notebook": "notebooks/figures/Anomaly Events.ipynb",
+    "manuscript_source": "20261103 FINDER-LLM JRFM.tex",
+    "manuscript_sha256": "aeb55ede5fa97943d4ba427ee8fedbe89ac9a4efb7c2bb3b6fa460dea8a2d60f",
+    "display_name": "Figure A1 · S&P 500 anomaly events",
+    "category": "results",
+    "manuscript_label": "fig:sp500_event_overview"
   }
 ]

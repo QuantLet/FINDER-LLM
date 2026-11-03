@@ -28,7 +28,7 @@ function localPath(path) {
 }
 
 async function readJSON(path) {
-  const response = await fetch(localPath(path));
+  const response = await fetch(localPath(path), {cache: 'no-store'});
   if (!response.ok) throw new Error('A saved research file could not be loaded. Serve the repository root and open Dashboard/.');
   return response.json();
 }
@@ -45,6 +45,17 @@ async function loadMarket(id) {
 
 function table(headers, rows, className = '') {
   return `<table class="${className}"><thead><tr>${headers.map(header => `<th scope="col">${escapeText(header)}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(value => `<td>${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+function performanceClass(value, values) {
+  if (number(value) === null) return '';
+  const ranked = [...new Set(values.filter(item => number(item) !== null).map(item => fixed(item)))].sort((a, b) => Number(b) - Number(a));
+  return ['best-performance', 'second-performance'][ranked.indexOf(fixed(value))] || '';
+}
+
+function paperComparison(market) {
+  const name = ({CACT: 'CACT', 'CBU0.L': 'CBU0.L'})[market.id] || marketLabel(market);
+  return state.index.comparison.filter(row => row.market === name);
 }
 
 function stat(label, value, detail, small = false) {
@@ -84,9 +95,9 @@ function renderOverview() {
 
 function renderMetricMatrix() {
   const metric = $('overview-metric').value;
-  $('metric-definition').textContent = metricNotes[metric] + ' Darker cells show larger values.';
+  $('metric-definition').textContent = metricNotes[metric] + ' Emphasis follows the paper’s ten-model comparison within each market.';
   const roles = scoredRoles();
-  $('role-matrix').innerHTML = `<table class="matrix-table"><thead><tr><th scope="col">Market</th>${roles.map(role => `<th scope="col" title="${escapeText(role.name)}">${escapeText(shortRole[role.id] || role.name)}</th>`).join('')}</tr></thead><tbody>${state.index.markets.map(market => `<tr><td><button type="button" class="market-link" data-market="${escapeText(market.id)}" title="${escapeText(market.name)}">${escapeText(marketLabel(market))}</button></td>${roles.map(role => { const value = number(metricFor(market.id, role.id)?.[metric]); const shade = value === null ? 'missing' : `heat-${Math.max(0, Math.min(5, Math.floor((metric === 'mcc' ? (value + 1) / 2 : value) * 6)))}`; return `<td class="${shade}"><button type="button" class="metric-cell" data-market="${escapeText(market.id)}" data-metric-role="${escapeText(role.id)}" aria-label="${escapeText(`${market.name}, ${role.name}, ${metricNames[metric]} ${fixed(value)}. Open score timeline.`)}">${value === null ? '—' : fixed(value)}</button></td>`; }).join('')}</tr>`).join('')}</tbody></table>`;
+  $('role-matrix').innerHTML = `<table class="matrix-table performance-table"><thead><tr><th scope="col">Market</th>${roles.map(role => `<th scope="col" title="${escapeText(role.name)}">${escapeText(shortRole[role.id] || role.name)}</th>`).join('')}</tr></thead><tbody>${state.index.markets.map(market => `<tr><td><button type="button" class="market-link" data-market="${escapeText(market.id)}" title="${escapeText(market.name)}">${escapeText(marketLabel(market))}</button></td>${roles.map(role => { const value = number(metricFor(market.id, role.id)?.[metric]); const shade = value === null ? 'missing' : performanceClass(value, paperComparison(market).map(row => row[metric === 'roc_auc' ? 'auc' : metric])); return `<td class="${shade}"><button type="button" class="metric-cell" data-market="${escapeText(market.id)}" data-metric-role="${escapeText(role.id)}" aria-label="${escapeText(`${market.name}, ${role.name}, ${metricNames[metric]} ${fixed(value)}. Open score timeline.`)}">${value === null ? '—' : fixed(value)}</button></td>`; }).join('')}</tr>`).join('')}</tbody></table>`;
   $('supervisor-metric-label').textContent = `${metricNames[metric]} · Full sample`;
   const width = 490, height = state.index.markets.length * 40 + 40, left = 115, right = 45, top = 12;
   const minimum = metric === 'mcc' ? -1 : 0, span = metric === 'mcc' ? 2 : 1;
@@ -103,7 +114,7 @@ function renderMetricMatrix() {
 function renderBenchmark() {
   const market = $('benchmark-market').value;
   const rows = state.index.comparison.filter(row => row.market === market);
-  $('benchmark-table').innerHTML = rows.length ? table(['Model', 'ROC AUC', 'Average precision', 'F1', 'MCC'], rows.map(row => [escapeText(row.model), fixed(row.auc), fixed(row.ap), fixed(row.f1), fixed(row.mcc)])) : '<p class="empty">No reported comparison is available for this market.</p>';
+  $('benchmark-table').innerHTML = rows.length ? table(['Model', 'ROC AUC', 'Average precision', 'F1', 'MCC'], rows.map(row => [escapeText(row.model), ...['auc', 'ap', 'f1', 'mcc'].map(metric => `<span class="${performanceClass(row[metric], rows.map(item => item[metric]))}">${fixed(row[metric])}</span>`)])) : '<p class="empty">No reported comparison is available for this market.</p>';
 }
 
 async function renderMarket(reset = false) {
@@ -312,8 +323,8 @@ async function renderCaseDetail() {
 async function renderGallery() {
   if (!state.figures.length) state.figures = await readJSON('../Figures/manifest.json');
   const group = $('figure-filter').value;
-  const figures = state.figures.map((figure, index) => { const name = figure.submission_file.replace(/\.png$/i, ''); const category = /Figure (01|05|06)\b/.test(name) ? 'method' : /Figure (02|03|04|07)\b/.test(name) ? 'inputs' : 'results'; return {...figure, index, name, category}; }).filter(figure => group === 'all' || figure.category === group);
-  $('figure-gallery').innerHTML = figures.map(figure => `<button type="button" class="figure-card" data-figure="${figure.index}"><img src="${escapeText(localPath('../' + figure.file))}" alt="${escapeText(figure.name)}" loading="lazy"><span class="figure-label"><strong>${escapeText(figure.name)}</strong><small>${{method: 'Method', results: 'Results', inputs: 'Input example'}[figure.category]} · Saved manuscript figure</small></span></button>`).join('');
+  const figures = state.figures.map((figure, index) => { const filename = (figure.submission_file || figure.file.split('/').at(-1)).replace(/\.png$/i, ''); const name = figure.display_name || filename; const category = figure.category || (/Figure (01|05|06)\b/.test(filename) ? 'method' : /Figure (02|03|04|07)\b/.test(filename) ? 'inputs' : 'results'); return {...figure, index, name, category}; }).filter(figure => group === 'all' || figure.category === group);
+  $('figure-gallery').innerHTML = figures.map(figure => `<button type="button" class="figure-card" data-figure="${figure.index}"><img src="${escapeText(localPath('../' + figure.file + '?v=' + figure.sha256))}" alt="${escapeText(figure.name)}" loading="lazy"><span class="figure-label"><strong>${escapeText(figure.name)}</strong><small>${{method: 'Method', results: 'Results', inputs: 'Input example'}[figure.category]} · Saved manuscript figure</small></span></button>`).join('');
 }
 
 function openFigure(src, title, caption = 'Saved research image. The original file is unchanged.') {
@@ -620,11 +631,11 @@ function drawComparison() {
     if (low < 0 && high > 0) svg += `<line x1="${left}" x2="${width-right}" y1="${y(0,panel)}" y2="${y(0,panel)}" stroke="#b5bcc5" stroke-width=".6"></line>`;
     let scorePath='',thresholdPath='',previousScore=null,previousThreshold=null;
     rows.forEach(row => { const values=row.models[model.id], score=comparisonValue(values?.score,model), threshold=comparisonValue(values?.threshold,model); if(score!==null) scorePath+=`${previousScore===null?'M':'L'}${x(row.target_date)},${y(score,panel)} `; previousScore=score; if(threshold!==null) thresholdPath+=previousThreshold===null?`M${x(row.target_date)},${y(threshold,panel)} `:`H${x(row.target_date)}V${y(threshold,panel)} `; previousThreshold=threshold; });
-    svg+=`<path d="${thresholdPath}" class="chart-threshold"></path><path d="${scorePath}" fill="none" stroke="${model.id==='decision_supervisor'?'#4169E1':'#555F6B'}" stroke-width="1.5"${model.id==='lstm_news'?' stroke-dasharray="5 3"':''}></path>`;
+    svg+=`<path d="${thresholdPath}" class="chart-threshold"></path><path d="${scorePath}" fill="none" stroke="${model.id==='decision_supervisor'?'#4169E1':'#555F6B'}" stroke-width="1.5"></path>`;
     rows.forEach(row => { const score=comparisonValue(row.models[model.id]?.score,model), outcome=decisionOutcome(row.label,row.models[model.id]?.prediction); if(score===null)return; const px=x(row.target_date),py=y(score,panel); if(outcome!=='tn'||rows.length<=40)svg+=outcomeMarker(outcome,px,py,rows.length<=40?4:2.6,model.id==='decision_supervisor'?'#4169E1':'#555F6B'); if(state.comparisonFilter?.model===model.id&&outcome===state.comparisonFilter.outcome)svg+=`<circle cx="${px}" cy="${py}" r="6" fill="none" stroke="#111" stroke-width="1"></circle>`; if(rows.length===1){ svg+=`<line class="chart-threshold" x1="${px-12}" x2="${px+12}" y1="${y(comparisonValue(row.models[model.id]?.threshold,model),panel)}" y2="${y(comparisonValue(row.models[model.id]?.threshold,model),panel)}"></line>`; } });
     svg+=`<rect class="chart-spine" x="${left}" y="${panelTop}" width="${width-left-right}" height="${panelHeight}"></rect><rect x="${left+5}" y="${panelTop+3}" width="${model.id==='lstm_news'?147:153}" height="18" fill="white" opacity=".95"></rect><text class="comparison-model" x="${left+8}" y="${panelTop+16}">${comparisonNames[model.id]}</text>`;
   });
-  svg+=`<text x="${left}" y="${lane-6}" font-weight="700">Observed outcome${width<500 ? ' · red = anomaly' : ''}</text>${width>=500 ? `<text x="${width-right}" y="${lane-6}" text-anchor="end">Anomaly = red · No anomaly = grey</text>` : ''}`;
+  svg+=`<text x="${left}" y="${lane-6}" font-weight="700">Observed outcome</text>${width>=500 ? `<rect x="${width-right-238}" y="${lane-14}" width="6" height="9" fill="#B43C4B"></rect><text x="${width-right-227}" y="${lane-6}">Anomaly</text><rect x="${width-right-149}" y="${lane-14}" width="6" height="9" fill="#89929D"></rect><text x="${width-right-138}" y="${lane-6}">No observed anomaly</text>` : ''}`;
   rows.forEach((row,index)=>{const before=index?(x(rows[index-1].target_date)+x(row.target_date))/2:left,after=index<rows.length-1?(x(rows[index+1].target_date)+x(row.target_date))/2:width-right;svg+=`<rect x="${before}" y="${lane}" width="${Math.max(.8,after-before)}" height="18" fill="${number(row.label)===1?'#B43C4B':number(row.label)===0?'#e1e3e6':'white'}"></rect>`;});
   svg+=`<rect class="chart-spine" x="${left}" y="${lane}" width="${width-left-right}" height="18"></rect>`;
   const tickCount=rows.length<=12&&width>700?rows.length:width<500?2:4;
@@ -789,7 +800,7 @@ $('case-detail').addEventListener('click', event => {
   if (chartButton) { const record = state.caseMatches.find(row => row.target_date === state.caseDate), chart = record.charts[Number(chartButton.dataset.chartIndex)]; openFigure(chart.src, `${record.target_date} · ${chart.title || 'Input chart'}`, 'Input chart captured for this target date.'); }
 });
 $('figure-filter').addEventListener('change', () => renderGallery().catch(showError));
-$('figure-gallery').addEventListener('click', event => { const button = event.target.closest('[data-figure]'); if (button) { const figure = state.figures[Number(button.dataset.figure)]; openFigure('../' + figure.file, figure.submission_file.replace(/\.png$/i, ''), figure.public_redaction || 'Saved manuscript figure.'); } });
+$('figure-gallery').addEventListener('click', event => { const button = event.target.closest('[data-figure]'); if (button) { const figure = state.figures[Number(button.dataset.figure)]; openFigure('../' + figure.file + '?v=' + figure.sha256, figure.display_name || (figure.submission_file || figure.file.split('/').at(-1)).replace(/\.png$/i, ''), figure.public_redaction || 'Saved manuscript figure.'); } });
 $('figure-close').addEventListener('click', () => $('figure-dialog').close());
 $('figure-dialog').addEventListener('click', event => { if (event.target === $('figure-dialog')) { const rect = event.target.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) event.target.close(); } });
 let resizeTimer;
