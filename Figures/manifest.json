@@ -70,23 +70,21 @@
   },
   {
     "file": "Figures/Manuscript/Figure 08 A ROC AUC.png",
-    "sha256": "5ddd6917f2135a405af4c6776d1c3135c51762c0187ea3d1891c66a05af907a9",
+    "sha256": "4dfba5e3e8edef5a192125525dbd988b1cfceab6f6be9311e8fec7529ce5b5b1",
     "submission_file": "Figure 08 A ROC AUC.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": false,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279
   },
   {
     "file": "Figures/Manuscript/Figure 08 B Average Precision.png",
-    "sha256": "711eebfa4b839e349f6a3d4b67665f7961adb81879ed0a41182a2fab63c753c4",
+    "sha256": "dbbef398eb0b15ddd585148504e472d2500191b67011846c4afe26f7ff8a3eac",
     "submission_file": "Figure 08 B Average Precision.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": false,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279
   },
   {
     "file": "Figures/Manuscript/Figure 09 Risk Scores.png",
@@ -100,63 +98,57 @@
   },
   {
     "file": "Figures/Manuscript/Figure 10 A SP500.png",
-    "sha256": "30d76cb3595b4ac855dcf59e96ac82d5b6f6c8fbec5651ab776ba63bd7aa853c",
+    "sha256": "d4e71cbe892423333ea4714b945608c8501211c90adc9361e73b7adb8d01b6f7",
     "submission_file": "Figure 10 A SP500.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279
   },
   {
     "file": "Figures/Manuscript/Figure 10 B FTSE100.png",
-    "sha256": "e2189eb290bd9320ea8e882be60ca6b8cc934842e7aed190a8a25af3c32cba8a",
+    "sha256": "2c7c4259e99b614af874d3d19fd9b57d388183790a2f1aaab189a6ad3f25805b",
     "submission_file": "Figure 10 B FTSE100.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279
   },
   {
     "file": "Figures/Manuscript/Figure 10 C DAX.png",
-    "sha256": "517fbfbb4df464404f6788f495a94c83e3d07db2c3f73d1804b124f6ef6dd621",
+    "sha256": "20abd0cfd492b781da5c8b5e2ce45e36bab260b0aae89e155a69d484fe61faec",
     "submission_file": "Figure 10 C DAX.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279
   },
   {
     "file": "Figures/Manuscript/Figure 10 D CACT.png",
-    "sha256": "f1fa47b217885c0d447344c6a792ba257fd7fb5bac6dbf7163931c1c321656d2",
+    "sha256": "e931b8a152de25ffd8fc07fa0b70f0f7a04df1ee22dc13ba87123546ce867073",
     "submission_file": "Figure 10 D CACT.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279
   },
   {
     "file": "Figures/Manuscript/Figure 10 E STOXX.png",
-    "sha256": "6f947671dadafeabdb9995cb00c694a046ce2f6f5ec411771b372a3bc4472640",
+    "sha256": "4c3cdbef1268eaf247c407b0ebc6cb3079c6927baea5218269046480b410826e",
     "submission_file": "Figure 10 E STOXX.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279
   },
   {
     "file": "Figures/Manuscript/Figure 10 F CBU0.png",
-    "sha256": "072bfb198df04478b5ed81e7a48bbf445cddb85be395bd50891d8cdc6b2020e7",
+    "sha256": "d85b85a9fc0db0ab2388f3b0fc45efea436bf1ac71b556085e12ec28ed8720a5",
     "submission_file": "Figure 10 F CBU0.png",
-    "submission_bytes_verified": true,
+    "submission_bytes_verified": false,
     "requires_external_data": true,
-    "regenerated_pixel_match": true,
-    "regenerated_pixel_difference_fraction": 0.0,
-    "notebook": "notebooks/figures/Comparison.ipynb"
+    "notebook": "notebooks/figures/Comparison.ipynb",
+    "evaluation_sample_n": 2279
   },
   {
     "file": "Figures/Manuscript/Figure 11 April Case Study.png",
@@ -177,5 +169,23 @@
     "regenerated_pixel_match": true,
     "regenerated_pixel_difference_fraction": 0.0,
     "notebook": "notebooks/figures/Anomaly Events.ipynb"
+  },
+  {
+    "file": "Figures/Manuscript/Paired ROC AUC.png",
+    "sha256": "9977dad1f9124314225583905e7f50e962b68d21e28cea4a6226cf884d62106e",
+    "submission_bytes_verified": false,
+    "evaluation_sample_n": 2279
+  },
+  {
+    "file": "Figures/Manuscript/Relative Economic Value.png",
+    "sha256": "46876dd9d0ebee403eb77921b4be27b99637eebebb2950d9a2a8f78fb15054c5",
+    "submission_bytes_verified": false,
+    "evaluation_sample_n": 2279
+  },
+  {
+    "file": "Figures/Manuscript/Paired AP.png",
+    "sha256": "74216f221f64617642f22be2bce390f0fd08ce55c84f9d2eb338aba739ea6ea1",
+    "submission_bytes_verified": false,
+    "evaluation_sample_n": 2279
   }
 ]

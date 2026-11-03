@@ -1,0 +1,171 @@
+{
+  "total_n": 2279,
+  "events": 123,
+  "finder_scores_labels_unchanged": true,
+  "all_60_model_metrics_reproduced": true,
+  "existing_gjr_probabilities_unchanged": true,
+  "lstm_logistic": [
+    {
+      "model": "SP500_NEWS",
+      "original_n": 374,
+      "restored_n": 374,
+      "added_dates": [],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "CAC_IND",
+      "original_n": 381,
+      "restored_n": 383,
+      "added_dates": [
+        "2025-02-28",
+        "2025-03-03"
+      ],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "STOXX_NEWS",
+      "original_n": 383,
+      "restored_n": 385,
+      "added_dates": [
+        "2025-02-28",
+        "2025-03-03"
+      ],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "STOXX_IND",
+      "original_n": 383,
+      "restored_n": 385,
+      "added_dates": [
+        "2025-02-28",
+        "2025-03-03"
+      ],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "DAX_IND",
+      "original_n": 379,
+      "restored_n": 379,
+      "added_dates": [],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "SP500_IND",
+      "original_n": 374,
+      "restored_n": 374,
+      "added_dates": [],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "CBU0_IND",
+      "original_n": 377,
+      "restored_n": 379,
+      "added_dates": [
+        "2025-02-28",
+        "2025-03-03"
+      ],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "FTSE_IND",
+      "original_n": 377,
+      "restored_n": 379,
+      "added_dates": [
+        "2025-02-28",
+        "2025-03-03"
+      ],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "CBU0_NEWS",
+      "original_n": 377,
+      "restored_n": 379,
+      "added_dates": [
+        "2025-02-28",
+        "2025-03-03"
+      ],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "FTSE_NEWS",
+      "original_n": 377,
+      "restored_n": 379,
+      "added_dates": [
+        "2025-02-28",
+        "2025-03-03"
+      ],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "DAX_NEWS",
+      "original_n": 379,
+      "restored_n": 379,
+      "added_dates": [],
+      "existing_probabilities_unchanged": true
+    },
+    {
+      "model": "CAC_NEWS",
+      "original_n": 381,
+      "restored_n": 383,
+      "added_dates": [
+        "2025-02-28",
+        "2025-03-03"
+      ],
+      "existing_probabilities_unchanged": true
+    }
+  ],
+  "no_llm_calls": true,
+  "no_lstm_logistic_training": true,
+  "ftse_quantitative_auc": 0.710385101010101,
+  "model_artifacts": {
+    "SP500_NEWS/lstm.keras": "ad0386dbe0bd35843ce4491586c2316c5760246a2b602f263afef21301a0b5ef",
+    "SP500_NEWS/logistic.joblib": "1d649269c224f8afa59b66c7629e262e4e0608a1acbc0ffc7bf61975e3c36258",
+    "SP500_NEWS/transforms.joblib": "6fda1a2e257bd74d3ec65463c2c056d5b5272d2d7abd54bc3a1c4e8c80b1a241",
+    "CAC_IND/lstm.keras": "4cf07f85e0c7a72a921e3165c3294fca46b30aa7e95393cef58ddc9983621129",
+    "CAC_IND/logistic.joblib": "31d7d4da3de19f1535913d7d63bab9cb144b864b59cdfc6a1b3a821b1a2466d1",
+    "CAC_IND/transforms.joblib": "88d38699633a9353bcc9da901bf9ac1874dfd1e8e4ffc6c84be4d4d185385ea6",
+    "STOXX_NEWS/lstm.keras": "79a4056dde29762d8ebbe7bc4dd05460a5b16a1d2b20d0453b0cb36f35458e72",
+    "STOXX_NEWS/logistic.joblib": "dba08201472ec1296575e0dd7c28e0de1350efe4c9f048c21b1c26c8f7b8b5e0",
+    "STOXX_NEWS/transforms.joblib": "70a3a80f5bf52112c53f76c9ba5ec48385024fa9fc5a207cb94dd9bdeb6e899a",
+    "STOXX_IND/lstm.keras": "bc4c84bfabf60df4155c6accf90c21995791068e18a73991b85a0e8d2809ad21",
+    "STOXX_IND/logistic.joblib": "43073b43b4d91271401421f16bcd42d6c74b406ab2ed5792573bc1d41a2ffa79",
+    "STOXX_IND/transforms.joblib": "201d37350e0fc933bce2c232128f8de7be82783f9452bf740ca2a1cd5570404f",
+    "DAX_IND/lstm.keras": "654a0e7bc5a42247161aad58b5150d803e866afb2993d6e806487d41baf2be83",
+    "DAX_IND/logistic.joblib": "2fda18a6816e1a2aa9f6961ccea7db93c1192830d951b525a090732013ead5fa",
+    "DAX_IND/transforms.joblib": "e099c41de2e36d6426bf6fb03c4508b3371564315df907963e59ffec536d6ed8",
+    "SP500_IND/lstm.keras": "1b4e86324e5a25e0b2b45119430cd8d71262a7053fe7f37ad211b0814c4b35d6",
+    "SP500_IND/logistic.joblib": "e28f08609cdddc7a9ce7127e440b9ccd682fb37f16cd7c3b68100120dd5228a7",
+    "SP500_IND/transforms.joblib": "8fda6b7101aaa6a1ea25d13e3c5b9e5325f2e616ba3178bc8a634426fd76937f",
+    "CBU0_IND/lstm.keras": "5be87a36b1386b964754d6a79d5b69a05a89b24ddf24fdadc313a6a63dc4655a",
+    "CBU0_IND/logistic.joblib": "b9d72a20ea515b9db0e7b9b65a512e1752431505e68e503e4bfc696a92b0f63d",
+    "CBU0_IND/transforms.joblib": "e7b07516f656f45b2b9808301dab0bef61f2e975b777fa6e5c2206656c2dd7d2",
+    "FTSE_IND/lstm.keras": "989b39496cafecad1c3cabf6b8932af9b16882339af535dc3182577708600049",
+    "FTSE_IND/logistic.joblib": "48b6b299327db3a8f298fc6606b59dff4dc4aff2a84a6dff4b68a4d33a116087",
+    "FTSE_IND/transforms.joblib": "1e265d0739724a2e1df612e48bce1d38032de6ed98103d1a98fa4ff9eb19bf4c",
+    "CBU0_NEWS/lstm.keras": "2fbff42fa2b18486cca9659f87f6d82c1ef419af444e3ea44f92f1e273baa75e",
+    "CBU0_NEWS/logistic.joblib": "0bff39582ac4aa9cde182ceac46c23263e9d5ffe3c382fd6c427fb5ff2273491",
+    "CBU0_NEWS/transforms.joblib": "47d56a85c232adb50ef19e4dfe7aeb823f38670c25aef4571a70dd157fed1d26",
+    "FTSE_NEWS/lstm.keras": "cc3765b4a2ba6e6dd133aab1809d817e8fd1bc9eba2b89552dad61900d06bcb9",
+    "FTSE_NEWS/logistic.joblib": "fa6c785d3703a23781d3160bd52548529fd4d8937cd264e28a029b89f731cf2a",
+    "FTSE_NEWS/transforms.joblib": "f6caa5db6bec1dc1f022540f2d6e839c230465e81dd05a125fa94bfe3cca09ea",
+    "DAX_NEWS/lstm.keras": "984ac9cabc59de5bd12d168e91fd608f2963944dec39685c5fbf5a153f2b7966",
+    "DAX_NEWS/logistic.joblib": "8b76c626210f41ac552a10335e71081531fbec6111b6cd17c2e01562256b08db",
+    "DAX_NEWS/transforms.joblib": "a4e9eaa7e826bb433faa2323992330d5b01f8c266a239f252e1d1af22ce29b87",
+    "CAC_NEWS/lstm.keras": "c77144250b11fe703a5904f2e7adcc764479eb5f4d76dd138371ecea8e019e1a",
+    "CAC_NEWS/logistic.joblib": "ce5cae3200d9d3643c9f08b45a1e1c65d94d7db5b06b9e4a604779c1818e330d",
+    "CAC_NEWS/transforms.joblib": "fbdb50d6898e5f356c1f0a5aab248248f8dc34610e61a16c17b484211f6f217c"
+  },
+  "gjr_extension": {
+    "added_target_dates": [
+      "2025-02-28",
+      "2025-03-03"
+    ],
+    "markets": [
+      "FTSE100",
+      "CACT",
+      "STOXX",
+      "CBU0.L"
+    ],
+    "existing_forecasts_and_refit_schedule_preserved": true
+  }
+}
